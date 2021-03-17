@@ -1,0 +1,16 @@
+{
+    "home": "Home",
+    "cart": "Cart",
+    "login": "Login",
+    "signUp": "Signup",
+    "product": "Product",
+    "supplier": "Suppliers",
+    "quantity_message": "Enter required quantity",
+    "cancel": "Cancel",
+    "add_to_cart": "Add to cart",
+    "info": "Info",
+    "callUs":"Call us",
+    "pharmacy":"Pharmacy",
+    "searchTitle":"Search",
+    "startSearch":"Start Search"
+}
