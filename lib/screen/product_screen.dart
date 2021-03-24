@@ -16,8 +16,8 @@ class ProductScreen extends StatefulWidget {
 
 class _ProductScreenState extends State<ProductScreen> {
   List<Product> productList = [];
-  String supplierId = "";
-  String categoryId = "";
+  String supplierId = "0";
+  String categoryId = "0";
   int limit = 20;
   @override
   void initState() {

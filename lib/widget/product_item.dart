@@ -1,7 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eshop/constant/constant.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/model/product_data.dart';
+import 'package:eshop/provider/product_provider.dart';
+import 'package:eshop/screen/product_details/product_details_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProductItems extends StatefulWidget {
   final Product product;
@@ -23,11 +27,16 @@ class _ProductItemsState extends State<ProductItems> {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width - 30.0,
-      height: MediaQuery.of(context).size.height - 50.0,
       child: Padding(
         padding: EdgeInsets.only(top: 5.0, bottom: 5.0, right: 5.0, left: 5.0),
         child: InkWell(
-          onTap: () {},
+          onTap: () {
+            Provider.of<ProductProvider>(context, listen: false)
+                .getProductById(widget.product.id);
+            Navigator.of(context).pushNamed(
+              ProductDetailsScreen.route,
+            );
+          },
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white,
@@ -43,7 +52,7 @@ class _ProductItemsState extends State<ProductItems> {
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.all(7.0),
+                  padding: EdgeInsets.all(3.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -61,11 +70,10 @@ class _ProductItemsState extends State<ProductItems> {
                 Hero(
                   tag: widget.product.id,
                   child: Container(
-                    height: 75.0,
-                    width: 75.0,
+                    height: 70.0,
+                    width: 60.0,
                     child: CachedNetworkImage(
-                      imageUrl: "http://eshop5827-001-site3.etempurl.com" +
-                          widget.product.imagePath,
+                      imageUrl: imagePath + widget.product.imagePath,
                       fit: BoxFit.fill,
                       placeholder: (context, url) =>
                           Center(child: CircularProgressIndicator()),
@@ -73,17 +81,17 @@ class _ProductItemsState extends State<ProductItems> {
                     ),
                   ),
                 ),
-                SizedBox(height: 7.0),
+                SizedBox(height: 5.0),
                 Text(
-                  '${widget.product.price}',
-                  style: TextStyle(color: Color(0xFFCC8053), fontSize: 15.0),
+                  '${widget.product.price}ج.م',
+                  style: TextStyle(color: Color(0xFFCC8053), fontSize: 12.0),
                 ),
                 Text(
                   widget.product.name,
                   style: TextStyle(
                       color: Color(0xFF575E67),
                       fontWeight: FontWeight.bold,
-                      fontSize: 16.0),
+                      fontSize: 13.0),
                 ),
               ],
             ),
@@ -106,10 +114,10 @@ class _ProductItemsState extends State<ProductItems> {
             ),
             actions: <Widget>[
               TextButton.icon(
-
-                icon: Icon(Icons.shopping_cart,),
+                icon: Icon(
+                  Icons.shopping_cart,
+                ),
                 label: Text(AppLocale.of(context).getString("add_to_cart")),
-                
                 style: TextButton.styleFrom(
                     primary: Theme.of(context).primaryColor),
                 onPressed: () {

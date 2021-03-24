@@ -9,8 +9,15 @@
     "cancel": "Cancel",
     "add_to_cart": "Add to cart",
     "info": "Info",
-    "callUs":"Call us",
-    "pharmacy":"Pharmacy",
-    "searchTitle":"Search",
-    "startSearch":"Start Search"
+    "callUs": "Call us",
+    "pharmacy": "Pharmacy",
+    "searchTitle": "Search",
+    "startSearch": "Start Search",
+    "location": "Our location",
+    "total": "Total",
+    "emptyPassword": "Please enter password first.",
+    "emptyEmail": "Please enter Email first.",
+    "email": "Email",
+    "password": "Password",
+    "loginText": "Login to your Account"
 }

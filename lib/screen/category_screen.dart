@@ -1,11 +1,16 @@
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:eshop/constant/constant.dart';
 import 'package:eshop/data/service/services.dart';
-import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/model/CityData.dart';
+import 'package:eshop/model/announcement_data.dart';
 import 'package:eshop/model/category_data.dart';
+import 'package:eshop/model/image_data.dart';
+import 'package:eshop/provider/announcement_provider.dart';
 import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/category_provider.dart';
 import 'package:eshop/provider/city_provider.dart';
+import 'package:eshop/provider/images_provider.dart';
 import 'package:eshop/screen/product_screen.dart';
 import 'package:eshop/widget/badge.dart';
 import 'package:flutter/material.dart';
@@ -24,12 +29,14 @@ class CategoryScreen extends StatefulWidget {
 class _CategoryScreenState extends State<CategoryScreen> {
   List<Category> categoryList = [];
   List<City> cityList = [];
+  List<AnnouncementData> announcementList = [];
+  List<ImageData> imageList = [];
   int intialId = 0;
   ScrollController _categoryScrollController = new ScrollController();
   int limit = 50;
   bool isLoaded = false;
-  String cityId = "";
-  String categoryId = "";
+  String cityId = "0";
+  String categoryId = "0";
   String _selectedCity;
   @override
   void didChangeDependencies() {
@@ -42,9 +49,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
     Provider.of<CategoryProvider>(context, listen: false)
         .fetchCategoryList(1, limit);
-
+    Provider.of<Cart>(context,listen: false).fetchCartList();
     Provider.of<CityProvider>(context, listen: false).fetchCityList(1, limit);
-
+    Provider.of<AnnouncementProvider>(context, listen: false)
+        .fetchAnnouncementList();
+    Provider.of<ImagesProvider>(context, listen: false).fetchImageList();
     _categoryScrollController.addListener(() {
       if (_categoryScrollController.position.pixels ==
           _categoryScrollController.position.maxScrollExtent) {
@@ -60,7 +69,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Widget build(BuildContext context) {
     categoryList = Provider.of<CategoryProvider>(context).categoryList;
     cityList = Provider.of<CityProvider>(context).cityList;
-
+    announcementList =
+        Provider.of<AnnouncementProvider>(context).announcementList;
+    imageList = Provider.of<ImagesProvider>(context).imagesList;
     return FutureBuilder(
         future: fetchSupplier(categoryId, cityId, 1, 20),
         builder: (context, snapshot) {
@@ -70,7 +81,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
             case ConnectionState.waiting:
               return Scaffold(
                 appBar: AppBar(
-                  title: Text("Suppliers"),
+                  centerTitle: true,
+                  title: Image.asset(
+                    'assets/images/app_logo.png',
+                    fit: BoxFit.cover,
+                    height: kToolbarHeight,
+                  ),
                 ),
                 drawer: mainDrawer(),
                 body: Center(
@@ -91,16 +107,21 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Scaffold buildScaffold(AsyncSnapshot snapshot, supplierList) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocale.of(context).getString('supplier')),
+        // centerTitle: true,
+        title: Image.asset(
+          'assets/images/app_logo.png',
+          fit: BoxFit.cover,
+          height: kToolbarHeight,
+        ),
         actions: [
-            IconButton(
+          IconButton(
               icon: Icon(Icons.search),
               onPressed: () {
                 Navigator.of(context).pushNamed(SearchScreen.route);
               }),
           Consumer<Cart>(
             builder: (_, cart, child) => Badge(
-              value: cart.itemCount.toString(),
+              value: cart.cartItems.length.toString()??"0.0",
               child: child,
               color: Colors.red,
             ),
@@ -110,22 +131,23 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   // Navigator.of(context).pushNamed(CartScreen.routesName);
                 }),
           ),
-        
         ],
       ),
       drawer: mainDrawer(),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Container(
-          child: Column(
+          child: ListView(
             children: [
+              buildAnnouncementSlider(),
+              buildImagesSlider(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Container(
                     // alignment: Alignment.centerRight,
                     child: DropdownButton(
-                        hint: Text("المدينه"),
+                        hint: Text("اختر المدينه"),
                         value: _selectedCity,
                         onChanged: (newValue) {
                           setState(() {
@@ -149,39 +171,107 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   ),
                 ],
               ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      onTap: () {
-                        print("object");
-                        Navigator.pushNamed(context, ProductScreen.route,
-                            arguments: {
-                              "supplierId": supplierList[index].id.toString(),
-                              "categoryId": categoryId
-                            });
-                      },
-                      leading: supplierList[index].imagePath == null
-                          ? Text("")
-                          : Container(
-                              width: 50,
-                              height: 50,
-                              child: CachedNetworkImage(
-                                imageUrl:
-                                    imagePath + supplierList[index].imagePath,
-                                fit: BoxFit.cover,
-                                placeholder: (context, url) =>
-                                    Center(child: CircularProgressIndicator()),
-                                errorWidget: (context, url, error) =>
-                                    Icon(Icons.error),
-                              ),
-                            ),
-                      title: Text(supplierList[index].name),
-                      subtitle: Text(supplierList[index].categoryName ?? ""),
-                    );
-                  },
+              GridView.builder(
+                padding: const EdgeInsets.all(5),
+                itemCount: snapshot.data.length,
+
+                physics: NeverScrollableScrollPhysics(),
+
+                ///
+                shrinkWrap: true,
+
+                ///
+                scrollDirection: Axis.vertical,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisSpacing: 5,
+                  mainAxisSpacing: 5,
+                  crossAxisCount: 2,
                 ),
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      print("object");
+                      Navigator.pushNamed(context, ProductScreen.route,
+                          arguments: {
+                            "supplierId": supplierList[index].id.toString(),
+                            "categoryId": categoryId
+                          });
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            spreadRadius: 3.0,
+                            blurRadius: 5.0,
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: 70.0,
+                            width: 65.0,
+                            child: CachedNetworkImage(
+                              imageUrl:
+                                  imagePath + supplierList[index].imagePath,
+                              fit: BoxFit.fill,
+                              placeholder: (context, url) =>
+                                  Center(child: CircularProgressIndicator()),
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
+                            ),
+                          ),
+                          SizedBox(height: 5.0),
+                          Text(
+                            supplierList[index].name,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF212121),
+                                fontSize: 16.0),
+                          ),
+                          Text(
+                            supplierList[index].categoryName ?? "",
+                            style: TextStyle(
+                                color: Color(0xFF575E67),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14.0),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                  // return ListTile(
+                  //   onTap: () {
+                  //     print("object");
+                  //     Navigator.pushNamed(context, ProductScreen.route,
+                  //         arguments: {
+                  //           "supplierId": supplierList[index].id.toString(),
+                  //           "categoryId": categoryId
+                  //         });
+                  //   },
+                  //   leading: supplierList[index].imagePath == null
+                  //       ? Text("")
+                  //       : Container(
+                  //           width: 50,
+                  //           height: 50,
+                  //           child: CachedNetworkImage(
+                  //             imageUrl:
+                  //                 imagePath + supplierList[index].imagePath,
+                  //             fit: BoxFit.cover,
+                  //             placeholder: (context, url) =>
+                  //                 Center(child: CircularProgressIndicator()),
+                  //             errorWidget: (context, url, error) =>
+                  //                 Icon(Icons.error),
+                  //           ),
+                  //         ),
+                  //   title: Text(supplierList[index].name),
+                  //   subtitle: Text(supplierList[index].categoryName ?? ""),
+                  // );
+                },
               ),
             ],
           ),
@@ -227,5 +317,59 @@ class _CategoryScreenState extends State<CategoryScreen> {
         ),
       ),
     );
+  }
+
+  Widget sliderBuilder(int index, List<dynamic> list) {
+    return Container(
+      width: double.infinity,
+      child: Image.network(
+        imagePath + list[index].imagePath,
+        fit: BoxFit.fill,
+      ),
+    );
+  }
+
+  Widget buildAnnouncementSlider() {
+    return announcementList != null && announcementList.isEmpty
+        ? Text("")
+        : Container(
+            height: MediaQuery.of(context).size.height / 4,
+            width: double.infinity,
+            child: CarouselSlider.builder(
+              itemCount: announcementList.length,
+              itemBuilder: (BuildContext context, int index, int realIndex) {
+                return sliderBuilder(index, announcementList);
+              },
+              // items: imageSliders,
+              options: CarouselOptions(
+                autoPlay: true,
+                enableInfiniteScroll: false,
+                enlargeCenterPage: true,
+                viewportFraction: 1,
+              ),
+            ),
+          );
+  }
+
+  Widget buildImagesSlider() {
+    return imageList != null && imageList.isEmpty
+        ? Text("")
+        : Container(
+            height: MediaQuery.of(context).size.height / 4,
+            width: double.infinity,
+            child: CarouselSlider.builder(
+              itemCount: imageList.length,
+              itemBuilder: (BuildContext context, int index, int realIndex) {
+                return sliderBuilder(index, imageList);
+              },
+              // items: imageSliders,
+              options: CarouselOptions(
+                autoPlay: true,
+                enableInfiniteScroll: false,
+                enlargeCenterPage: true,
+                viewportFraction: 1,
+              ),
+            ),
+          );
   }
 }

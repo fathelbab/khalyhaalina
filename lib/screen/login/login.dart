@@ -1,4 +1,5 @@
 import 'package:eshop/constant/constant.dart';
+import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/provider/auth_provider.dart';
 import 'package:eshop/screen/home/home_screen.dart';
 import 'package:eshop/screen/signup/signup.dart';
@@ -36,6 +37,7 @@ class _LoginState extends State<Login> {
         body: Container(
           padding: EdgeInsets.all(20.0),
           child: Column(
+        
             children: [
               Expanded(
                   child: Form(
@@ -45,7 +47,7 @@ class _LoginState extends State<Login> {
                     Container(
                       margin: EdgeInsets.all(10.0),
                       child: Text(
-                        "Login to your Account",
+                     AppLocale.of(context).getString('loginText'),
                         style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold,
@@ -62,14 +64,14 @@ class _LoginState extends State<Login> {
                       child: TextFormField(
                         controller: _emailController,
                         decoration: InputDecoration(
-                          hintText: "Email",
+                          hintText: AppLocale.of(context).getString('email'),
                           border: InputBorder.none,
                         ),
                         validator: (value) {
                           if (value.isEmpty ||
                               value.indexOf(".") == -1 ||
                               value.indexOf("@") == -1) {
-                            return "Please enter Email first.";
+                            return AppLocale.of(context).getString('emptyEmail');
                           }return null;
                         },
                       ),
@@ -84,12 +86,12 @@ class _LoginState extends State<Login> {
                         obscureText: true,
                         controller: _passwordController,
                         decoration: InputDecoration(
-                          hintText: "Password",
+                          hintText: AppLocale.of(context).getString('password'),
                           border: InputBorder.none,
                         ),
                         validator: (value) {
                           if (value.isEmpty || value.length < 6) {
-                            return "Please enter password first.";
+                            return AppLocale.of(context).getString("emptyPassword");
                           }return null;
                         },
                       ),

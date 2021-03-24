@@ -37,6 +37,9 @@ dependencies:
   splashscreen: ^1.3.5
   url_launcher: ^6.0.2
   material_floating_search_bar: ^0.3.3
+  font_awesome_flutter: ^8.12.0
+  getwidget: ^1.2.4
+  carousel_slider: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -78,7 +81,7 @@ flutter:
           weight: 700
     - family: Anton
       fonts:
-        - asset: assets/fonts/Anton-Regular.ttf
+        - asset: assets/fonts/Ibrahim.otf
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf

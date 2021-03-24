@@ -12,5 +12,12 @@
     "callUs": "اتصل بنا",
     "pharmacy": "الصيدليه",
     "searchTitle": "البحث",
-    "startSearch": "ابدا البحث"
+    "startSearch": "ابدا البحث",
+    "location": "الموقع",
+    "total": "المجموع",
+    "emptyPassword": "يرجى ادخال كلمة المرور",
+    "emptyEmail": "يرجى ادخال البريد الالكترونى",
+    "email": "البريد الالكترونى",
+    "password": "كلمة المرور",
+    "loginText": "الدخول لحسابى "
 }

@@ -2,6 +2,7 @@ import 'package:eshop/constant/constant.dart';
 import 'package:eshop/provider/auth_provider.dart';
 import 'package:eshop/provider/category_provider.dart';
 import 'package:eshop/provider/city_provider.dart';
+import 'package:eshop/provider/images_provider.dart';
 import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/provider/supplier_provider.dart';
 import 'package:eshop/screen/category_screen.dart';
@@ -18,6 +19,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'language/app_locale.dart';
+import 'provider/announcement_provider.dart';
 import 'provider/cart.dart';
 
 void main() async {
@@ -52,6 +54,12 @@ class MyApp extends StatelessWidget {
           create: (context) => Auth(),
         ),
         ChangeNotifierProvider(
+          create: (context) => AnnouncementProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ImagesProvider(),
+        ),
+        ChangeNotifierProvider(
           create: (context) => Cart(),
         )
       ],
@@ -60,7 +68,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primaryColor: primaryColor,
-          fontFamily: 'Lato',
+          fontFamily: 'Anton',
           visualDensity: VisualDensity.adaptivePlatformDensity,
           accentColor: Colors.blueGrey,
         ),
@@ -87,8 +95,9 @@ class MyApp extends StatelessWidget {
           }
           return supportedLocales.first;
         },
-        initialRoute:
-            token == "" || token == null ? Login.route : SplashAppScreen.route,
+        initialRoute: token == "" || token == null
+            ? Login.route
+            : SplashAppScreen.route,
         routes: {
           // '/': (context) => HomeScreen(),
           Login.route: (context) => Login(),
