@@ -12,6 +12,7 @@ class CartData {
     CartData({
         this.id,
         this.qty,
+        this.productid,
         this.price,
         this.totaleamount,
         this.image,
@@ -20,6 +21,7 @@ class CartData {
 
     int id;
     int qty;
+    int productid;
     double price;
     double totaleamount;
     String image;
@@ -28,6 +30,7 @@ class CartData {
     factory CartData.fromJson(Map<String, dynamic> json) => CartData(
         id: json["id"],
         qty: json["qty"],
+        productid: json["productid"],
         price: json["price"],
         totaleamount: json["totaleamount"],
         image: json["image"],
@@ -37,6 +40,7 @@ class CartData {
     Map<String, dynamic> toJson() => {
         "id": id,
         "qty": qty,
+        "productid": productid,
         "price": price,
         "totaleamount": totaleamount,
         "image": image,

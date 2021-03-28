@@ -7,6 +7,8 @@ import 'package:eshop/widget/product_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'cart/cart_screen.dart';
+
 class ProductScreen extends StatefulWidget {
   static const String route = "/product_screen";
 
@@ -37,14 +39,16 @@ class _ProductScreenState extends State<ProductScreen> {
         actions: [
           Consumer<Cart>(
             builder: (_, cart, child) => Badge(
-              value: cart.itemCount.toString(),
+                value: cart.cartItems != null && cart.cartItems.length > 0
+                  ? cart.cartItems.length.toString()
+                  : "0.0",
               child: child,
               color: Colors.red,
             ),
             child: IconButton(
                 icon: Icon(Icons.shopping_cart),
                 onPressed: () {
-                  // Navigator.of(context).pushNamed(CartScreen.routesName);
+                  Navigator.of(context).pushNamed(CartScreen.route);
                 }),
           ),
         ],
@@ -83,6 +87,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
     // print(id);
   }
+  
 }
 
 // class ProductItems extends StatelessWidget {

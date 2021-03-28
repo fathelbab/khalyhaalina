@@ -3,11 +3,14 @@ import 'package:eshop/provider/auth_provider.dart';
 import 'package:eshop/provider/category_provider.dart';
 import 'package:eshop/provider/city_provider.dart';
 import 'package:eshop/provider/images_provider.dart';
+import 'package:eshop/provider/order_provider.dart';
 import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/provider/supplier_provider.dart';
+import 'package:eshop/screen/cart/cart_screen.dart';
 import 'package:eshop/screen/category_screen.dart';
 import 'package:eshop/screen/home/home_screen.dart';
 import 'package:eshop/screen/login/login.dart';
+import 'package:eshop/screen/order/order_screen.dart';
 import 'package:eshop/screen/product_details/product_details_screen.dart';
 import 'package:eshop/screen/product_screen.dart';
 import 'package:eshop/screen/search/search_screen.dart';
@@ -21,6 +24,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'language/app_locale.dart';
 import 'provider/announcement_provider.dart';
 import 'provider/cart.dart';
+import 'provider/pharmacy_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,6 +55,9 @@ class MyApp extends StatelessWidget {
           create: (context) => SupplierProvider(),
         ),
         ChangeNotifierProvider(
+          create: (context) => PharmacyProvider(),
+        ),
+        ChangeNotifierProvider(
           create: (context) => Auth(),
         ),
         ChangeNotifierProvider(
@@ -61,6 +68,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => Cart(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => OrderProvider(),
         )
       ],
       child: MaterialApp(
@@ -95,9 +105,8 @@ class MyApp extends StatelessWidget {
           }
           return supportedLocales.first;
         },
-        initialRoute: token == "" || token == null
-            ? Login.route
-            : SplashAppScreen.route,
+        initialRoute:
+            token == "" || token == null ? Login.route : SplashAppScreen.route,
         routes: {
           // '/': (context) => HomeScreen(),
           Login.route: (context) => Login(),
@@ -108,6 +117,8 @@ class MyApp extends StatelessWidget {
           SignUp.route: (context) => SignUp(),
           SplashAppScreen.route: (context) => SplashAppScreen(),
           SearchScreen.route: (context) => SearchScreen(),
+          CartScreen.route: (context) => CartScreen(),
+          OrderScreen.route: (context) => OrderScreen(),
         },
       ),
     );

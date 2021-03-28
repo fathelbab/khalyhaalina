@@ -4,6 +4,7 @@ import 'package:eshop/model/product_data.dart';
 import 'package:eshop/model/product_details_data.dart';
 import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/product_provider.dart';
+import 'package:eshop/screen/cart/cart_screen.dart';
 import 'package:eshop/screen/search/search_screen.dart';
 import 'package:eshop/widget/badge.dart';
 import 'package:flutter/material.dart';
@@ -47,14 +48,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               }),
           Consumer<Cart>(
             builder: (_, cart, child) => Badge(
-              value: cart.itemCount.toString(),
+            value: cart.cartItems != null && cart.cartItems.length > 0
+                  ? cart.cartItems.length.toString()
+                  : "0.0",
               child: child,
               color: Colors.red,
             ),
             child: IconButton(
                 icon: Icon(Icons.shopping_cart),
                 onPressed: () {
-                  // Navigator.of(context).pushNamed(CartScreen.routesName);
+                  Navigator.of(context).pushNamed(CartScreen.route);
                 }),
           ),
         ],
@@ -153,9 +156,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     onTap: () {
                       if (quantity > 0) {
                         addToCart(quantity, productDetails.id);
-                      } else {
-
-                      }
+                      } else {}
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -325,15 +326,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     Provider.of<Cart>(context, listen: false)
         .addItemToCart(id, quantity)
         .then((value) {
-          print(value);
+      print(value);
       if (value == "done") {
-      Provider.of<Cart>(context, listen: false).fetchCartList();
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Added successfully')));
+        Provider.of<Cart>(context, listen: false).fetchCartList();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(AppLocale.of(context).getString("addedSuccess"))));
       } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Added Failed')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(AppLocale.of(context).getString("addedError"))));
       }
-    }).catchError((e) {});
+    }).catchError((e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(AppLocale.of(context).getString("addedError"))));
+    });
   }
 }

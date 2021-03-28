@@ -13,13 +13,15 @@ class Cart with ChangeNotifier {
     return _cartItems.length;
   }
 
-  // double get totalMount {
-  //   var total = 0.0;
-  //   _cartItems.map((item) {
-  //     total += item.price * item.totaleamount;
-  //   });
-  //   return total;
-  // }
+  double get totalMount {
+    var total = 0.0;
+
+    cartItems.forEach((item) {
+      total += item.price * item.qty;
+    });
+
+    return total;
+  }
 
   fetchCartList() async {
     final token = await _getToken();
@@ -39,5 +41,13 @@ class Cart with ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
     return token;
+  }
+
+  Future clearCart() async {
+    
+  }
+
+  removeItems(String productId) async {
+    await removeItemFromCart(int.parse(productId));
   }
 }

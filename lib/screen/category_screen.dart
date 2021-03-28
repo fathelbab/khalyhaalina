@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+import 'cart/cart_screen.dart';
 import 'search/search_screen.dart';
 
 class CategoryScreen extends StatefulWidget {
@@ -49,7 +50,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
     Provider.of<CategoryProvider>(context, listen: false)
         .fetchCategoryList(1, limit);
-    Provider.of<Cart>(context,listen: false).fetchCartList();
+    Provider.of<Cart>(context, listen: false).fetchCartList();
     Provider.of<CityProvider>(context, listen: false).fetchCityList(1, limit);
     Provider.of<AnnouncementProvider>(context, listen: false)
         .fetchAnnouncementList();
@@ -121,14 +122,16 @@ class _CategoryScreenState extends State<CategoryScreen> {
               }),
           Consumer<Cart>(
             builder: (_, cart, child) => Badge(
-              value: cart.cartItems.length.toString()??"0.0",
+              value: cart.cartItems != null && cart.cartItems.length > 0
+                  ? cart.cartItems.length.toString()
+                  : "0.0",
               child: child,
               color: Colors.red,
             ),
             child: IconButton(
                 icon: Icon(Icons.shopping_cart),
                 onPressed: () {
-                  // Navigator.of(context).pushNamed(CartScreen.routesName);
+                  Navigator.of(context).pushNamed(CartScreen.route);
                 }),
           ),
         ],

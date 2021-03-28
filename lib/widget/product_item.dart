@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eshop/constant/constant.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/model/product_data.dart';
+import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/screen/product_details/product_details_screen.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,8 @@ class _ProductItemsState extends State<ProductItems> {
                     children: [
                       GestureDetector(
                           onTap: () {
-                            _displayTextInputDialog(context);
+                            // _displayTextInputDialog(context);
+                            addToCart(1, widget.product.id);
                           },
                           child: Icon(
                             Icons.shopping_cart,
@@ -144,5 +146,23 @@ class _ProductItemsState extends State<ProductItems> {
   void dispose() {
     super.dispose();
     _textFieldController.dispose();
+  }
+   void addToCart(int quantity, int id) async {
+    Provider.of<Cart>(context, listen: false)
+        .addItemToCart(id, quantity)
+        .then((value) {
+      print(value);
+      if (value == "done") {
+        Provider.of<Cart>(context, listen: false).fetchCartList();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(AppLocale.of(context).getString("addedSuccess"))));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(AppLocale.of(context).getString("addedError"))));
+      }
+    }).catchError((e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(AppLocale.of(context).getString("addedError"))));
+    });
   }
 }

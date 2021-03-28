@@ -5,6 +5,7 @@ import 'package:eshop/model/announcement_data.dart';
 import 'package:eshop/model/cart_data.dart';
 import 'package:eshop/model/category_data.dart';
 import 'package:eshop/model/image_data.dart';
+import 'package:eshop/model/order_data.dart';
 import 'package:eshop/model/product_data.dart';
 import 'package:eshop/model/product_details_data.dart' hide Category, Supplier;
 import 'package:eshop/model/supplier_data.dart';
@@ -110,6 +111,92 @@ Future<String> addProductToCart(
         headers: {'Content-Type': 'application/json', "access_token": token});
     print(response.statusCode);
     if (response.statusCode == 201) {
+      return "done";
+    } else {
+      return "failed";
+    }
+    // print("abdo" + response.body.toString());
+  } catch (e) {
+    throw e;
+  }
+}
+
+Future<String> removeItemFromCart(int productId) async {
+  try {
+    final response = await http.delete(
+      apiPath + "/Carts/$productId",
+      headers: {'Content-Type': 'application/json'},
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      return "done";
+    } else {
+      return "failed";
+    }
+    // print("abdo" + response.body.toString());
+  } catch (e) {
+    throw e;
+  }
+}
+
+Future<String> createOrderbyUser(
+  String customerName,
+  String phoneNumber,
+  String address,
+  double subTotal,
+  List<CartData> listOfProduct,
+  String token,
+) async {
+  try {
+    print(jsonEncode({
+      "customerName": customerName,
+      "phoneNumber": phoneNumber,
+      "address": address,
+      "subtotale": subTotal,
+      "vat": 0,
+      "orderdeitalsdto":
+          listOfProduct.map((productData) => productData.toJson()).toList(),
+    }));
+    final response = await http.post(
+      apiPath + "/Orders",
+      body: jsonEncode({
+        "customerName": customerName.toString(),
+        "phoneNumber": phoneNumber.toString(),
+        "address": address.toString(),
+   
+        "subtotale": 0,
+        "orderdeitalsdto":
+            listOfProduct.map((productData) => productData.toJson()).toList()
+      }),
+      headers: {"Content-Type": "application/json", "access_token": token},
+    );
+    print(response.statusCode);
+    print(response.body.toString());
+    if (response.statusCode == 201) {
+      return "done";
+    } else {
+      return "failed";
+    }
+    // print("abdo" + response.body.toString());
+  } catch (e) {
+    throw e;
+  }
+}
+
+Future<String> addPharmacy(String name, String address, String phoneNumber,
+    String image, String token) async {
+  try {
+    final response = await http.post(apiPath + "/Pharmacy/PostPharmacy",
+        body: jsonEncode({
+          "name": name,
+          "address": address,
+          "phoneNumber": phoneNumber,
+          "imagePath": image
+        }),
+        headers: {'Content-Type': 'application/json', "access_token": token});
+    // print(response.statusCode);
+    // print(response.body.toString());
+    if (response.statusCode == 200) {
       return "done";
     } else {
       return "failed";
