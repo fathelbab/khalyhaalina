@@ -3,6 +3,7 @@ import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/model/order_data.dart';
 import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/order_provider.dart';
+import 'package:eshop/screen/category_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -60,7 +61,7 @@ class _OrderScreenState extends State<OrderScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        AppLocale.of(context).getString("total"),
+                        AppLocale.of(context).getString("totalPrice"),
                         style: TextStyle(fontSize: 20.0),
                       ),
                       Spacer(),
@@ -235,7 +236,9 @@ class _OrderScreenState extends State<OrderScreen> {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(
                     AppLocale.of(context).getString("orderSuccessMessage"))));
-            // Provider.of<Cart>(context, listen: false).clearCart(cart.cartItems);
+            Provider.of<Cart>(context, listen: false).clearCart();
+            Provider.of<Cart>(context, listen: false).fetchCartList();
+            Navigator.of(context).pushReplacementNamed(CategoryScreen.route);
           } else {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(

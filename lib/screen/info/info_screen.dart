@@ -45,7 +45,7 @@ class InfoScreen extends StatelessWidget {
               ),
               trailing: Icon(Icons.arrow_forward_ios),
               subtitle: Text(
-                '+2 01145227769',
+                '+2 01229337175',
                 textAlign: TextAlign.end,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -53,7 +53,7 @@ class InfoScreen extends StatelessWidget {
                 ),
                 textDirection: TextDirection.ltr,
               ),
-              onTap: () => _launchURL("tel:+201145227769"),
+              onTap: () => _launchURL("tel:+201229337175"),
             ),
             ListTile(
               title: Text(

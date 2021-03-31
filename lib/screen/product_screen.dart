@@ -60,7 +60,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 child: CircularProgressIndicator(),
               )
             : productList.length == 0
-                ? Center(child: Text('No Products Found'))
+                ? Center(child: Text('لايوجد منتجات متاحة'))
                 : GridView.builder(
                     itemCount: productList.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

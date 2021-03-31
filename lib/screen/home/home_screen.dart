@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedItemColor: primaryColor,
         unselectedItemColor: Color(0XFF494949),
         elevation: 5,
-        selectedFontSize: 16,
+        selectedFontSize: 14,
         selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
         items: [
           BottomNavigationBarItem(

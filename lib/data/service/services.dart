@@ -4,7 +4,11 @@ import 'package:eshop/model/CityData.dart';
 import 'package:eshop/model/announcement_data.dart';
 import 'package:eshop/model/cart_data.dart';
 import 'package:eshop/model/category_data.dart';
+import 'package:eshop/model/doctor_data.dart' hide City;
+import 'package:eshop/model/doctor_details_data.dart';
+import 'package:eshop/model/doctor_specialist_data.dart';
 import 'package:eshop/model/image_data.dart';
+import 'package:eshop/model/notification_data.dart';
 import 'package:eshop/model/order_data.dart';
 import 'package:eshop/model/product_data.dart';
 import 'package:eshop/model/product_details_data.dart' hide Category, Supplier;
@@ -36,6 +40,19 @@ Future<List> fetchProduct(
   //     "/Product/GetAll?CategoryId=$categoryId&SupplierId=$supplierId&Offset=1&Limit=100");
   if (response.statusCode == 200) {
     // print(response.body);
+    return productDataFromJson(response.body).product;
+  } else {
+    print(response.statusCode);
+    return null;
+  }
+}
+
+Future<List> fetchProductHot(
+    String supplierId, String categoryId, int offset, int limit) async {
+  final response = await http.get(apiPath +
+      "/Product/GetAllHot?Offset=1&Limit=200&SupplierId=0&CategoryId=0");
+  print("abdo ${response.body}");
+  if (response.statusCode == 200) {
     return productDataFromJson(response.body).product;
   } else {
     print(response.statusCode);
@@ -121,14 +138,36 @@ Future<String> addProductToCart(
   }
 }
 
-Future<String> removeItemFromCart(int productId) async {
+Future<String> removeItemFromCart(int productId, String token) async {
   try {
     final response = await http.delete(
-      apiPath + "/Carts/$productId",
-      headers: {'Content-Type': 'application/json'},
+      "http://ahmedinara00-001-site1.dtempurl.com/api/Carts/$productId",
+      headers: {'Content-Type': 'application/json', "access_token": token},
     );
     print(response.statusCode);
     if (response.statusCode == 200) {
+      return "done";
+    } else {
+      return "failed";
+    }
+    // print("abdo" + response.body.toString());
+  } catch (e) {
+    throw e;
+  }
+}
+
+Future<String> cleartUserCart(String token) async {
+  try {
+    final response = await http.delete(
+      "http://ahmedinara00-001-site1.dtempurl.com/api/Orders/DeleteCart",
+      headers: {
+        'Content-Type': 'application/json',
+        'access_token': token,
+      },
+    );
+    // print(" abdo $token");
+
+    if (response.statusCode == 204) {
       return "done";
     } else {
       return "failed";
@@ -158,12 +197,11 @@ Future<String> createOrderbyUser(
           listOfProduct.map((productData) => productData.toJson()).toList(),
     }));
     final response = await http.post(
-      apiPath + "/Orders",
+      apiPath + "/Orders/PostOrderOrderDitales",
       body: jsonEncode({
         "customerName": customerName.toString(),
         "phoneNumber": phoneNumber.toString(),
         "address": address.toString(),
-   
         "subtotale": 0,
         "orderdeitalsdto":
             listOfProduct.map((productData) => productData.toJson()).toList()
@@ -194,6 +232,31 @@ Future<String> addPharmacy(String name, String address, String phoneNumber,
           "imagePath": image
         }),
         headers: {'Content-Type': 'application/json', "access_token": token});
+    // print(response.statusCode);
+    // print(response.body.toString());
+    if (response.statusCode == 200) {
+      return "done";
+    } else {
+      return "failed";
+    }
+    // print("abdo" + response.body.toString());
+  } catch (e) {
+    throw e;
+  }
+}
+
+Future<String> sendCompliatOrSuggestion(String firstName, String lastName,
+    String email, String phoneNumber, String userMessage) async {
+  try {
+    final response = await http.post(apiPath + "/ContactUs/PostPharmacy",
+        body: jsonEncode({
+          "email": email,
+          "firstName": firstName,
+          "lastName": lastName,
+          "phone": phoneNumber,
+          "message": userMessage,
+        }),
+        headers: {'Content-Type': 'application/json'});
     // print(response.statusCode);
     // print(response.body.toString());
     if (response.statusCode == 200) {
@@ -241,13 +304,31 @@ Future<List<AnnouncementData>> fetchAnnouncement() async {
   }
 }
 
+Future<List<Notifications>> fetchNotification() async {
+  try {
+    final response =
+        await http.get(apiPath + "/Notifications/GetAll?Offset=1&Limit=100");
+
+    if (response.statusCode == 200) {
+      // print(response.statusCode);
+      // print(response.body);
+      return notificationsDataFromJson(response.body).notification;
+    } else {
+      // print(response.statusCode);
+      return null;
+    }
+  } catch (e) {
+    throw e;
+  }
+}
+
 Future<List<ImageData>> fetchImages() async {
   try {
     final response = await http.get(apiPath + "/Image/GetAll");
 
     if (response.statusCode == 200) {
-      // print(response.statusCode);
-      // print(response.body);
+      print(response.statusCode);
+      print(response.body);
       return imageDataFromJson(response.body);
     } else {
       // print(response.statusCode);
@@ -270,6 +351,56 @@ Future<List<City>> getAllCity(int offset, int limit) async {
       return cityDataFromJson(response.body).city;
     } else {
       // print(response.statusCode);
+      return null;
+    }
+  } catch (e) {
+    throw e;
+  }
+}
+
+Future<List<DoctorInfo>> getAllDoctorList(
+    String cityId, String specialistId) async {
+  try {
+    final response = await http.get(apiPath +
+        "/Doctor/GetAll?Offset=1&Limit=100&CityId=$cityId&DoctorSpecialistId=$specialistId");
+
+    print("done${response.body}");
+
+    if (response.statusCode == 200) {
+      print("done${response.body}");
+      return doctorDataFromJson(response.body).result;
+    } else {
+      print(response.statusCode);
+      return null;
+    }
+  } catch (e) {
+    throw e;
+  }
+}
+
+Future<List<DoctorSpecialistt>> getAllDoctorSpecialist() async {
+  final response =
+      await http.get(apiPath + "/DoctorSpecialist/GetAll?Offset=1&Limit=100");
+  try {
+    if (response.statusCode == 200) {
+      print(response.body);
+      return doctorSpecialistDataFromJson(response.body).doctorSpecialist;
+    } else {
+      print(response.statusCode);
+      return null;
+    }
+  } catch (e) {
+    throw e;
+  }
+}
+
+Future<DoctorDetailsData> getDoctorByID(String doctorId) async {
+  final response = await http.get(apiPath + "/Doctor/getById/$doctorId");
+  try {
+    if (response.statusCode == 200) {
+      print(response.body);
+      return doctorDetailsDataFromJson(response.body);
+    } else {
       return null;
     }
   } catch (e) {
@@ -319,15 +450,13 @@ Future<void> register(
           "confirmPassword": password,
         }));
     final resultData = json.decode(response.body);
-    // print(response.body);
-    // print(resultData['arrayMessage'].toString());
-    if (response.statusCode == 200 && resultData['statusCode'] == 200) {
-      // print(resultData['result']);
+    print(response.body);
+    print(resultData['arrayMessage'].toString());
+    if (response.statusCode == 200) {
+      print(resultData['result']);
       // final prefs = await SharedPreferences.getInstance();
       // String token = resultData['result'] ?? "";
       // prefs.setString('token', token);
-    } else {
-      throw "${resultData['message']}";
     }
   } catch (e) {
     throw e;

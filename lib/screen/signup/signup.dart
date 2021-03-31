@@ -1,4 +1,5 @@
 import 'package:eshop/constant/constant.dart';
+import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/provider/auth_provider.dart';
 import 'package:eshop/screen/login/login.dart';
 import 'package:flutter/material.dart';
@@ -47,189 +48,271 @@ class _SignUpState extends State<SignUp> {
                 Expanded(
                   child: Form(
                     key: _formKey,
-                    child: ListView(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.all(10.0),
-                          child: Text(
-                            "انشاء حساب جديد",
-                            style: TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
-                              color: primaryColor,
+                    child: Center(
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: [
+                          Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.all(10.0),
+                            child: Text(
+                              "انشاء حساب جديد",
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                                color: primaryColor,
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.all(5.0),
-                          padding: EdgeInsets.only(right: 10, left: 10),
-                          decoration: BoxDecoration(
+                          Container(
+                            margin: EdgeInsets.all(5.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(20.0)),
-                          child: TextFormField(
-                            controller: _firstNameController,
-                            decoration: InputDecoration(
-                              hintText: "الاسم الاول",
-                              border: InputBorder.none,
                             ),
-                            validator: (value) {
-                              if (value.isEmpty || value.length < 1) {
-                                return "يرجى ادخال الاسم الاول";
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.all(5.0),
-                          padding: EdgeInsets.only(right: 10, left: 10),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20.0)),
-                          child: TextFormField(
-                            controller: _lastNameController,
-                            decoration: InputDecoration(
-                              hintText: "اسم العائله",
-                              border: InputBorder.none,
-                            ),
-                            validator: (value) {
-                              if (value.isEmpty || value.length < 1) {
-                                return "يرجى ادخال الاسم العائله";
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.all(5.0),
-                          padding: EdgeInsets.only(right: 10, left: 10),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20.0)),
-                          child: TextFormField(
-                            controller: _emailController,
-                            decoration: InputDecoration(
-                              hintText: "البريد الالكترونى",
-                              border: InputBorder.none,
-                            ),
-                            validator: (value) {
-                              if (value.isEmpty ||
-                                  value.indexOf(".") == -1 ||
-                                  value.indexOf("@") == -1) {
-                                return "يرجى ادخال البريد الالكترونى ";
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-
-                        Container(
-                          margin: EdgeInsets.all(5.0),
-                          padding: EdgeInsets.only(right: 10, left: 10),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20.0)),
-                          child: TextFormField(
-                              obscureText: true,
-                              controller: _passwordController,
+                            child: TextFormField(
+                              controller: _firstNameController,
                               decoration: InputDecoration(
-                                hintText: "كلمة المرور",
-                                border: InputBorder.none,
+                                prefixIcon: Icon(Icons.person),
+                                hintStyle: TextStyle(fontSize: 13),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context).primaryColor),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                border: new OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                    const Radius.circular(10.0),
+                                  ),
+                                ),
+                                hintText: "الاسم الاول",
                               ),
                               validator: (value) {
-                                if (value.isEmpty || value.length < 6) {
-                                  return "يرجى ادخال كلمة المرور";
-                                } else {
-                                  if (!regex.hasMatch(value))
-                                    return 'يرجى ادخال كلمة السر بطريقة صحيحه';
-                                  else
-                                    return null;
+                                if (value.isEmpty || value.length < 1) {
+                                  return "يرجى ادخال الاسم الاول";
                                 }
-                              }),
-                        ),
-                        Container(
-                          margin: EdgeInsets.all(5.0),
-                          padding: EdgeInsets.only(right: 10, left: 10),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20.0)),
-                          child: TextFormField(
-                            obscureText: true,
-                            controller: _passwordConfirmController,
-                            decoration: InputDecoration(
-                              hintText: "تاكيد كلمة المرور",
-                              border: InputBorder.none,
+                                return null;
+                              },
                             ),
-                            validator: (value) {
-                              if (_passwordConfirmController.text !=
-                                  _passwordController.text) {
-                                return "يرجى تاكيد كلمة المرور";
-                              }
-                              return null;
-                            },
                           ),
-                        ),
-                        MaterialButton(
-                          onPressed: () {
-                            _submit();
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
+                          Container(
+                            margin: EdgeInsets.all(5.0),
                             decoration: BoxDecoration(
-                              color: primaryColor,
-                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "انشاء حساب",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15),
-                                )),
+                            child: TextFormField(
+                              controller: _lastNameController,
+                              decoration: InputDecoration(
+                                prefixIcon: Icon(Icons.person),
+                                hintStyle: TextStyle(fontSize: 13),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context).primaryColor),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                border: new OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                    const Radius.circular(10.0),
+                                  ),
+                                ),
+                                hintText: "اسم العائله",
+                              ),
+                              validator: (value) {
+                                if (value.isEmpty || value.length < 1) {
+                                  return "يرجى ادخال الاسم العائله";
+                                }
+                                return null;
+                              },
+                            ),
                           ),
-                        ),
-                        // Container(
-                        //   margin: EdgeInsets.all(5.0),
-                        //   child: Text("Agree to our terms and conditions"),
-                        // )
-                      ],
+                          Container(
+                            margin: EdgeInsets.all(5.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: TextFormField(
+                              controller: _emailController,
+                              decoration: InputDecoration(
+                                prefixIcon: Icon(Icons.mail),
+                                hintStyle: TextStyle(fontSize: 13),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context).primaryColor),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                border: new OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                    const Radius.circular(10.0),
+                                  ),
+                                ),
+                                hintText: "البريد الالكترونى",
+                              ),
+                              validator: (value) {
+                                if (value.isEmpty ||
+                                    value.indexOf(".") == -1 ||
+                                    value.indexOf("@") == -1) {
+                                  return "يرجى ادخال البريد الالكترونى ";
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+
+                          Container(
+                            margin: EdgeInsets.all(5.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: TextFormField(
+                                obscureText: true,
+                                controller: _passwordController,
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(Icons.lock),
+                                  hintStyle: TextStyle(fontSize: 13),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Theme.of(context).primaryColor),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  border: new OutlineInputBorder(
+                                    borderRadius: const BorderRadius.all(
+                                      const Radius.circular(10.0),
+                                    ),
+                                  ),
+                                  hintText: "كلمة المرور",
+                                ),
+                                validator: (value) {
+                                  if (value.isEmpty || value.length < 6) {
+                                    return "يرجى ادخال كلمة المرور";
+                                  } else {
+                                    if (!regex.hasMatch(value))
+                                      return 'يرجى ادخال كلمة السر بطريقة صحيحه';
+                                    else
+                                      return null;
+                                  }
+                                }),
+                          ),
+                          Container(
+                            margin: EdgeInsets.all(5.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                            ),
+                            child: TextFormField(
+                              obscureText: true,
+                              controller: _passwordConfirmController,
+                              decoration: InputDecoration(
+                                prefixIcon: Icon(Icons.lock),
+                                hintStyle: TextStyle(fontSize: 13),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context).primaryColor),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                border: new OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                    const Radius.circular(10.0),
+                                  ),
+                                ),
+                                hintText: "تاكيد كلمة المرور",
+                              ),
+                              validator: (value) {
+                                if (_passwordConfirmController.text !=
+                                    _passwordController.text) {
+                                  return "يرجى تاكيد كلمة المرور";
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          MaterialButton(
+                            onPressed: () {
+                              _submit();
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: primaryColor,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "انشاء حساب",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15),
+                                  )),
+                            ),
+                          ),
+                          // Container(
+                          //   margin: EdgeInsets.all(5.0),
+                          //   child: Text("Agree to our terms and conditions"),
+                          // )
+                          Container(
+                            margin: const EdgeInsets.only(top: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "لدى حساب بالفعل",
+                                  style: TextStyle(
+                                    fontSize: 15.0,
+                                    color: primaryColor,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 5.0,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Login()));
+                                  },
+                                  child: Text(
+                                    AppLocale.of(context).getString("login"),
+                                    style: TextStyle(
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey[800],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        "لدى حساب بالفعل",
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          color: primaryColor,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => Login()));
-                        },
-                        child: Text(
-                          "الدخول",
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey[800],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
               ],
             ),
           ),

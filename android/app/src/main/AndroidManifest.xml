@@ -2,7 +2,7 @@
     package="com.kira.eshop">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="eshop"
+        android:label="خليها علينا"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <activity

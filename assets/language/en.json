@@ -15,6 +15,7 @@
     "startSearch": "Start Search",
     "location": "Our location",
     "total": "Total",
+    "totalPrice": "Total",
     "emptyPassword": "Please enter password first.",
     "emptyEmail": "Please enter Email first.",
     "email": "Email",
@@ -38,5 +39,12 @@
     "quantity": "Quantity",
     "confirmOrder": "Confirm Order",
     "orderSuccessMessage": "Order Placed Successfully",
-    "orderErrorMessage": "Something wrong happened"
+    "orderErrorMessage": "Something wrong happened",
+    "noInternetConnection": "No Internet Connection",
+    "checkInternet":"You are not connected to the internet. Make sure WiFi is on.",
+    "alert":"Alert!",
+    "alertBody":"'Are you sure delete this product?'",
+    "no":"No",
+    "yes":"Yes",
+    "addedMessageSuccess":"Your Message added successfully"
 }

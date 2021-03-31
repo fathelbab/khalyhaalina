@@ -43,11 +43,13 @@ class Cart with ChangeNotifier {
     return token;
   }
 
-  Future clearCart() async {
-    
+  Future<void> clearCart() async {
+    final token = await _getToken();
+    await cleartUserCart(token);
   }
 
   removeItems(String productId) async {
-    await removeItemFromCart(int.parse(productId));
+    final token = await _getToken();
+    await removeItemFromCart(int.parse(productId),token);
   }
 }
