@@ -7,7 +7,9 @@ import 'package:eshop/provider/images_provider.dart';
 import 'package:eshop/provider/notification_provider.dart';
 import 'package:eshop/provider/order_provider.dart';
 import 'package:eshop/provider/product_provider.dart';
+import 'package:eshop/provider/service_provider.dart';
 import 'package:eshop/provider/supplier_provider.dart';
+import 'package:eshop/screen/call_us/call_us.dart';
 import 'package:eshop/screen/cart/cart_screen.dart';
 import 'package:eshop/screen/category_screen.dart';
 import 'package:eshop/screen/city/city_screen.dart';
@@ -31,6 +33,7 @@ import 'provider/announcement_provider.dart';
 import 'provider/cart.dart';
 import 'provider/contact_us_provider.dart';
 import 'provider/pharmacy_provider.dart';
+import 'screen/services/services_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -80,8 +83,12 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => DoctorProvider(),
-        ),  ChangeNotifierProvider(
+        ),
+        ChangeNotifierProvider(
           create: (context) => CallUsProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ServiceProvider(),
         ),
         // ChangeNotifierProvider(
         //   create: (context) => ConnectivityProvider(),
@@ -137,7 +144,9 @@ class MyApp extends StatelessWidget {
           CartScreen.route: (context) => CartScreen(),
           OrderScreen.route: (context) => OrderScreen(),
           CityScreen.route: (context) => CityScreen(),
+          CallUsScreen.route: (context) => CallUsScreen(),
           DoctorDetailsScreen.route: (context) => DoctorDetailsScreen(),
+          ServicesScreen.route: (context) => ServicesScreen(),
         },
       ),
     );

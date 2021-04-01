@@ -6,26 +6,36 @@ import 'package:eshop/screen/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CallUsScreen extends StatefulWidget {
-  static const String route = "/callus_screen";
+class ServicesScreen extends StatefulWidget {
+  static const String route = "/services_screen";
 
-  CallUsScreen({Key key}) : super(key: key);
+  ServicesScreen({Key key}) : super(key: key);
 
   @override
-  _CallUsScreenState createState() => _CallUsScreenState();
+  _ServicesScreenState createState() => _ServicesScreenState();
 }
 
-class _CallUsScreenState extends State<CallUsScreen> {
+class _ServicesScreenState extends State<ServicesScreen> {
   RegExp regex = new RegExp(
       r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
   final GlobalKey<FormState> _formKey = GlobalKey();
   final _phoneNumberText = TextEditingController();
-  final _emailController = TextEditingController();
+  final  _userAddressController = TextEditingController();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _userMessageController = TextEditingController();
+  String servicePhoneNumber = "";
+  String name = "";
+  String serviceAddress = "";
+  String serviceName = "";
   @override
   Widget build(BuildContext context) {
+    final Map service = ModalRoute.of(context).settings.arguments as Map;
+    serviceName = service != null ? service["serviceName"] ?? "" : "";
+    serviceAddress = service != null ? service["serviceAddress"] ?? "" : "";
+    name = service != null ? service["name"] ?? "" : "";
+    servicePhoneNumber =
+        service != null ? service["servicePhoneNumber"] ?? "" : "";
     return Container(
       child: Scaffold(
         backgroundColor: Colors.grey[100],
@@ -57,7 +67,7 @@ class _CallUsScreenState extends State<CallUsScreen> {
                             alignment: Alignment.center,
                             margin: EdgeInsets.all(10.0),
                             child: Text(
-                              "الشكاوى والاقتراحات",
+                              "الخدمات",
                               style: TextStyle(
                                 fontSize: 18.0,
                                 fontWeight: FontWeight.bold,
@@ -90,16 +100,17 @@ class _CallUsScreenState extends State<CallUsScreen> {
                                     const Radius.circular(10.0),
                                   ),
                                 ),
-                                hintText: "الاسم الاول",
+                                hintText: "الاسم ",
                               ),
                               validator: (value) {
                                 if (value.isEmpty || value.length < 1) {
-                                  return "يرجى ادخال الاسم الاول";
+                                  return "يرجى ادخال الاسم ";
                                 }
                                 return null;
                               },
                             ),
                           ),
+                          
                           Container(
                             margin: EdgeInsets.all(5.0),
                             decoration: BoxDecoration(
@@ -107,9 +118,9 @@ class _CallUsScreenState extends State<CallUsScreen> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: TextFormField(
-                              controller: _lastNameController,
+                              controller:  _userAddressController,
                               decoration: InputDecoration(
-                                prefixIcon: Icon(Icons.person),
+                                prefixIcon: Icon(Icons.add_location),
                                 hintStyle: TextStyle(fontSize: 13),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
@@ -125,48 +136,11 @@ class _CallUsScreenState extends State<CallUsScreen> {
                                     const Radius.circular(10.0),
                                   ),
                                 ),
-                                hintText: "اسم العائله",
+                                hintText:  "العنوان",
                               ),
                               validator: (value) {
-                                if (value.isEmpty || value.length < 1) {
-                                  return "يرجى ادخال الاسم العائله";
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.all(5.0),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: TextFormField(
-                              controller: _emailController,
-                              decoration: InputDecoration(
-                                prefixIcon: Icon(Icons.mail),
-                                hintStyle: TextStyle(fontSize: 13),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Theme.of(context).primaryColor),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                border: new OutlineInputBorder(
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(10.0),
-                                  ),
-                                ),
-                                hintText: "البريد الالكترونى",
-                              ),
-                              validator: (value) {
-                                if (value.isEmpty ||
-                                    value.indexOf(".") == -1 ||
-                                    value.indexOf("@") == -1) {
-                                  return "يرجى ادخال البريد الالكترونى ";
+                                if (value.isEmpty) {
+                                  return "يرجى ادخال العنوان ";
                                 }
                                 return null;
                               },
@@ -211,13 +185,14 @@ class _CallUsScreenState extends State<CallUsScreen> {
                           Container(
                             margin: EdgeInsets.all(5.0),
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
                               color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
                             ),
                             child: TextFormField(
-                              controller: _userMessageController,
+                              readOnly: true,
+                              controller: _lastNameController,
                               decoration: InputDecoration(
-                                prefixIcon: Icon(Icons.comment),
+                                prefixIcon: Icon(Icons.person),
                                 hintStyle: TextStyle(fontSize: 13),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
@@ -233,14 +208,38 @@ class _CallUsScreenState extends State<CallUsScreen> {
                                     const Radius.circular(10.0),
                                   ),
                                 ),
-                                hintText: "الشكاوى والاقتراحات",
+                                hintText: name??"",
                               ),
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return "يرجى ادخال الشكاوى والاقتراحات";
-                                }
-                                return null;
-                              },
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.all(5.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                            ),
+                            child: TextFormField(
+                              readOnly: serviceName.isNotEmpty ? true : false,
+                              controller: _userMessageController,
+                              decoration: InputDecoration(
+                                prefixIcon: Icon(Icons.supervised_user_circle),
+                                hintStyle: TextStyle(fontSize: 13),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context).primaryColor),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                border: new OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                    const Radius.circular(10.0),
+                                  ),
+                                ),
+                                hintText: serviceName ?? "",
+                              ),
                             ),
                           ),
                           MaterialButton(
@@ -256,7 +255,7 @@ class _CallUsScreenState extends State<CallUsScreen> {
                               child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
-                                    "ارسال",
+                                    " ارسال طلب الخدمة",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -284,7 +283,7 @@ class _CallUsScreenState extends State<CallUsScreen> {
   @override
   void dispose() {
     super.dispose();
-    _emailController.dispose();
+     _userAddressController.dispose();
     _phoneNumberText.dispose();
     _userMessageController.dispose();
     _firstNameController.dispose();
@@ -299,24 +298,18 @@ class _CallUsScreenState extends State<CallUsScreen> {
       Provider.of<CallUsProvider>(context, listen: false)
           .sendUserCompliatOrSuggestion(
         _firstNameController.text.toString(),
-        _lastNameController.text.toString(),
-        _emailController.text.toString(),
+        name,
+         _userAddressController.text.toString(),
         _phoneNumberText.text.toString(),
-        _userMessageController.text.toString(),
+        "$servicePhoneNumber/$serviceName/$serviceAddress",
       )
           .then((value) {
         print(value);
         if (value == "done") {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text(
-                  AppLocale.of(context).getString("addedMessageSuccess"))));
-          setState(() {
-            _firstNameController.text = "";
-            _lastNameController.text = "";
-            _emailController.text = "";
-            _phoneNumberText.text = "";
-            _userMessageController.text = "";
-          });
+                  AppLocale.of(context).getString("orderSuccessMessage"))));
+          Navigator.pop(context);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text(AppLocale.of(context).getString("addedError"))));
@@ -325,19 +318,4 @@ class _CallUsScreenState extends State<CallUsScreen> {
               content: Text(AppLocale.of(context).getString("addedError")))));
     }
   }
-
-  // _showErrorDialog() {
-  //   showDialog(
-  //       context: context,
-  //       builder: (_) => AlertDialog(
-  //             title: Text('!حدث خطا'),
-  //             content: Text("هذا الحساب موجود"),
-  //             actions: [
-  //               TextButton(
-  //                 onPressed: () => Navigator.pop(context),
-  //                 child: Text('حسنا'),
-  //               ),
-  //             ],
-  //           ));
-  // }
 }
