@@ -3,6 +3,8 @@ import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/provider/auth_provider.dart';
 import 'package:eshop/screen/home/home_screen.dart';
 import 'package:eshop/screen/signup/signup.dart';
+import 'package:eshop/widget/facebook_signup_button.dart';
+import 'package:eshop/widget/google_signup_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -141,6 +143,35 @@ class _LoginState extends State<Login> {
                         SizedBox(
                           height: 10,
                         ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 5),
+                              height: 1,
+                              width: MediaQuery.of(context).size.width / 3,
+                              color: Colors.grey,
+                            ),
+                            Text("او"),
+                            Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 5),
+                              height: 1,
+                              width: MediaQuery.of(context).size.width / 3,
+                              color: Colors.grey,
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            FacebookSignupButton(),
+                            GoogleSignupButton(),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
                         Container(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -209,12 +240,12 @@ class _LoginState extends State<Login> {
     showDialog(
         context: context,
         builder: (_) => AlertDialog(
-              title: Text('An error Occurred!'),
-              content: Text("Incorrect Email Or Password"),
+              title: Text('!تنبيه'),
+              content: Text("البريد الالكترونى او كلمة مرور غير صحيحة؟"),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text('okey'),
+                  child: Text('حسنا'),
                 ),
               ],
             ));

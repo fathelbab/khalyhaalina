@@ -1,3 +1,4 @@
+import 'package:eshop/constant/constant.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/model/cart_data.dart';
 import 'package:eshop/provider/cart.dart';
@@ -22,7 +23,50 @@ class CartScreen extends StatelessWidget {
         ),
       ),
       body: cart.cartItems == null || cart.cartItems.isEmpty
-          ? Container()
+          ? Container(
+              width: double.infinity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.shopping_bag_rounded,
+                    size: 150,
+                    color: Colors.grey,
+                  ),
+                  Text(
+                    'السلة فارغة',
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: primaryColor,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  OutlinedButton(
+                    onPressed: () {},
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(
+                        color: primaryColor,
+                        width: 2,
+                      ),
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(15))),
+                    ),
+                    child: Text(
+                      'مواصلة التسوق',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: primaryColor,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
           : Column(
               children: [
                 Card(
@@ -101,7 +145,7 @@ class _OrderButtonState extends State<OrderButton> {
     return TextButton(
       onPressed: () {
         // if (Provider.of<Cart>(context).cartItems.isNotEmpty)
-          Navigator.of(context).pushNamed(OrderScreen.route);
+        Navigator.of(context).pushNamed(OrderScreen.route);
       },
       child: _isLoading
           ? CircularProgressIndicator()

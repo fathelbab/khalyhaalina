@@ -190,6 +190,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       appBar: AppBar(
         // centerTitle: true,
         title: FittedBox(
+          fit: BoxFit.cover,
           child: Image.asset(
             'assets/images/app_logo.png',
             fit: BoxFit.cover,
@@ -215,7 +216,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             builder: (_, cart, child) => Badge(
               value: cart.cartItems != null && cart.cartItems.length > 0
                   ? cart.cartItems.length.toString()
-                  : "0.0",
+                  : "0",
               child: child,
               color: Colors.red,
             ),

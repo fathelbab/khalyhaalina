@@ -31,10 +31,11 @@ class ProductDetailsScreen extends StatefulWidget {
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   int quantity = 1;
+  
   @override
   Widget build(BuildContext context) {
     // final productId = ModalRoute.of(context).settings.arguments;
-
+final size=MediaQuery.of(context).size;
     ProductDetailsData productDetails =
         Provider.of<ProductProvider>(context).productData;
     // print(productId);
@@ -48,9 +49,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               }),
           Consumer<Cart>(
             builder: (_, cart, child) => Badge(
-            value: cart.cartItems != null && cart.cartItems.length > 0
+              value: cart.cartItems != null && cart.cartItems.length > 0
                   ? cart.cartItems.length.toString()
-                  : "0.0",
+                  : "0",
               child: child,
               color: Colors.red,
             ),
@@ -75,26 +76,38 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       children: [
                         productDetails.productGalleries != null &&
                                 productDetails.productGalleries.isEmpty
-                            ? Text("")
-                            : Container(
-                                height: MediaQuery.of(context).size.height / 4,
-                                width: MediaQuery.of(context).size.width,
-                                child: CarouselSlider.builder(
-                                  itemCount:
-                                      productDetails.productGalleries.length,
-                                  itemBuilder: (BuildContext context, int index,
-                                      int realIndex) {
-                                    return sliderBuilder(
-                                        index, productDetails.productGalleries);
-                                  },
-                                  // items: imageSliders,
-                                  options: CarouselOptions(
-                                    autoPlay: true,
-                                    enableInfiniteScroll: false,
-                                    aspectRatio: 2.0,
-                                    disableCenter: false,
-                                    enlargeCenterPage: true,
-                                    // enlargeStrategy: CenterPageEnlargeStrategy.height,
+                            ? Hero(
+                             tag: productDetails.id,
+                              child: Image.network(
+                                  imagePath + productDetails.imagePath,
+                                  fit: BoxFit.fitHeight,
+                                  width: double.infinity,
+                                  height:size.height/4 ,
+                                ),
+                            )
+                            : Hero(
+                                tag: productDetails.id,
+                                child: Container(
+                                  height:
+                                      MediaQuery.of(context).size.height / 4,
+                                  width: MediaQuery.of(context).size.width,
+                                  child: CarouselSlider.builder(
+                                    itemCount:
+                                        productDetails.productGalleries.length,
+                                    itemBuilder: (BuildContext context,
+                                        int index, int realIndex) {
+                                      return sliderBuilder(index,
+                                          productDetails.productGalleries);
+                                    },
+                                    // items: imageSliders,
+                                    options: CarouselOptions(
+                                      autoPlay: true,
+                                      enableInfiniteScroll: false,
+                                      aspectRatio: 2.0,
+                                      disableCenter: false,
+                                      enlargeCenterPage: true,
+                                      // enlargeStrategy: CenterPageEnlargeStrategy.height,
+                                    ),
                                   ),
                                 ),
                               ),

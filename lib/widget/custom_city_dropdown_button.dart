@@ -37,7 +37,7 @@ class _CustomCityDropDownButtonState extends State<CustomCityDropDownButton> {
         mainAxisSize: MainAxisSize.min,
         children: [
           DropdownButton(
-            iconEnabledColor: Colors.white,
+              iconEnabledColor: Colors.white,
               dropdownColor: Theme.of(context).primaryColor,
               style: TextStyle(
                 color: Colors.white,
@@ -49,11 +49,16 @@ class _CustomCityDropDownButtonState extends State<CustomCityDropDownButton> {
               ),
               value: _selectedCity,
               onChanged: (newValue) {
-                saveNewValue();
-                print(newValue);
                 setState(() {
                   _selectedCity = newValue;
+                  cityId = cityList
+                          .firstWhere((city) => (city.name == _selectedCity),
+                              orElse: () => null)
+                          .id
+                          .toString() ??
+                      "0";
                 });
+                saveNewValue(cityId);
               },
               items: cityList
                   .map(
@@ -71,15 +76,10 @@ class _CustomCityDropDownButtonState extends State<CustomCityDropDownButton> {
     );
   }
 
-  Future<void> saveNewValue() async {
-    cityId = cityList
-            .firstWhere((city) => (city.name == _selectedCity),
-                orElse: () => null)
-            .id
-            .toString() ??
-        "0";
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString('cityId', cityId);
-    print(cityId);
+  saveNewValue(String cityId) {
+    Provider.of<CityProvider>(context,listen: false).saveUserCity(cityId);
+    // final prefs = await SharedPreferences.getInstance();
+    // prefs.setString('cityId', cityId);
+    // print(cityId);
   }
 }

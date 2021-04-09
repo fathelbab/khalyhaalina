@@ -90,10 +90,12 @@ class _ProductItemsState extends State<ProductItems> {
                 ),
                 Text(
                   widget.product.name,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                       color: Color(0xFF575E67),
                       fontWeight: FontWeight.bold,
-                      fontSize: 13.0),
+                      fontSize: 12.0),
                 ),
               ],
             ),
@@ -147,7 +149,8 @@ class _ProductItemsState extends State<ProductItems> {
     super.dispose();
     _textFieldController.dispose();
   }
-   void addToCart(int quantity, int id) async {
+
+  void addToCart(int quantity, int id) async {
     Provider.of<Cart>(context, listen: false)
         .addItemToCart(id, quantity)
         .then((value) {

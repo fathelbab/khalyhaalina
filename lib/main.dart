@@ -102,7 +102,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primaryColor: primaryColor,
-          fontFamily: 'Anton',
+          fontFamily: 'Lato',
           visualDensity: VisualDensity.adaptivePlatformDensity,
           accentColor: Colors.blueGrey,
         ),
