@@ -457,26 +457,27 @@ Future<DoctorDetailsData> getDoctorByID(String doctorId) async {
 Future<void> signIn(String email, String password) async {
   print(email + " " + password);
   try {
-    final http.Response response =
-        await http.post(Uri.parse(apiPath + "/User/OnPost/authenticate"),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: json.encode({
-              "email": email,
-              "password": password,
-            }));
+    final http.Response response = await http.post(
+        Uri.parse(apiPath + "/User/OnPost/authenticate"),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode(
+            {"email": email, "password": password, "rememberMe": true}));
     final resultData = json.decode(response.body);
     print(resultData['token'].toString());
+    print(resultData.toString());
     if (response.statusCode == 200) {
       print(resultData['token']);
       final prefs = await SharedPreferences.getInstance();
       String token = resultData['token'] ?? "";
       prefs.setString('token', token);
     } else {
+      print(resultData['message']);
       throw "${resultData['message']}";
     }
   } catch (e) {
+    print(e);
     throw e;
   }
 }
@@ -540,8 +541,8 @@ Future<void> register(
   }
 }
 
-Future<void> userFacebookSignIn(
-    String email, String authToken, String firstName, String lastName) async {
+Future<String> userFacebookSignIn(String email, String authToken, int userId,
+    String name, String firstName, String lastName) async {
   print(email + " " + authToken + " " + firstName + " " + lastName);
   try {
     final http.Response response =
@@ -555,13 +556,13 @@ Future<void> userFacebookSignIn(
               "firstName": firstName,
               "id": 0,
               "lastName": lastName,
-              "name": "$firstName $lastName",
+              "name": name,
             }));
     final resultData = json.decode(response.body);
     print(response.body);
 
     if (response.statusCode == 200) {
-      print(resultData['token']);
+      // print(resultData['token']);
       final prefs = await SharedPreferences.getInstance();
       String token = resultData['token'] ?? "";
       prefs.setString('token', token);

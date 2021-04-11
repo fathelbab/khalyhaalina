@@ -1,10 +1,15 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:eshop/data/service/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class Auth with ChangeNotifier {
   final GoogleSignIn googleSignIn = GoogleSignIn();
+  static final FacebookLogin facebookSignIn = new FacebookLogin();
+
   bool _isSigningIn;
   Auth() {
     _isSigningIn = false;
@@ -33,11 +38,6 @@ class Auth with ChangeNotifier {
     }
   }
 
-  Future<String> userGoogleRegister(String accessToken) async {
-    String response = await userGoogleSignIn(accessToken);
-    return response;
-  }
-
   Future<String> googleLogin() async {
     // googleSignIn.disconnect();
     try {
@@ -50,7 +50,7 @@ class Auth with ChangeNotifier {
         final googleAuth = await user.authentication;
         print("abdo${user.displayName} accessToken : ${googleAuth.idToken}");
         isSigningIn = true;
-        String response = await userGoogleRegister(googleAuth.idToken);
+        String response = await userGoogleSignIn(googleAuth.idToken);
         print(response);
         return response;
         // final credential = GoogleAuthProvider.credential(
@@ -63,11 +63,49 @@ class Auth with ChangeNotifier {
         isSigningIn = false;
         return "failed";
       }
-      
     } catch (e) {
       print(e);
     }
+    return "failed";
+  }
+
+  Future<String> facebookLogin() async {
+    try {
+      final FacebookLoginResult result =
+          await facebookSignIn.logIn(['email', 'public_profile']);
+
+      switch (result.status) {
+        case FacebookLoginStatus.loggedIn:
+          final FacebookAccessToken accessToken = result.accessToken;
+          final graphResponse = await http.get(Uri.parse(
+              'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture&access_token=${accessToken.token}'));
+          final profile = json.decode(graphResponse.body);
+          final response = await userFacebookSignIn(
+              profile['email'],
+              accessToken.token,
+              int.parse(accessToken.userId),
+              profile['name'],
+              profile['first_name'],
+              profile['last_name']);
+          return response;
+          break;
+        case FacebookLoginStatus.cancelledByUser:
+          // print('Login cancelled by the user.');
+          return "failed";
+
+          break;
+        case FacebookLoginStatus.error:
+          // print('Something went wrong with the login process.\n'
+          //     'Here\'s the error Facebook gave us: ${result.errorMessage}');
+          return "failed";
+
+          break;
+      }
+    } catch (e) {
+      // print(e);
       return "failed";
+    }
+    return "failed";
   }
 
   void logout() async {
@@ -75,3 +113,16 @@ class Auth with ChangeNotifier {
     isSigningIn = false;
   }
 }
+      //  print('''
+      //    Logged in!
+      //    firstName: ${profile['first_name']}
+         
+      //    lastname: ${profile['last_name']}
+      //    image: ${profile['picture']['data']['url']}
+  
+      //    Token: ${accessToken.token}
+      //    User id: ${accessToken.userId}
+      //    Expires: ${accessToken.expires}
+      //    Permissions: ${accessToken.permissions}
+      //    Declined permissions: ${accessToken.declinedPermissions}
+      //    ''');
