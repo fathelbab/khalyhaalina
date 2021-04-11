@@ -189,12 +189,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
     return Scaffold(
       appBar: AppBar(
         // centerTitle: true,
-        title: FittedBox(
-          fit: BoxFit.cover,
+        title: SizedBox(
+          height: kToolbarHeight,
           child: Image.asset(
             'assets/images/app_logo.png',
             fit: BoxFit.cover,
-            height: kToolbarHeight,
           ),
         ),
         actions: [
@@ -625,8 +624,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
               // isDoctor=true
               CustomDoctorDropDownButton(),
               doctorList == null || doctorList.isEmpty
-                  ? Center(
-                      child: Text("لايوجد طبيب متاح فى هذه المنطقة"))
+                  ? Center(child: Text("لايوجد طبيب متاح فى هذه المنطقة"))
                   : GridView.builder(
                       padding: const EdgeInsets.all(5),
                       itemCount: doctorList.length,
