@@ -1,6 +1,7 @@
 import 'package:eshop/constant/constant.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/provider/auth_provider.dart';
+import 'package:eshop/screen/city/city_screen.dart';
 import 'package:eshop/screen/home/home_screen.dart';
 import 'package:eshop/screen/signup/signup.dart';
 import 'package:eshop/widget/facebook_signup_button.dart';
@@ -229,7 +230,7 @@ class _LoginState extends State<Login> {
           _passwordController.text.toString(),
         );
 
-        Navigator.pushReplacementNamed(context, HomeScreen.route);
+        Navigator.pushReplacementNamed(context, CityScreen.route);
       } catch (e) {
         _showErrorDialog();
       }

@@ -145,8 +145,7 @@ Future<String> addProductToCart(
 Future<String> removeItemFromCart(int productId, String token) async {
   try {
     final response = await http.delete(
-      Uri.parse(
-          "http://ahmedinara00-001-site1.dtempurl.com/api/Carts/$productId"),
+      Uri.parse("https://www.khlihaalina.com/api/Carts/$productId"),
       headers: {'Content-Type': 'application/json', "access_token": token},
     );
     print(response.statusCode);
@@ -164,21 +163,18 @@ Future<String> removeItemFromCart(int productId, String token) async {
 Future<String> cleartUserCart(String token) async {
   try {
     final response = await http.delete(
-      Uri.parse(
-          "http://ahmedinara00-001-site1.dtempurl.com/api/Orders/DeleteCart"),
+      Uri.parse("https://api.khlihaalina.com/api/Orders/DeleteCart"),
       headers: {
         'Content-Type': 'application/json',
         'access_token': token,
       },
     );
     // print(" abdo $token");
-
     if (response.statusCode == 204) {
       return "done";
     } else {
       return "failed";
     }
-    // print("abdo" + response.body.toString());
   } catch (e) {
     throw e;
   }
@@ -214,15 +210,16 @@ Future<String> createOrderbyUser(
       }),
       headers: {"Content-Type": "application/json", "access_token": token},
     );
-    print(response.statusCode);
-    print(response.body.toString());
-    if (response.statusCode == 201) {
+    print("abied ${response.statusCode}");
+    print("abied ${response.body.toString()}");
+    if (response.statusCode == 200) {
       return "done";
     } else {
       return "failed";
     }
     // print("abdo" + response.body.toString());
   } catch (e) {
+    print("abied ${e.toString()}");
     throw e;
   }
 }

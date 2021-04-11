@@ -22,7 +22,7 @@ class _CustomCityDropDownButtonState extends State<CustomCityDropDownButton> {
 
   @override
   Widget build(BuildContext context) {
-    cityList = Provider.of<CityProvider>(context, listen: false).cityList;
+    cityList = Provider.of<CityProvider>(context).cityList;
 
     return Container(
       decoration: BoxDecoration(

@@ -21,8 +21,10 @@ class _OrderScreenState extends State<OrderScreen> {
   TextEditingController userNameText = TextEditingController();
   TextEditingController userAddressText = TextEditingController();
   TextEditingController userPhoneNumberText = TextEditingController();
+  TextEditingController couponText = TextEditingController();
   final _userAddressFocusNode = FocusNode();
   final _userPhoneNumberFocusNode = FocusNode();
+  final _couponFocusNode = FocusNode();
 
   GlobalKey<FormState> _formkey = GlobalKey();
 
@@ -35,6 +37,8 @@ class _OrderScreenState extends State<OrderScreen> {
     userAddressText.dispose();
     _userAddressFocusNode.dispose();
     _userPhoneNumberFocusNode.dispose();
+    _couponFocusNode.dispose();
+    couponText.dispose();
   }
 
   @override
@@ -95,6 +99,7 @@ class _OrderScreenState extends State<OrderScreen> {
                             borderRadius: BorderRadius.circular(20.0)),
                         child: TextFormField(
                           controller: userNameText,
+                          textInputAction: TextInputAction.next,
                           onFieldSubmitted: (_) {
                             FocusScope.of(context)
                                 .requestFocus(_userAddressFocusNode);
@@ -120,11 +125,12 @@ class _OrderScreenState extends State<OrderScreen> {
                             borderRadius: BorderRadius.circular(20.0)),
                         child: TextFormField(
                           controller: userAddressText,
+                          textInputAction: TextInputAction.next,
                           focusNode: _userAddressFocusNode,
                           keyboardType: TextInputType.text,
                           onFieldSubmitted: (_) {
                             FocusScope.of(context)
-                                .requestFocus(_userPhoneNumberFocusNode);
+                                .requestFocus(_couponFocusNode);
                           },
                           decoration: InputDecoration(
                             hintText:
@@ -138,6 +144,27 @@ class _OrderScreenState extends State<OrderScreen> {
                             }
                             return null;
                           },
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.all(5.0),
+                        padding: EdgeInsets.only(right: 10, left: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20.0)),
+                        child: TextFormField(
+                          controller: couponText,
+                          textInputAction: TextInputAction.next,
+                          focusNode: _couponFocusNode,
+                          keyboardType: TextInputType.text,
+                          onFieldSubmitted: (_) {
+                            FocusScope.of(context)
+                                .requestFocus(_userPhoneNumberFocusNode);
+                          },
+                          decoration: InputDecoration(
+                            hintText: "كود الخصم",
+                            border: InputBorder.none,
+                          ),
                         ),
                       ),
                       Container(
@@ -220,7 +247,9 @@ class _OrderScreenState extends State<OrderScreen> {
                 productName: product.name,
               ))
           .toList();
-
+      if (couponText.text.isEmpty) {
+        couponText.text = "";
+      }
       bool validator = _formkey.currentState.validate();
       if (userAddressText.text.isNotEmpty &&
           userNameText.text.isNotEmpty &&
@@ -228,8 +257,12 @@ class _OrderScreenState extends State<OrderScreen> {
           validator) {
         final response = await Provider.of<OrderProvider>(context,
                 listen: false)
-            .createOrder(userNameText.text, userPhoneNumberText.text,
-                userAddressText.text, cart.totalMount, cart.cartItems)
+            .createOrder(
+                userNameText.text,
+                userPhoneNumberText.text,
+                "${userAddressText.text}/${couponText.text}",
+                cart.totalMount,
+                cart.cartItems)
             .then((value) {
           print(value);
           if (value == "done") {

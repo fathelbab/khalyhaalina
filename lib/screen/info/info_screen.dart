@@ -85,7 +85,7 @@ class InfoScreen extends StatelessWidget {
               children: [
                 GFButton(
                   onPressed: () {
-                    _launchURL("https://www.facebook.com/Khliha.Alina/");
+                    _launchURL("https://www.facebook.com/Khliha-Alina-107191591452629/");
                   },
                   text: "Facebook",
                   icon: FaIcon(FontAwesomeIcons.facebook, color: Colors.white),
@@ -102,7 +102,7 @@ class InfoScreen extends StatelessWidget {
                 GFButton(
                   onPressed: () {
                     _launchURL(
-                        "http://eshop5827-001-site1.etempurl.com/shoping/home");
+                        "https://www.khlihaalina.com");
                   },
                   text: "Eshop",
                   textStyle: TextStyle(fontWeight: FontWeight.bold),

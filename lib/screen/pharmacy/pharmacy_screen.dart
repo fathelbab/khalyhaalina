@@ -155,7 +155,7 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
                           keyboardType: TextInputType.phone,
                           focusNode: _pharmacyPhoneNumberFocusNode,
                           validator: (value) {
-                            if (value.isEmpty || value.length < 13) {
+                            if (value.isEmpty) {
                               return AppLocale.of(context)
                                   .getString('emptyPhoneNumber');
                             }
