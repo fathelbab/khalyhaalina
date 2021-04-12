@@ -8,7 +8,6 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class Auth with ChangeNotifier {
   final GoogleSignIn googleSignIn = GoogleSignIn();
-  static final FacebookLogin facebookSignIn = new FacebookLogin();
 
   bool _isSigningIn;
   Auth() {
@@ -71,38 +70,42 @@ class Auth with ChangeNotifier {
 
   Future<String> facebookLogin() async {
     try {
+      final FacebookLogin facebookSignIn = FacebookLogin();
       final FacebookLoginResult result =
           await facebookSignIn.logIn(['email', 'public_profile']);
+      print("abdo ${result.status}");
 
       switch (result.status) {
         case FacebookLoginStatus.loggedIn:
           final FacebookAccessToken accessToken = result.accessToken;
           final graphResponse = await http.get(Uri.parse(
               'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture&access_token=${accessToken.token}'));
+          print("abdo ${accessToken.token.toString()}");
           final profile = json.decode(graphResponse.body);
           final response = await userFacebookSignIn(
               profile['email'],
               accessToken.token,
-              int.parse(accessToken.userId),
+              accessToken.userId,
               profile['name'],
               profile['first_name'],
               profile['last_name']);
+              print("abdo ${response.toString()}");
           return response;
           break;
         case FacebookLoginStatus.cancelledByUser:
-          // print('Login cancelled by the user.');
+          print('Login cancelled by the user.');
           return "failed";
 
           break;
         case FacebookLoginStatus.error:
-          // print('Something went wrong with the login process.\n'
-          //     'Here\'s the error Facebook gave us: ${result.errorMessage}');
+          print('Something went wrong with the login process.\n'
+              'Here\'s the error Facebook gave us: ${result.errorMessage}');
           return "failed";
 
           break;
       }
     } catch (e) {
-      // print(e);
+      print("abdo exception ${e.toString()}");
       return "failed";
     }
     return "failed";

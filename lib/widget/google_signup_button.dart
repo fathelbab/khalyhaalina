@@ -9,40 +9,29 @@ class GoogleSignupButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isGoogleLogin = Provider.of<Auth>(context).isSigningIn;
-    return Container(
-      padding: const EdgeInsets.all(4.0),
-      child: OutlinedButton.icon(
-        label: Text(
-          // !Provider.of<Auth>(context).isSigningIn
-          //     ? 'الدخول بجوجل '
-          //     :
-          " تسجيل الدخول",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-        ),
-        style: OutlinedButton.styleFrom(
-          shape: StadiumBorder(),
-          padding: EdgeInsets.all(5),
-        ),
-        icon: FaIcon(
+    return InkWell(
+      onTap: () {
+        final provider = Provider.of<Auth>(context, listen: false);
+        if (isGoogleLogin) {
+          provider.logout();
+        } else {
+          provider.googleLogin().then((value) {
+            print(value);
+            if (value == "done") {
+              Navigator.of(context).pushReplacementNamed(CityScreen.route);
+            } else {
+              _showErrorDialog(context);
+            }
+          });
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.all(10),
+        child: FaIcon(
           FontAwesomeIcons.google,
           color: Colors.red,
+          size: 30,
         ),
-        onPressed: () {
-          final provider = Provider.of<Auth>(context, listen: false);
-          if (isGoogleLogin) {
-            provider.logout();
-          } else {
-            provider.googleLogin().then((value) {
-              print(value);
-              if (value == "done") {
-                Navigator.of(context)
-                    .pushReplacementNamed(CityScreen.route);
-              } else {
-                _showErrorDialog(context);
-              }
-            });
-          }
-        },
       ),
     );
   }

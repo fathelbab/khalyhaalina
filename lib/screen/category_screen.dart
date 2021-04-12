@@ -55,48 +55,45 @@ class _CategoryScreenState extends State<CategoryScreen> {
     {"id": 2, "name": "ملابس رجالي"},
     {"id": 3, "name": "ملابس حريمي"},
     {"id": 4, "name": "ملابس أطفال"},
+    {"id": 5, "name": "أحذيه رجالي"},
+    {"id": 6, "name": "أحذيه حريمي"},
+    {"id": 7, "name": "أحذيه أطفال"},
+
     {"id": 16, "name": "بصريات"},
     {"id": 8, "name": "الموبايلات"},
-    {"id": 22, "name": "مستلزمات المطبخ"},
+    {"id": 9, "name": "الأجهزة ومستلزمات المطبخ "},
     {"id": 10, "name": "العقارات"},
-    {"id": 11, "name": "الاثاث المنزلي"},
-    {"id": 12, "name": "المطاعم و الكافيهات"},
-    {"id": 14, "name": "التبريد و التكييف"},
+    {"id": 11, "name": " الاثاث المنزلي والمكتبى"},
+    {"id": 12, "name": "المطاعم و الحلويات"},
+    {"id": 14, "name": " فلاتر المياة والتبريد و التكييف"},
     {"id": 15, "name": "هدايا وأكسسوارات"},
-    {"id": 13, "name": "الصيدليات"},
-    {"id": 23, "name": "حلويات"},
-    {"id": 21, "name": "العطاره"},
-    {"id": 20, "name": "مسليات "},
-    {"id": 19, "name": "قطع غيار سيارات"},
-    {"id": 17, "name": "المسكرات"},
-    {"id": 9, "name": "الأجهزة الكهربائية "},
-    {"id": 7, "name": "أحذيه أطفال"},
-    {"id": 6, "name": "أحذيه حريمي"},
-    {"id": 5, "name": "أحذيه رجالي"},
+    {"id": 13, "name": "الصيدلية"},
+    // {"id": 23, "name": "حلويات"},
+    // {"id": 21, "name": "العطاره"},
+    // {"id": 20, "name": "مسليات "},
+    // {"id": 19, "name": "قطع غيار سيارات"},
   ];
   List<IconData> categoryIcon = [
     Icons.store,
     FontAwesomeIcons.tshirt,
     FontAwesomeIcons.tshirt,
     FontAwesomeIcons.tshirt,
+    FontAwesomeIcons.shoePrints,
+    FontAwesomeIcons.shoePrints,
+    FontAwesomeIcons.shoePrints,
     FontAwesomeIcons.glasses,
     FontAwesomeIcons.mobile,
-    FontAwesomeIcons.tools,
+    Icons.electrical_services,
     FontAwesomeIcons.building,
     FontAwesomeIcons.chair,
     FontAwesomeIcons.coffee,
     Icons.devices_other,
     FontAwesomeIcons.gifts,
     Icons.medical_services,
-    Icons.shop,
-    Icons.store,
-    Icons.store,
-    Icons.car_repair,
-    Icons.local_drink,
-    Icons.electrical_services,
-    Icons.store,
-    Icons.store,
-    Icons.store,
+    // Icons.shop,
+    // Icons.store,
+    // Icons.store,
+    // Icons.car_repair,
   ];
   List<City> cityList = [];
   List<DoctorSpecialistt> doctorSpeciaList = [];
@@ -114,6 +111,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   bool isLoaded = false;
   bool isDoctor = false;
   bool isService = false;
+  bool isHome = true;
   String cityId = "0";
   String categoryId = "0";
   String _selectedCity;
@@ -242,19 +240,60 @@ class _CategoryScreenState extends State<CategoryScreen> {
     return SafeArea(
       child: Drawer(
         child: Container(
-          color: primaryColor,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [
+                Color(0XFF5c89ac),
+                Color(0XFF5c89ac),
+                Color(0XFF5c89ac),
+                Color(0XFF7299b8),
+                Color(0XFF769cba),
+              ],
+            ),
+          ),
+          // color: primaryColor,
           child: SingleChildScrollView(
             child: Column(
               children: [
-                ListTile(
-                  title: Text(
-                    "التخصصات",
-                    style: TextStyle(
+                Container(
+                  margin: const EdgeInsets.only(top: 5),
+                  child: ListTile(
+                    title: Text(
+                      "الصفحة الرئيسية",
+                      style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,
-                        fontWeight: FontWeight.bold),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    leading: Icon(
+                      Icons.home,
+                      color: Colors.white,
+                    ),
+                    onTap: () {
+                      setState(() {
+                        Navigator.pop(context);
+                        isHome = true;
+                        isDoctor = false;
+                        isService = false;
+                      });
+                    },
                   ),
                 ),
+                Divider(
+                  color: Colors.white,
+                ),
+                // ListTile(
+                //   title: Text(
+                //     "التخصصات",
+                //     style: TextStyle(
+                //         color: Colors.white,
+                //         fontSize: 16,
+                //         fontWeight: FontWeight.bold),
+                //   ),
+                // ),
                 ListView.separated(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
@@ -272,6 +311,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         setState(() {
                           isDoctor = false;
                           isService = false;
+                          isHome = false;
                         });
                       },
                       leading: Icon(
@@ -297,21 +337,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     );
                   },
                 ),
-                ListTile(
-                  onTap: () {
-                    setState(() {
-                      Navigator.pop(context);
-                      isService = true;
-                      isDoctor = false;
-                    });
-                  },
-                  title: Text(
-                    "الخدمات",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold),
-                  ),
+                Divider(
+                  color: Colors.white,
                 ),
                 ListTile(
                   onTap: () {
@@ -321,8 +348,35 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       isService = false;
                     });
                   },
+                  leading: Icon(
+                    Icons.medical_services,
+                    color: Colors.white,
+                  ),
                   title: Text(
                     "الدكتور",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Divider(
+                  color: Colors.white,
+                ),
+                ListTile(
+                  onTap: () {
+                    setState(() {
+                      Navigator.pop(context);
+                      isService = true;
+                      isDoctor = false;
+                    });
+                  },
+                  leading: Icon(
+                    Icons.home_repair_service,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    "الخدمات",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,
@@ -462,6 +516,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
               setState(() {
                 isService = false;
                 isDoctor = false;
+                isHome = false;
               });
             },
             child: Column(
@@ -532,11 +587,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
       return Container(
         child: ListView(
           children: [
-            buildAnnouncementSlider(),
+            isHome ? buildAnnouncementSlider() : Container(),
             buildMainCategoryListView(),
-            buildImagesSlider(),
-            buildProductHotList(),
-            buildNotificationsSlider(),
+            isHome ? buildImagesSlider() : Container(),
+            isHome ? buildProductHotList() : Container(),
+            isHome ? buildNotificationsSlider() : Container(),
             supplierList == null || supplierList.isEmpty
                 ? Text("")
                 : GridView.builder(
@@ -639,15 +694,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
-                            print("object");
+                            Provider.of<DoctorProvider>(context, listen: false)
+                                .getDoctorById(doctorList[index].id.toString());
                             Navigator.pushNamed(
                               context,
                               DoctorDetailsScreen.route,
                             );
-                            Provider.of<DoctorProvider>(context, listen: false)
-                                .getDoctorById(doctorList[index].id.toString());
                           },
                           child: Container(
+                            padding: const EdgeInsets.all(8.0),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(15.0),
@@ -679,6 +734,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                 Text(
                                   doctorList[index].name,
                                   textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Theme.of(context).primaryColor,
@@ -688,14 +745,18 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      doctorList[index].phoneNumber ?? "",
+                                      doctorList[index].phoneNumber.length > 12
+                                          ? doctorList[index]
+                                              .phoneNumber
+                                              .substring(12)
+                                          : doctorList[index].phoneNumber ?? "",
                                       style: TextStyle(
                                           color: Color(0xFF575E67),
                                           fontWeight: FontWeight.bold,
                                           fontSize: 14.0),
                                     ),
                                     SizedBox(
-                                      width: 5,
+                                      width: 2,
                                     ),
                                     Icon(
                                       Icons.phone,
@@ -785,26 +846,26 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                       color: Theme.of(context).primaryColor,
                                       fontSize: 15.0),
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      serviceList[index].phoneNumber ?? "",
-                                      style: TextStyle(
-                                          color: Color(0xFF575E67),
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14.0),
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Icon(
-                                      Icons.phone,
-                                      color: Theme.of(context).primaryColor,
-                                      size: 15,
-                                    ),
-                                  ],
-                                ),
+                                // Row(
+                                //   mainAxisAlignment: MainAxisAlignment.center,
+                                //   children: [
+                                //     Text(
+                                //       serviceList[index].phoneNumber ?? "",
+                                //       style: TextStyle(
+                                //           color: Color(0xFF575E67),
+                                //           fontWeight: FontWeight.bold,
+                                //           fontSize: 14.0),
+                                //     ),
+                                //     SizedBox(
+                                //       width: 5,
+                                //     ),
+                                //     Icon(
+                                //       Icons.phone,
+                                //       color: Theme.of(context).primaryColor,
+                                //       size: 15,
+                                //     ),
+                                //   ],
+                                // ),
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     primary: Theme.of(context).primaryColor,

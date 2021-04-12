@@ -29,7 +29,7 @@ Future<List<Category>> fetchCategory(int offset, int limit) async {
     // print(categoryDataFromJson(response.body).result[0].name);
     return categoryDataFromJson(response.body).result;
   } else {
-    print(response.statusCode);
+    // print(response.statusCode);
     return null;
   }
 }
@@ -44,7 +44,7 @@ Future<List> fetchProduct(
     // print(response.body);
     return productDataFromJson(response.body).product;
   } else {
-    print(response.statusCode);
+    // print(response.statusCode);
     return null;
   }
 }
@@ -53,11 +53,11 @@ Future<List> fetchProductHot(
     String supplierId, String categoryId, int offset, int limit) async {
   final response = await http.get(Uri.parse(apiPath +
       "/Product/GetAllHot?Offset=1&Limit=200&SupplierId=0&CategoryId=0"));
-  print("abdo ${response.body}");
+  // print("abdo ${response.body}");
   if (response.statusCode == 200) {
     return productDataFromJson(response.body).product;
   } else {
-    print(response.statusCode);
+    // print(response.statusCode);
     return null;
   }
 }
@@ -68,8 +68,8 @@ Future<List> searchWithTerm(String searchTerm, int offset, int limit) async {
         "/Product/GetAll?SearchTerm=$searchTerm&Offset=$offset&Limit=$limit"));
     // print(apiPath +
     //     "/Product/GetAll?CategoryId=$categoryId&SupplierId=$supplierId&Offset=1&Limit=100");
-    print(response.statusCode);
-    print(response.body.toString());
+    // print(response.statusCode);
+    // print(response.body.toString());
 
     if (response.statusCode == 200) {
       ProductData productDataFromJson(String str) =>
@@ -78,7 +78,7 @@ Future<List> searchWithTerm(String searchTerm, int offset, int limit) async {
       // print(response.body);
       return productDataFromJson(response.body).product;
     } else {
-      print(response.statusCode);
+      // print(response.statusCode);
       return null;
     }
   } catch (e) {
@@ -109,7 +109,7 @@ Future<List<CartData>> fetchCartItems(String token) async {
       "access_token": token,
     });
     print("token" + token);
-    print(response.body.toString());
+    // print(response.body.toString());
     if (response.statusCode == 200) {
       return cartDataFromJson(response.body);
     } else {
@@ -129,7 +129,7 @@ Future<String> addProductToCart(
           "quantity": quantity,
         }),
         headers: {'Content-Type': 'application/json', "access_token": token});
-    print(response.statusCode);
+    // print(response.statusCode);
     // print(response.body.toString());
     if (response.statusCode == 201) {
       return "done";
@@ -148,7 +148,7 @@ Future<String> removeItemFromCart(int productId, String token) async {
       Uri.parse("https://www.khlihaalina.com/api/Carts/$productId"),
       headers: {'Content-Type': 'application/json', "access_token": token},
     );
-    print(response.statusCode);
+    // print(response.statusCode);
     if (response.statusCode == 200) {
       return "done";
     } else {
@@ -189,15 +189,15 @@ Future<String> createOrderbyUser(
   String token,
 ) async {
   try {
-    print(jsonEncode({
-      "customerName": customerName,
-      "phoneNumber": phoneNumber,
-      "address": address,
-      "subtotale": subTotal,
-      "vat": 0,
-      "orderdeitalsdto":
-          listOfProduct.map((productData) => productData.toJson()).toList(),
-    }));
+    // print(jsonEncode({
+    //   "customerName": customerName,
+    //   "phoneNumber": phoneNumber,
+    //   "address": address,
+    //   "subtotale": subTotal,
+    //   "vat": 0,
+    //   "orderdeitalsdto":
+    //       listOfProduct.map((productData) => productData.toJson()).toList(),
+    // }));
     final response = await http.post(
       Uri.parse(apiPath + "/Orders/PostOrderOrderDitales"),
       body: jsonEncode({
@@ -210,8 +210,8 @@ Future<String> createOrderbyUser(
       }),
       headers: {"Content-Type": "application/json", "access_token": token},
     );
-    print("abied ${response.statusCode}");
-    print("abied ${response.body.toString()}");
+    // print("abied ${response.statusCode}");
+    // print("abied ${response.body.toString()}");
     if (response.statusCode == 200) {
       return "done";
     } else {
@@ -219,7 +219,7 @@ Future<String> createOrderbyUser(
     }
     // print("abdo" + response.body.toString());
   } catch (e) {
-    print("abied ${e.toString()}");
+    // print("abied ${e.toString()}");
     throw e;
   }
 }
@@ -333,8 +333,8 @@ Future<List<ImageData>> fetchImages() async {
     final response = await http.get(Uri.parse(apiPath + "/Image/GetAll"));
 
     if (response.statusCode == 200) {
-      print(response.statusCode);
-      print(response.body);
+      // print(response.statusCode);
+      // print(response.body);
       return imageDataFromJson(response.body);
     } else {
       // print(response.statusCode);
@@ -370,13 +370,13 @@ Future<List<DoctorInfo>> getAllDoctorList(
     final response = await http.get(Uri.parse(apiPath +
         "/Doctor/GetAll?Offset=1&Limit=100&CityId=$cityId&DoctorSpecialistId=$specialistId"));
 
-    print("done${response.body}");
+    // print("done${response.body}");
 
     if (response.statusCode == 200) {
-      print("done${response.body}");
+      // print("done${response.body}");
       return doctorDataFromJson(response.body).result;
     } else {
-      print(response.statusCode);
+      // print(response.statusCode);
       return null;
     }
   } catch (e) {
@@ -390,13 +390,13 @@ Future<List<ServiceInfo>> getAllServiceInfoList(
     final response = await http.get(Uri.parse(apiPath +
         "/Service/GetAll?Offset=1&Limit=100&CityId=$cityId&ServiceSpecialistId=$specialistId"));
 
-    print("done${response.body}");
+    // print("done${response.body}");
 
     if (response.statusCode == 200) {
-      print("done${response.body}");
+      // print("done${response.body}");
       return serviceDetailsDataFromJson(response.body).result;
     } else {
-      print(response.statusCode);
+      // print(response.statusCode);
       return null;
     }
   } catch (e) {
@@ -409,10 +409,10 @@ Future<List<DoctorSpecialistt>> getAllDoctorSpecialist() async {
       .get(Uri.parse(apiPath + "/DoctorSpecialist/GetAll?Offset=1&Limit=100"));
   try {
     if (response.statusCode == 200) {
-      print(response.body);
+      // print(response.body);
       return doctorSpecialistDataFromJson(response.body).doctorSpecialist;
     } else {
-      print(response.statusCode);
+      // print(response.statusCode);
       return null;
     }
   } catch (e) {
@@ -425,10 +425,10 @@ Future<List<ServiceSpecialist>> getAllServiceSpecialist() async {
       .get(Uri.parse(apiPath + "/ServiceSpecialist/GetAll?Offset=1&Limit=100"));
   try {
     if (response.statusCode == 200) {
-      print(response.body);
+      // print(response.body);
       return serviceSpecialistDataFromJson(response.body).result;
     } else {
-      print(response.statusCode);
+      // print(response.statusCode);
       return null;
     }
   } catch (e) {
@@ -441,7 +441,7 @@ Future<DoctorDetailsData> getDoctorByID(String doctorId) async {
       await http.get(Uri.parse(apiPath + "/Doctor/getById/$doctorId"));
   try {
     if (response.statusCode == 200) {
-      print(response.body);
+      // print(response.body);
       return doctorDetailsDataFromJson(response.body);
     } else {
       return null;
@@ -452,7 +452,7 @@ Future<DoctorDetailsData> getDoctorByID(String doctorId) async {
 }
 
 Future<void> signIn(String email, String password) async {
-  print(email + " " + password);
+  // print(email + " " + password);
   try {
     final http.Response response = await http.post(
         Uri.parse(apiPath + "/User/OnPost/authenticate"),
@@ -462,19 +462,19 @@ Future<void> signIn(String email, String password) async {
         body: json.encode(
             {"email": email, "password": password, "rememberMe": true}));
     final resultData = json.decode(response.body);
-    print(resultData['token'].toString());
-    print(resultData.toString());
+    // print(resultData['token'].toString());
+    // print(resultData.toString());
     if (response.statusCode == 200) {
-      print(resultData['token']);
+      // print(resultData['token']);
       final prefs = await SharedPreferences.getInstance();
       String token = resultData['token'] ?? "";
       prefs.setString('token', token);
     } else {
-      print(resultData['message']);
+      // print(resultData['message']);
       throw "${resultData['message']}";
     }
   } catch (e) {
-    print(e);
+    // print(e);
     throw e;
   }
 }
@@ -489,13 +489,13 @@ Future<String> userGoogleSignIn(String accessToken) async {
       },
     );
     final resultData = json.decode(response.body);
-    print(resultData['token'].toString());
+    // print(resultData['token'].toString());
     if (response.statusCode == 200) {
-      print("abdoo ${resultData['token']}");
+      // print("abdoo ${resultData['token']}");
       final prefs = await SharedPreferences.getInstance();
       String token = resultData['token'] ?? "";
       prefs.setString('token', token);
-      print("done");
+      // print("done");
       return "done";
     } else {
       return "failed";
@@ -503,14 +503,14 @@ Future<String> userGoogleSignIn(String accessToken) async {
     }
   } catch (e) {
     // throw e;
-    print(e);
+    // print(e);
     return "failed";
   }
 }
 
 Future<void> register(
     String email, String password, String firstName, String lastName) async {
-  print(email + " " + password + " " + firstName + " " + lastName);
+  // print(email + " " + password + " " + firstName + " " + lastName);
   try {
     final http.Response response =
         await http.post(Uri.parse(apiPath + "/User/PostUser"),
@@ -525,10 +525,10 @@ Future<void> register(
               "confirmPassword": password,
             }));
     final resultData = json.decode(response.body);
-    print(response.body);
-    print(resultData['arrayMessage'].toString());
+    // print(response.body);
+    // print(resultData['arrayMessage'].toString());
     if (response.statusCode == 200) {
-      print(resultData['result']);
+      // print(resultData['result']);
       // final prefs = await SharedPreferences.getInstance();
       // String token = resultData['result'] ?? "";
       // prefs.setString('token', token);
@@ -538,28 +538,40 @@ Future<void> register(
   }
 }
 
-Future<String> userFacebookSignIn(String email, String authToken, int userId,
+Future<String> userFacebookSignIn(String email, String authToken, String userId,
     String name, String firstName, String lastName) async {
-  print(email + " " + authToken + " " + firstName + " " + lastName);
   try {
-    final http.Response response =
-        await http.post(Uri.parse(apiPath + "/User/FaceBookRegisterlogin"),
+    print("abdo ${json.encode({
+      "authToken": authToken,
+      "email": email,
+      "fristName": firstName,
+      "id": userId,
+      "lastName": lastName,
+      "provider": "FACEBOOK",
+      "name": name
+    })}");
+    final response =
+        await http.post(Uri.parse("$apiPath/User/FaceBookRegisterlogin"),
             headers: {
               'Content-Type': 'application/json',
             },
             body: json.encode({
               "authToken": authToken,
               "email": email,
-              "firstName": firstName,
-              "id": 0,
+              "fristName": firstName,
+              "id": userId,
               "lastName": lastName,
-              "name": name,
+              "provider": "FACEBOOK",
+              "name": name
             }));
+    ;
+    print("abdo 111 ${response.statusCode}");
     final resultData = json.decode(response.body);
-    print(response.body);
+    print("abdo status code  ${response.statusCode}");
+    print("abdo body ${response.body.toString()}");
 
     if (response.statusCode == 200) {
-      // print(resultData['token']);
+      print("abdo token ${resultData['token']}");
       final prefs = await SharedPreferences.getInstance();
       String token = resultData['token'] ?? "";
       prefs.setString('token', token);
@@ -574,6 +586,7 @@ Future<String> userFacebookSignIn(String email, String authToken, int userId,
     }
   } catch (e) {
     // throw e;
+    print("abdo 111 ${e.toString()}");
     return "failed";
   }
 }

@@ -8,33 +8,25 @@ import 'package:provider/provider.dart';
 class FacebookSignupButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(4.0),
-      child: OutlinedButton.icon(
-        label: Text(
-          " تسجيل الدخول",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-        ),
-        style: OutlinedButton.styleFrom(
-          shape: StadiumBorder(),
-          padding: EdgeInsets.all(5),
-        ),
-        icon: FaIcon(
+    return InkWell(
+      onTap: () {
+        Provider.of<Auth>(context, listen: false).facebookLogin().then((value) {
+          if (value == "done") {
+            print("abdo value >>> $value");
+            Navigator.of(context).pushReplacementNamed(CityScreen.route);
+          } else {
+            print("abdo value >>> $value");
+            _showErrorDialog(context);
+          }
+        });
+      },
+      child: Container(
+        margin: const EdgeInsets.all(10),
+        child: FaIcon(
           FontAwesomeIcons.facebook,
+          color: Colors.blue,
+          size: 30,
         ),
-        onPressed: () {
-          Provider.of<Auth>(context, listen: false)
-              .facebookLogin()
-              .then((value) {
-            if (value == "done") {
-              // print(value);
-                Navigator.of(context)
-                    .pushReplacementNamed(CityScreen.route);
-            } else {
-              _showErrorDialog(context);
-            }
-          });
-        },
       ),
     );
   }
