@@ -35,9 +35,9 @@ Future<List<Category>> fetchCategory(int offset, int limit) async {
 }
 
 Future<List> fetchProduct(
-    String supplierId, String categoryId, int offset, int limit) async {
+    String supplierId, String categoryId,String searchTerm, int offset, int limit) async {
   final response = await http.get(Uri.parse(apiPath +
-      "/Product/GetAll?CategoryId=$categoryId&SupplierId=$supplierId&Offset=1&Limit=100"));
+      "/Product/GetAll?CategoryId=$categoryId&SupplierId=$supplierId&SearchTerm=$searchTerm&Offset=1&Limit=100"));
   // print(apiPath
   //     "/Product/GetAll?CategoryId=$categoryId&SupplierId=$supplierId&Offset=1&Limit=100");
   if (response.statusCode == 200) {
@@ -145,17 +145,20 @@ Future<String> addProductToCart(
 Future<String> removeItemFromCart(int productId, String token) async {
   try {
     final response = await http.delete(
-      Uri.parse("https://www.khlihaalina.com/api/Carts/$productId"),
+      Uri.parse("https://api.khlihaalina.com/api/Carts/$productId"),
       headers: {'Content-Type': 'application/json', "access_token": token},
     );
-    // print(response.statusCode);
-    if (response.statusCode == 200) {
+    print(response.statusCode);
+    print(productId);
+    print(token);
+    print("abdo" + response.body.toString());
+    if (response.statusCode == 204) {
       return "done";
     } else {
       return "failed";
     }
-    // print("abdo" + response.body.toString());
   } catch (e) {
+    print(e);
     throw e;
   }
 }
@@ -278,8 +281,28 @@ Future<String> sendCompliatOrSuggestion(String firstName, String lastName,
 Future<List<Supplier>> fetchSupplier(
     String categoryId, String cityId, int offset, int limit) async {
   final response = await http.get(Uri.parse(apiPath +
-      "/Supplier/GetAll?CityId=$cityId&CategoryId=$categoryId&Offset=1&Limit=100"));
+      "/Supplier/GetAll?CityId=$cityId&CategoryId=$categoryId&Offset=1&Limit=150"));
 
+  if (response.statusCode == 200) {
+    SupplierData supplierDataFromJson(String str) =>
+        SupplierData.fromJson(json.decode(str));
+
+    // print(response.body);
+    return supplierDataFromJson(response.body).supplier;
+  } else {
+    // print(response.statusCode);
+    return null;
+  }
+}
+
+Future<List<Supplier>> searchSupplier(
+    String searchTerm, String cityId, int offset, int limit) async {
+  print(cityId);
+  final response = await http.get(Uri.parse(apiPath +
+      "/Supplier/GetAll?Offset=1&Limit=150&CityId=$cityId&SearchTerm=$searchTerm"));
+  print(cityId);
+  print(response.body);
+  print(response.statusCode);
   if (response.statusCode == 200) {
     SupplierData supplierDataFromJson(String str) =>
         SupplierData.fromJson(json.decode(str));

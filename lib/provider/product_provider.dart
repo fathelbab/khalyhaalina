@@ -10,11 +10,13 @@ class ProductProvider extends ChangeNotifier {
   List<Product> _productHotList = [];
   List<Product> _searchProductList = [];
   ProductDetailsData _productData;
-  fetchProductList(
-      String supplierId, String categoryId, int offset, int limit) async {
+  fetchProductList(String supplierId, String categoryId, String searchTerm,
+      int offset, int limit) async {
+        print(searchTerm);
     _productList = await fetchProduct(
       supplierId,
       categoryId,
+      searchTerm,
       offset,
       limit,
     );

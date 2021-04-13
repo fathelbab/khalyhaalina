@@ -36,4 +36,17 @@ class SupplierProvider extends ChangeNotifier {
   }
 
   List<Supplier> get supplierList => _supplierList;
+
+  searchSupplierByCity(String searchTerm, int offset, int limit) async {
+    final cityId = await getCityId();
+    print(cityId);
+    _supplierList = await searchSupplier(
+      searchTerm,
+      cityId,
+      offset,
+      limit,
+    );
+    // print("done" + " " + categoryId + " " + cityId);
+    notifyListeners();
+  }
 }

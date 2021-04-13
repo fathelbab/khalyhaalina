@@ -166,7 +166,7 @@ class _LoginState extends State<Login> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            // FacebookSignupButton(),
+                            FacebookSignupButton(),
                             GoogleSignupButton(),
                           ],
                         ),
