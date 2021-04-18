@@ -44,7 +44,7 @@ class _ProductScreenState extends State<ProductScreen> {
             builder: (_, cart, child) => Badge(
               value: cart.cartItems != null && cart.cartItems.length > 0
                   ? cart.cartItems.length.toString()
-                  : "0.0",
+                  : "0",
               child: child,
               color: Colors.red,
             ),

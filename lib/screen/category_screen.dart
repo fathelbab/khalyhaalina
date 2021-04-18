@@ -619,7 +619,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                               child: TextField(
                             controller: _searchController,
                             onSubmitted: (value) {
-                              print(value);
+                              // print(value);
                               Provider.of<SupplierProvider>(context,
                                       listen: false)
                                   .searchSupplierByCity(value, 1, limit);
@@ -652,12 +652,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                 ),
                               ),
                               onTap: () {
-                                print(_searchController.text);
+                                // print(_searchController.text);
                                 if (_searchController.text.isNotEmpty) {
                                   _searchController.clear();
                                   Provider.of<SupplierProvider>(context,
                                           listen: false)
-                                      .fetchSupplierList("0", 1, limit);
+                                      .fetchCurrentSupplierList(1, limit);
                                 }
                                 // setState(() {
                                 //   // isSearch
@@ -703,7 +703,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
-                              print("object");
+                              // print("object");
                               Provider.of<ProductProvider>(context,
                                       listen: false)
                                   .fetchProductList(
@@ -750,18 +750,19 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                   Text(
                                     supplierList[index].name,
                                     textAlign: TextAlign.center,
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Theme.of(context).primaryColor,
-                                        fontSize: 15.0),
-                                  ),
-                                  Text(
-                                    supplierList[index].categoryName ?? "",
-                                    style: TextStyle(
-                                        color: Color(0xFF575E67),
-                                        fontWeight: FontWeight.bold,
                                         fontSize: 14.0),
                                   ),
+                                  // Text(
+                                  //   supplierList[index].categoryName ?? "",
+                                  //   style: TextStyle(
+                                  //       color: Color(0xFF575E67),
+                                  //       fontWeight: FontWeight.bold,
+                                  //       fontSize: 14.0),
+                                  // ),
                                 ],
                               ),
                             ),

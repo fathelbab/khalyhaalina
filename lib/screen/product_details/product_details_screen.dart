@@ -31,11 +31,11 @@ class ProductDetailsScreen extends StatefulWidget {
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   int quantity = 1;
-  
+
   @override
   Widget build(BuildContext context) {
     // final productId = ModalRoute.of(context).settings.arguments;
-final size=MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
     ProductDetailsData productDetails =
         Provider.of<ProductProvider>(context).productData;
     // print(productId);
@@ -77,19 +77,19 @@ final size=MediaQuery.of(context).size;
                         productDetails.productGalleries != null &&
                                 productDetails.productGalleries.isEmpty
                             ? Hero(
-                             tag: productDetails.id,
-                              child: Image.network(
+                                tag: productDetails.id,
+                                child: Image.network(
                                   imagePath + productDetails.imagePath,
-                                  fit: BoxFit.fitHeight,
+                                  fit: BoxFit.contain,
                                   width: double.infinity,
-                                  height:size.height/4 ,
+                                  height: size.height / 3,
                                 ),
-                            )
+                              )
                             : Hero(
                                 tag: productDetails.id,
                                 child: Container(
                                   height:
-                                      MediaQuery.of(context).size.height / 4,
+                                      MediaQuery.of(context).size.height / 3,
                                   width: MediaQuery.of(context).size.width,
                                   child: CarouselSlider.builder(
                                     itemCount:
@@ -102,7 +102,7 @@ final size=MediaQuery.of(context).size;
                                     // items: imageSliders,
                                     options: CarouselOptions(
                                       autoPlay: true,
-                                      enableInfiniteScroll: false,
+                                      enableInfiniteScroll: true,
                                       aspectRatio: 2.0,
                                       disableCenter: false,
                                       enlargeCenterPage: true,
@@ -295,13 +295,13 @@ final size=MediaQuery.of(context).size;
 
   Container sliderBuilder(int index, List<ProductGallery> productGalleries) {
     return Container(
-      margin: EdgeInsets.all(5.0),
+      margin: EdgeInsets.only(left: 5.0, right: 5),
       child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(5.0)),
           child: Stack(
             children: <Widget>[
               Image.network(imagePath + productGalleries[index].imagePath,
-                  fit: BoxFit.fill, width: double.infinity),
+                  fit: BoxFit.contain, width: double.infinity),
               // Positioned(
               //   bottom: 0.0,
               //   left: 0.0,

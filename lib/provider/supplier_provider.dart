@@ -6,8 +6,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SupplierProvider extends ChangeNotifier {
   List<Supplier> _supplierList = [];
   String cityId = "";
-  String categoryId = "";
+  String currentCategoryId = "0";
   fetchSupplierList(String categoryId, int offset, int limit) async {
+    currentCategoryId = categoryId;
     final cityId = await getCityId();
     _supplierList = await fetchSupplier(
       categoryId,
@@ -16,6 +17,18 @@ class SupplierProvider extends ChangeNotifier {
       limit,
     );
     print("done" + " " + categoryId + " " + cityId);
+    notifyListeners();
+  }
+
+  fetchCurrentSupplierList(int offset, int limit) async {
+    final cityId = await getCityId();
+    _supplierList = await fetchSupplier(
+      currentCategoryId,
+      cityId,
+      offset,
+      limit,
+    );
+    print("done" + " " + currentCategoryId + " " + cityId);
     notifyListeners();
   }
 

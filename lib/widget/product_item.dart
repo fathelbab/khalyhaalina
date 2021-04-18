@@ -72,8 +72,8 @@ class _ProductItemsState extends State<ProductItems> {
                 Hero(
                   tag: widget.product.id,
                   child: Container(
-                    height: 70.0,
-                    width: 60.0,
+                    height: 75.0,
+                    width: 65.0,
                     child: CachedNetworkImage(
                       imageUrl: imagePath + widget.product.imagePath,
                       fit: BoxFit.fill,
