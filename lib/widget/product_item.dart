@@ -33,6 +33,9 @@ class _ProductItemsState extends State<ProductItems> {
         child: InkWell(
           onTap: () {
             Provider.of<ProductProvider>(context, listen: false)
+                .clearProductData();
+                
+                Provider.of<ProductProvider>(context, listen: false)
                 .getProductById(widget.product.id);
             Navigator.of(context).pushNamed(
               ProductDetailsScreen.route,

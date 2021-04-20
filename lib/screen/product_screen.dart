@@ -28,6 +28,7 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   void initState() {
     super.initState();
+
     _productScrollController.addListener(() {
       if (_productScrollController.position.pixels ==
           _productScrollController.position.maxScrollExtent) {

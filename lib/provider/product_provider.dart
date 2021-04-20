@@ -12,7 +12,7 @@ class ProductProvider extends ChangeNotifier {
   ProductDetailsData _productData;
   fetchProductList(String supplierId, String categoryId, String searchTerm,
       int offset, int limit) async {
-        print(searchTerm);
+    print(searchTerm);
     _productList = await fetchProduct(
       supplierId,
       categoryId,
@@ -47,6 +47,15 @@ class ProductProvider extends ChangeNotifier {
   getProductById(int productId) async {
     _productData = await fetchProductById(productId);
 
+    notifyListeners();
+  }
+
+  clearProductList() {
+    _productList.clear();
+    notifyListeners();
+  }
+clearProductData() {
+    _productData=null;
     notifyListeners();
   }
 

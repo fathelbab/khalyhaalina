@@ -718,13 +718,16 @@ class _CategoryScreenState extends State<CategoryScreen> {
                               // print("object");
                               Provider.of<ProductProvider>(context,
                                       listen: false)
+                                  .clearProductList();
+                              Provider.of<ProductProvider>(context,
+                                      listen: false)
                                   .fetchProductList(
                                       supplierList[index].id.toString(),
                                       categoryId,
                                       "",
                                       1,
                                       limit);
-                                      print(limit);
+                              print(limit);
                               Navigator.pushNamed(
                                   context, ProductScreen.route, arguments: {
                                 "supplierId": supplierList[index].id.toString(),
