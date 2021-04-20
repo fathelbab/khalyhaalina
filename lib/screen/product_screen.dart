@@ -23,10 +23,22 @@ class _ProductScreenState extends State<ProductScreen> {
   String categoryId = "0";
   int limit = 20;
   final _searchController = TextEditingController();
+  ScrollController _productScrollController = new ScrollController();
 
   @override
   void initState() {
     super.initState();
+    _productScrollController.addListener(() {
+      if (_productScrollController.position.pixels ==
+          _productScrollController.position.maxScrollExtent) {
+        print(limit);
+
+        limit += 20;
+        Provider.of<ProductProvider>(context, listen: false)
+            .fetchProductList(supplierId, categoryId, "", 1, limit);
+        print(limit);
+      } else {}
+    });
   }
 
   @override
@@ -73,9 +85,9 @@ class _ProductScreenState extends State<ProductScreen> {
                     controller: _searchController,
                     onSubmitted: (value) {
                       print(value);
-                       Provider.of<ProductProvider>(context, listen: false)
-                              .fetchProductList(
-                                  supplierId, categoryId, value, 1, limit);
+                      Provider.of<ProductProvider>(context, listen: false)
+                          .fetchProductList(
+                              supplierId, categoryId, value, 1, limit);
                     },
                     decoration: InputDecoration(
                         hintText: 'البحث',
@@ -126,8 +138,12 @@ class _ProductScreenState extends State<ProductScreen> {
                       child: CircularProgressIndicator(),
                     )
                   : productList.length == 0
-                      ? Center(child: Text('لايوجد منتجات متاحة'))
+                      // ? Center(child: Text('لايوجد منتجات متاحة'))
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
                       : GridView.builder(
+                          controller: _productScrollController,
                           itemCount: productList.length,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
@@ -148,10 +164,7 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   void dispose() {
     super.dispose();
-    // _categoryScrollController.dispose();
+    _productScrollController.dispose();
     _searchController.dispose();
   }
-
-
 }
-

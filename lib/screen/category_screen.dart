@@ -104,7 +104,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   int intialId = 0;
   ScrollController _categoryScrollController = new ScrollController();
 
-  int limit = 50;
+  int limit = 20;
   bool isLoaded = false;
   bool isSearch = false;
   bool isDoctor = false;
@@ -156,7 +156,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
         limit += 5;
         Provider.of<CategoryProvider>(context, listen: false)
             .fetchCategoryList(1, limit);
-        getAllCity(1, 100);
       } else {}
     });
   }
@@ -275,6 +274,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       setState(() {
                         Navigator.pop(context);
                         isHome = true;
+                        isLoaded = false;
                         isDoctor = false;
                         isService = false;
                       });
@@ -306,12 +306,18 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         // if (!isDoctor) {
                         Provider.of<SupplierProvider>(context, listen: false)
                             .fetchSupplierList(
-                                categoryList[index]["id"].toString(), 1, limit);
+                                categoryList[index]["id"].toString(), 1, limit)
+                            .then((value) {
+                          setState(() {
+                            isLoaded = false;
+                          });
+                        });
 
                         setState(() {
                           isDoctor = false;
                           isService = false;
                           isHome = false;
+                          isLoaded = true;
                         });
                       },
                       leading: categoryIcon[index]["id"] == 1
@@ -521,12 +527,18 @@ class _CategoryScreenState extends State<CategoryScreen> {
             onTap: () {
               Provider.of<SupplierProvider>(context, listen: false)
                   .fetchSupplierList(
-                      categoryList[index]["id"].toString(), 1, limit);
+                      categoryList[index]["id"].toString(), 1, limit)
+                  .then((value) {
+                setState(() {
+                  isLoaded = false;
+                });
+              });
 
               setState(() {
                 isService = false;
                 isDoctor = false;
                 isHome = false;
+                isLoaded = true;
               });
             },
             child: Column(
@@ -683,7 +695,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             isHome ? buildImagesSlider() : Container(),
             isHome ? buildProductHotList() : Container(),
             isHome ? buildNotificationsSlider() : Container(),
-            !isHome
+            !isHome && !isLoaded
                 ? supplierList == null || supplierList.isEmpty
                     ? Text("")
                     : GridView.builder(
@@ -712,6 +724,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                       "",
                                       1,
                                       limit);
+                                      print(limit);
                               Navigator.pushNamed(
                                   context, ProductScreen.route, arguments: {
                                 "supplierId": supplierList[index].id.toString(),
@@ -769,6 +782,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
                           );
                         },
                       )
+                : Container(),
+            !isHome && isLoaded
+                ? Container(
+                    margin: const EdgeInsets.only(top: 30),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
                 : Container(),
           ],
         ),

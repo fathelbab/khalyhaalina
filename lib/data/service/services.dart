@@ -37,7 +37,7 @@ Future<List<Category>> fetchCategory(int offset, int limit) async {
 Future<List> fetchProduct(
     String supplierId, String categoryId,String searchTerm, int offset, int limit) async {
   final response = await http.get(Uri.parse(apiPath +
-      "/Product/GetAll?CategoryId=$categoryId&SupplierId=$supplierId&SearchTerm=$searchTerm&Offset=1&Limit=100"));
+      "/Product/GetAll?CategoryId=$categoryId&SupplierId=$supplierId&SearchTerm=$searchTerm&Offset=1&Limit=$limit"));
   // print(apiPath
   //     "/Product/GetAll?CategoryId=$categoryId&SupplierId=$supplierId&Offset=1&Limit=100");
   if (response.statusCode == 200) {

@@ -7,7 +7,7 @@ class SupplierProvider extends ChangeNotifier {
   List<Supplier> _supplierList = [];
   String cityId = "";
   String currentCategoryId = "0";
-  fetchSupplierList(String categoryId, int offset, int limit) async {
+ Future fetchSupplierList(String categoryId, int offset, int limit) async {
     currentCategoryId = categoryId;
     final cityId = await getCityId();
     _supplierList = await fetchSupplier(
