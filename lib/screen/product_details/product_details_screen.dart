@@ -72,97 +72,101 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               child: Column(
                 children: [
                   Expanded(
-                    child: Column(
-                      children: [
-                        productDetails.productGalleries != null &&
-                                productDetails.productGalleries.isEmpty
-                            ? Hero(
-                                tag: productDetails.id,
-                                child: Image.network(
-                                  imagePath + productDetails.imagePath,
-                                  fit: BoxFit.contain,
-                                  width: double.infinity,
-                                  height: size.height / 3,
-                                ),
-                              )
-                            : Hero(
-                                tag: productDetails.id,
-                                child: Container(
-                                  height:
-                                      MediaQuery.of(context).size.height / 3,
-                                  width: MediaQuery.of(context).size.width,
-                                  child: CarouselSlider.builder(
-                                    itemCount:
-                                        productDetails.productGalleries.length,
-                                    itemBuilder: (BuildContext context,
-                                        int index, int realIndex) {
-                                      return sliderBuilder(index,
-                                          productDetails.productGalleries);
-                                    },
-                                    // items: imageSliders,
-                                    options: CarouselOptions(
-                                      autoPlay: true,
-                                      enableInfiniteScroll: true,
-                                      aspectRatio: 2.0,
-                                      disableCenter: false,
-                                      enlargeCenterPage: true,
-                                      // enlargeStrategy: CenterPageEnlargeStrategy.height,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          productDetails.productGalleries != null &&
+                                  productDetails.productGalleries.isEmpty
+                              ? Hero(
+                                  tag: productDetails.id,
+                                  child: Image.network(
+                                    imagePath + productDetails.imagePath,
+                                    fit: BoxFit.contain,
+                                    width: double.infinity,
+                                    height: size.height /3,
+                                  ),
+                                )
+                              : Hero(
+                                  tag: productDetails.id,
+                                  child: Container(
+                                    height:
+                                        MediaQuery.of(context).size.height / 3,
+                                    width: MediaQuery.of(context).size.width,
+                                    child: CarouselSlider.builder(
+                                      itemCount: productDetails
+                                          .productGalleries.length,
+                                      itemBuilder: (BuildContext context,
+                                          int index, int realIndex) {
+                                        return sliderBuilder(index,
+                                            productDetails.productGalleries);
+                                      },
+                                      // items: imageSliders,
+                                      options: CarouselOptions(
+                                        autoPlay: true,
+                                        enableInfiniteScroll: true,
+                                        aspectRatio: 1.0,
+                                        disableCenter: false,
+                                        enlargeCenterPage: true,
+                                        // enlargeStrategy: CenterPageEnlargeStrategy.height,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                        Text(
-                          productDetails.name ?? '',
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontFamily: 'Anton',
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              "${productDetails.price ?? 0.0} ج.م",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: Theme.of(context).errorColor),
+                          Text(
+                            productDetails.name ?? '',
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 18,
+                              // fontFamily: 'Anton',
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
                             ),
-                            productDetails.price == productDetails.oldPrice
-                                ? Text('')
-                                : Text(
-                                    "${productDetails.oldPrice ?? 0.0} ج.م",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                        decoration: TextDecoration.lineThrough,
-                                        color: Theme.of(context).errorColor),
-                                  ),
-                          ],
-                        ),
-                        Text(
-                          productDetails.description ?? "",
-                          maxLines: 3,
-                          style: TextStyle(
-                            fontSize: 16,
                           ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        buildQuantityIncrementer(),
-                      ],
+                          SizedBox(
+                            width: 5,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                "${productDetails.price ?? 0.0} ج.م",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: Theme.of(context).errorColor),
+                              ),
+                              productDetails.price == productDetails.oldPrice
+                                  ? Text('')
+                                  : Text(
+                                      "${productDetails.oldPrice ?? 0.0} ج.م",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                          decoration:
+                                              TextDecoration.lineThrough,
+                                          color: Theme.of(context).errorColor),
+                                    ),
+                            ],
+                          ),
+                          Text(
+                            productDetails.description ?? "",
+                            maxLines: 6,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          buildQuantityIncrementer(),
+                        ],
+                      ),
                     ),
                   ),
                   GestureDetector(

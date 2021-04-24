@@ -821,6 +821,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         return GestureDetector(
                           onTap: () {
                             Provider.of<DoctorProvider>(context, listen: false)
+                                .clearDoctorData();
+                            Provider.of<DoctorProvider>(context, listen: false)
                                 .getDoctorById(doctorList[index].id.toString());
                             Navigator.pushNamed(
                               context,
@@ -925,12 +927,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context, CallUsScreen.route,
+                            Navigator.pushNamed(context, ServicesScreen.route,
                                 arguments: {
-                                  "serviceName": serviceList[index]
-                                      .serviceSpecialist
-                                      .name
-                                      .toString()
+                                  "name": serviceList[index].name,
+                                  "serviceName":
+                                      serviceList[index].serviceSpecialist.name,
+                                  "serviceAddress": serviceList[index].address,
+                                  "servicePhoneNumber":
+                                      serviceList[index].phoneNumber,
                                 });
                             // Provider.of<DoctorProvider>(context, listen: false)
                             //     .getDoctorById(serviceList[index].id.toString());
