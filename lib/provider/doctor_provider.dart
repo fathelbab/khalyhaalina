@@ -33,7 +33,7 @@ class DoctorProvider extends ChangeNotifier {
     _doctorDetailsData = null;
     notifyListeners();
   }
-
+  
   Future getCityId() async {
     final prefs = await SharedPreferences.getInstance();
     final cityId = prefs.getString('cityId');

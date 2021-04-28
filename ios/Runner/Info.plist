@@ -10,10 +10,21 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+		<string>
+<key>NSCameraUsageDescription</key>
+<string>Need to take picture using Camera until user can send a picture of the prescription to pharmacist</string>
+
+</string>
+<string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>Need to take picture from photo library until user can send a picture of the prescription to pharmacist</string>
+
+</string>
 	<key>CFBundleName</key>
 	<string>خليها علينا</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
@@ -27,6 +38,8 @@
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>
+
+
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
