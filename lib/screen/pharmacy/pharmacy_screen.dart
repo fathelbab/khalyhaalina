@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:eshop/constant/constant.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/provider/pharmacy_provider.dart';
+import 'package:eshop/widget/progress_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -165,11 +166,11 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
                       ),
                       Container(
                         margin: EdgeInsets.all(5.0),
-                        alignment: Alignment.topLeft,
+                        alignment: Alignment.center,
                         child: IconButton(
                             icon: Icon(
                               Icons.image,
-                              size: 50,
+                              size: 60,
                               color: primaryColor,
                             ),
                             onPressed: () {
@@ -188,31 +189,33 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
                                 fit: BoxFit.cover,
                               ),
                       ),
-                      isLoading
-                          ? Center(child: CircularProgressIndicator())
-                          : MaterialButton(
-                              onPressed: () {
-                                savePharmacyData(
-                                  context,
-                                );
-                              },
-                              child: Container(
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      AppLocale.of(context).getString("save"),
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15),
-                                    )),
-                              ),
-                            )
+                      // isLoading
+                      // ? Center(child: CircularProgressIndicator())
+                      // :
+                      MaterialButton(
+                        onPressed: () {
+                       
+                          savePharmacyData(
+                            context,
+                          );
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: primaryColor,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                AppLocale.of(context).getString("save"),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15),
+                              )),
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -240,6 +243,15 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
         pharmacyPhoneNumberText.text.isNotEmpty &&
         validator) {
       isLoading = true;
+      showDialog(
+        
+          context: context,
+          barrierDismissible: false,
+          builder: (context) {
+            return ProgressDialog(
+              message: "...جارى تنفيذ طلبك ,يرجى الانتظار",
+            );
+          });
       String imageBase64String = base64Encode(_image.readAsBytesSync());
       Provider.of<PharmacyProvider>(context, listen: false)
           .addPharmacyItem(
@@ -251,6 +263,7 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
           .then((value) {
         print(value);
         if (value == "done") {
+          Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text(AppLocale.of(context).getString("addedSuccess"))));
           setState(() {
@@ -261,11 +274,15 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
             _image = null;
           });
         } else {
+          Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text(AppLocale.of(context).getString("addedError"))));
         }
-      }).catchError((e) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(AppLocale.of(context).getString("addedError")))));
+      }).catchError((e) {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(AppLocale.of(context).getString("addedError"))));
+      });
       // Map arr = {
       //   "cat_name": categoryNameText.text,
       //   "cat_name_en": categoryNameEnText.text,

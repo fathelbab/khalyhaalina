@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Auth with ChangeNotifier {
   final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -89,7 +90,7 @@ class Auth with ChangeNotifier {
               profile['name'],
               profile['first_name'],
               profile['last_name']);
-              print("abdo ${response.toString()}");
+          print("abdo ${response.toString()}");
           return response;
           break;
         case FacebookLoginStatus.cancelledByUser:
@@ -112,20 +113,20 @@ class Auth with ChangeNotifier {
   }
 
   void logout() async {
-    await googleSignIn.signOut();
-    isSigningIn = false;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
   }
 }
-      //  print('''
-      //    Logged in!
-      //    firstName: ${profile['first_name']}
-         
-      //    lastname: ${profile['last_name']}
-      //    image: ${profile['picture']['data']['url']}
-  
-      //    Token: ${accessToken.token}
-      //    User id: ${accessToken.userId}
-      //    Expires: ${accessToken.expires}
-      //    Permissions: ${accessToken.permissions}
-      //    Declined permissions: ${accessToken.declinedPermissions}
-      //    ''');
+//  print('''
+//    Logged in!
+//    firstName: ${profile['first_name']}
+
+//    lastname: ${profile['last_name']}
+//    image: ${profile['picture']['data']['url']}
+
+//    Token: ${accessToken.token}
+//    User id: ${accessToken.userId}
+//    Expires: ${accessToken.expires}
+//    Permissions: ${accessToken.permissions}
+//    Declined permissions: ${accessToken.declinedPermissions}
+//    ''');

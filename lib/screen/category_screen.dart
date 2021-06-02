@@ -13,6 +13,7 @@ import 'package:eshop/model/product_details_data.dart' hide Supplier;
 import 'package:eshop/model/service_details_data.dart' hide City;
 import 'package:eshop/model/supplier_data.dart';
 import 'package:eshop/provider/announcement_provider.dart';
+import 'package:eshop/provider/auth_provider.dart';
 import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/category_provider.dart';
 import 'package:eshop/provider/city_provider.dart';
@@ -24,6 +25,7 @@ import 'package:eshop/provider/service_provider.dart';
 import 'package:eshop/provider/supplier_provider.dart';
 import 'package:eshop/screen/call_us/call_us.dart';
 import 'package:eshop/screen/city/city_screen.dart';
+import 'package:eshop/screen/login/login.dart';
 import 'package:eshop/screen/product_screen.dart';
 import 'package:eshop/screen/services/services_screen.dart';
 import 'package:eshop/widget/badge.dart';
@@ -393,6 +395,28 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   ),
                   title: Text(
                     "الخدمات",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Divider(
+                  height: 5,
+                  color: Color(0XFFE5A352),
+                ),
+                ListTile(
+                  onTap: () {
+                    Provider.of<Auth>(context).logout();
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, Login.route, (Route<dynamic> route) => false);
+                  },
+                  leading: Icon(
+                    Icons.logout,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    "تسجيل الخروج",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,

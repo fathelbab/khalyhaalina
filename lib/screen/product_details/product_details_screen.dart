@@ -2,9 +2,11 @@ import 'package:eshop/constant/constant.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/model/product_data.dart';
 import 'package:eshop/model/product_details_data.dart';
+import 'package:eshop/provider/auth_provider.dart';
 import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/screen/cart/cart_screen.dart';
+import 'package:eshop/screen/login/login.dart';
 import 'package:eshop/screen/search/search_screen.dart';
 import 'package:eshop/widget/badge.dart';
 import 'package:flutter/material.dart';
@@ -83,7 +85,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     imagePath + productDetails.imagePath,
                                     fit: BoxFit.contain,
                                     width: double.infinity,
-                                    height: size.height /3,
+                                    height: size.height / 3,
                                   ),
                                 )
                               : Hero(
@@ -348,6 +350,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         Provider.of<Cart>(context, listen: false).fetchCartList();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(AppLocale.of(context).getString("addedSuccess"))));
+      } else if (value == "auth") {
+        Provider.of<Auth>(context).logout();
+        Navigator.pushNamedAndRemoveUntil(
+            context, Login.route, (Route<dynamic> route) => false);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(AppLocale.of(context).getString("addedError"))));
