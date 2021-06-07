@@ -4,7 +4,7 @@ import 'package:eshop/model/CityData.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CityProvider extends ChangeNotifier {
-  List<City> _cityList = [];
+  List<City>? _cityList = [];
   fetchCityList(int offset, int limit) async {
     _cityList = await getAllCity(offset, limit);
     notifyListeners();
@@ -16,5 +16,5 @@ class CityProvider extends ChangeNotifier {
     // print(cityId);
   }
 
-  List<City> get cityList => _cityList;
+  List<City>? get cityList => _cityList;
 }

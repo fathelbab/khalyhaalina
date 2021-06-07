@@ -22,16 +22,16 @@ class AnnouncementData {
         this.imagePath,
     });
 
-    int id;
+    int? id;
     dynamic order;
-    String createdDate;
-    String updatedDate;
-    bool isActive;
-    bool isDeleted;
+    String? createdDate;
+    String? updatedDate;
+    bool? isActive;
+    bool? isDeleted;
     dynamic createdBy;
     dynamic updatedBy;
-    String title;
-    String imagePath;
+    String? title;
+    String? imagePath;
 
     factory AnnouncementData.fromJson(Map<String, dynamic> json) => AnnouncementData(
         id: json["id"],

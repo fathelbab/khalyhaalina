@@ -1,12 +1,8 @@
-import 'package:eshop/model/CityData.dart';
-import 'package:eshop/model/doctor_specialist_data.dart';
 import 'package:eshop/model/service_specialist_data.dart';
-import 'package:eshop/provider/city_provider.dart';
-import 'package:eshop/provider/doctor_provider.dart';
+
 import 'package:eshop/provider/service_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomServiceDropDownButton extends StatefulWidget {
   @override
@@ -16,10 +12,10 @@ class CustomServiceDropDownButton extends StatefulWidget {
 
 class _CustomServiceDropDownButtonState
     extends State<CustomServiceDropDownButton> {
-  String _serviceSpcialistId;
-  List<ServiceSpecialist> serviceSpecialist = [];
+  String? _serviceSpcialistId;
+  List<ServiceSpecialist>? serviceSpecialist = [];
 
-  String _selectedServiceSpecialist;
+  String? _selectedServiceSpecialist;
   @override
   void initState() {
     super.initState();
@@ -53,24 +49,23 @@ class _CustomServiceDropDownButtonState
                 "الخدمات",
               ),
               value: _selectedServiceSpecialist,
-              onChanged: (newValue) {
+              onChanged: (dynamic newValue) {
                 setState(() {
                   _selectedServiceSpecialist = newValue;
-                  _serviceSpcialistId = serviceSpecialist
+                  _serviceSpcialistId = serviceSpecialist!
                           .firstWhere((speacial) =>
                               (speacial.name == _selectedServiceSpecialist))
                           .id
-                          .toString() ??
-                      "0";
+                          ?.toString() ;
                 });
                 fectchDoctorList();
               },
-              items: serviceSpecialist
+              items: serviceSpecialist!
                   .map(
                     (service) => DropdownMenuItem(
-                      value: service.name,
+                      value: service.name.toString(),
                       child: Text(
-                        service.name ?? "",
+                        service.name.toString(),
                         style: TextStyle(color: Colors.black),
                       ),
                     ),

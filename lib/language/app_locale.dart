@@ -6,9 +6,9 @@ import 'package:flutter/services.dart';
 class AppLocale {
   Locale locale;
   AppLocale(this.locale);
-  Map<String, String> _loadedLocalizedValue;
+  late Map<String, String> _loadedLocalizedValue;
 
-  static AppLocale of(BuildContext context) {
+  static AppLocale? of(BuildContext context) {
     return Localizations.of(context, AppLocale);
   }
 
@@ -20,7 +20,7 @@ class AppLocale {
         _loadedValues.map((key, value) => MapEntry(key, value.toString()));
   }
 
-  String getString(String key) {
+  String? getString(String key) {
     return _loadedLocalizedValue[key];
   }
 

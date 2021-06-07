@@ -21,15 +21,15 @@ class OrderData {
     this.orderdeitalsdto,
   });
 
-  int id;
-  String createdDate;
-  String customerName;
-  String phoneNumber;
-  String address;
-  int vat;
-  int subtotale;
-  String orderDate;
-  List<Orderdeitalsdto> orderdeitalsdto;
+  int? id;
+  String? createdDate;
+  String? customerName;
+  String? phoneNumber;
+  String? address;
+  int? vat;
+  int? subtotale;
+  String? orderDate;
+  List<Orderdeitalsdto>? orderdeitalsdto;
 
   factory OrderData.fromJson(Map<String, dynamic> json) => OrderData(
         id: json["id"],
@@ -54,7 +54,7 @@ class OrderData {
         "subtotale": subtotale,
         "orderDate": orderDate,
         "orderdeitalsdto":
-            List<dynamic>.from(orderdeitalsdto.map((x) => x.toJson())),
+            List<dynamic>.from(orderdeitalsdto!.map((x) => x.toJson())),
       };
 }
 
@@ -67,11 +67,11 @@ class Orderdeitalsdto {
     this.qty,
   });
 
-  String image;
-  double price;
-  int productId;
-  String productName;
-  int qty;
+  String? image;
+  double? price;
+  int? productId;
+  String? productName;
+  int? qty;
 
   factory Orderdeitalsdto.fromJson(Map<String, dynamic> json) =>
       Orderdeitalsdto(

@@ -16,10 +16,10 @@ class SupplierData {
         this.supplier,
     });
 
-    int offset;
-    int limit;
-    int length;
-    List<Supplier> supplier;
+    int? offset;
+    int? limit;
+    int? length;
+    List<Supplier>? supplier;
 
     factory SupplierData.fromJson(Map<String, dynamic> json) => SupplierData(
         offset: json["offset"],
@@ -32,7 +32,7 @@ class SupplierData {
         "offset": offset,
         "limit": limit,
         "length": length,
-        "result": List<dynamic>.from(supplier.map((x) => x.toJson())),
+        "result": List<dynamic>.from(supplier!.map((x) => x.toJson())),
     };
 }
 
@@ -51,17 +51,17 @@ class Supplier {
         this.order,
     });
 
-    int id;
-    String name;
-    String imagePath;
-    int price;
-    String categoryName;
-    String supplierName;
-    int categoryId;
-    int supplierId;
+    int? id;
+    String? name;
+    String? imagePath;
+    int? price;
+    String? categoryName;
+    String? supplierName;
+    int? categoryId;
+    int? supplierId;
     dynamic imageExtension;
     dynamic imageBase64;
-    int order;
+    int? order;
 
     factory Supplier.fromJson(Map<String, dynamic> json) => Supplier(
         id: json["id"],

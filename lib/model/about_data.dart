@@ -23,15 +23,15 @@ class AboutData {
     this.content,
   });
 
-  int id;
+  int? id;
   dynamic order;
-  String createdDate;
-  String updatedDate;
-  bool isActive;
-  bool isDeleted;
+  String? createdDate;
+  String? updatedDate;
+  bool? isActive;
+  bool? isDeleted;
   dynamic createdBy;
   dynamic updatedBy;
-  String content;
+  String? content;
 
   factory AboutData.fromJson(Map<String, dynamic> json) => AboutData(
         id: json["id"],

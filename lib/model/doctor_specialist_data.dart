@@ -18,10 +18,10 @@ class DoctorSpecialistData {
     this.length,
   });
 
-  int offset;
-  List<DoctorSpecialistt> doctorSpecialist;
-  int limit;
-  int length;
+  int? offset;
+  List<DoctorSpecialistt>? doctorSpecialist;
+  int? limit;
+  int? length;
 
   factory DoctorSpecialistData.fromJson(Map<String, dynamic> json) =>
       DoctorSpecialistData(
@@ -34,7 +34,7 @@ class DoctorSpecialistData {
 
   Map<String, dynamic> toJson() => {
         "offset": offset,
-        "result": List<dynamic>.from(doctorSpecialist.map((x) => x.toJson())),
+        "result": List<dynamic>.from(doctorSpecialist!.map((x) => x.toJson())),
         "limit": limit,
         "length": length,
       };
@@ -46,8 +46,8 @@ class DoctorSpecialistt {
     this.name,
   });
 
-  int id;
-  String name;
+  int? id;
+  String? name;
 
   factory DoctorSpecialistt.fromJson(Map<String, dynamic> json) =>
       DoctorSpecialistt(

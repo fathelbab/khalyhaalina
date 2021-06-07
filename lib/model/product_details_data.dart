@@ -36,27 +36,27 @@ class ProductDetailsData {
     this.orderdeitals,
   });
 
-  int id;
+  int? id;
   dynamic order;
-  String createdDate;
-  String updatedDate;
-  bool isActive;
-  bool isDeleted;
+  String? createdDate;
+  String? updatedDate;
+  bool? isActive;
+  bool? isDeleted;
   dynamic createdBy;
   dynamic updatedBy;
-  String name;
-  String imagePath;
-  double price;
-  int categoryId;
-  int supplierId;
-  int quantity;
-  double oldPrice;
-  String description;
-  bool isHot;
-  Category category;
-  Supplier supplier;
-  List<dynamic> carts = [];
-  List<ProductGallery> productGalleries = [];
+  String? name;
+  String? imagePath;
+  double? price;
+  int? categoryId;
+  int? supplierId;
+  int? quantity;
+  double? oldPrice;
+  String? description;
+  bool? isHot;
+  Category? category;
+  Supplier? supplier;
+  List<dynamic>? carts = [];
+  List<ProductGallery>? productGalleries = [];
   dynamic orderdeitals;
 
   factory ProductDetailsData.fromJson(Map<String, dynamic> json) =>
@@ -82,10 +82,9 @@ class ProductDetailsData {
         supplier: Supplier.fromJson(json["supplier"]),
         carts: json["carts"] == null
             ? []
-            : List<dynamic>.from(json["carts"].map((x) => x)) ?? [],
-        productGalleries: List<ProductGallery>.from(json["productGalleries"]
-                .map((x) => ProductGallery.fromJson(x))) ??
-            [],
+            : List<dynamic>.from(json["carts"].map((x) => x)),
+        productGalleries: List<ProductGallery>.from(
+            json["productGalleries"].map((x) => ProductGallery.fromJson(x))),
         orderdeitals: json["orderdeitals"],
       );
 
@@ -107,11 +106,11 @@ class ProductDetailsData {
         "oldPrice": oldPrice,
         "description": description,
         "isHot": isHot,
-        "category": category.toJson(),
-        "supplier": supplier.toJson(),
-        "carts": List<dynamic>.from(carts.map((x) => x)) ?? [],
+        "category": category!.toJson(),
+        "supplier": supplier!.toJson(),
+        "carts": List<dynamic>.from(carts!.map((x) => x)),
         "productGalleries":
-            List<dynamic>.from(productGalleries.map((x) => x.toJson())) ?? [],
+            List<dynamic>.from(productGalleries!.map((x) => x.toJson())),
         "orderdeitals": orderdeitals,
       };
 }
@@ -131,17 +130,17 @@ class Category {
     this.suppliers,
   });
 
-  int id;
+  int? id;
   dynamic order;
-  String createdDate;
-  String updatedDate;
-  bool isActive;
-  bool isDeleted;
+  String? createdDate;
+  String? updatedDate;
+  bool? isActive;
+  bool? isDeleted;
   dynamic createdBy;
   dynamic updatedBy;
-  String name;
-  List<dynamic> products = [];
-  List<dynamic> suppliers = [];
+  String? name;
+  List<dynamic>? products = [];
+  List<dynamic>? suppliers = [];
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
         id: json["id"],
@@ -153,8 +152,8 @@ class Category {
         createdBy: json["createdBy"],
         updatedBy: json["updatedBy"],
         name: json["name"],
-        products: List<dynamic>.from(json["products"].map((x) => x)) ?? [],
-        suppliers: List<dynamic>.from(json["suppliers"].map((x) => x)) ?? [],
+        products: List<dynamic>.from(json["products"].map((x) => x)),
+        suppliers: List<dynamic>.from(json["suppliers"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
@@ -167,8 +166,8 @@ class Category {
         "createdBy": createdBy,
         "updatedBy": updatedBy,
         "name": name,
-        "products": List<dynamic>.from(products.map((x) => x)) ?? [],
-        "suppliers": List<dynamic>.from(suppliers.map((x) => x)) ?? [],
+        "products": List<dynamic>.from(products!.map((x) => x)),
+        "suppliers": List<dynamic>.from(suppliers!.map((x) => x)),
       };
 }
 
@@ -180,9 +179,9 @@ class ProductGallery {
     this.product,
   });
 
-  int id;
-  int productId;
-  String imagePath;
+  int? id;
+  int? productId;
+  String? imagePath;
   dynamic product;
 
   factory ProductGallery.fromJson(Map<String, dynamic> json) => ProductGallery(
@@ -221,15 +220,15 @@ class Supplier {
     this.products,
   });
 
-  int id;
+  int? id;
   dynamic order;
-  String createdDate;
-  String updatedDate;
-  bool isActive;
-  bool isDeleted;
+  String? createdDate;
+  String? updatedDate;
+  bool? isActive;
+  bool? isDeleted;
   dynamic createdBy;
   dynamic updatedBy;
-  String name;
+  String? name;
   dynamic phoneNumber;
   dynamic cityId;
   dynamic imagePath;
@@ -237,7 +236,7 @@ class Supplier {
   dynamic categoryId;
   dynamic category;
   dynamic city;
-  List<dynamic> products = [];
+  List<dynamic>? products = [];
 
   factory Supplier.fromJson(Map<String, dynamic> json) => Supplier(
         id: json["id"],
@@ -256,7 +255,7 @@ class Supplier {
         categoryId: json["categoryId"],
         category: json["category"],
         city: json["city"],
-        products: List<dynamic>.from(json["products"].map((x) => x)) ?? [],
+        products: List<dynamic>.from(json["products"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
@@ -276,6 +275,6 @@ class Supplier {
         "categoryId": categoryId,
         "category": category,
         "city": city,
-        "products": List<dynamic>.from(products.map((x) => x)) ?? [],
+        "products": List<dynamic>.from(products!.map((x) => x)),
       };
 }

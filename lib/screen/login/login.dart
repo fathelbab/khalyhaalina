@@ -2,7 +2,6 @@ import 'package:eshop/constant/constant.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/provider/auth_provider.dart';
 import 'package:eshop/screen/city/city_screen.dart';
-import 'package:eshop/screen/home/home_screen.dart';
 import 'package:eshop/screen/signup/signup.dart';
 import 'package:eshop/widget/facebook_signup_button.dart';
 import 'package:eshop/widget/google_signup_button.dart';
@@ -12,7 +11,7 @@ import 'package:provider/provider.dart';
 class Login extends StatefulWidget {
   static const String route = "/login_screen";
 
-  Login({Key key}) : super(key: key);
+  Login({Key? key}) : super(key: key);
 
   @override
   _LoginState createState() => _LoginState();
@@ -41,7 +40,7 @@ class _LoginState extends State<Login> {
                           margin: EdgeInsets.all(10.0),
                           alignment: Alignment.center,
                           child: Text(
-                            AppLocale.of(context).getString("login"),
+                            AppLocale.of(context)!.getString("login")!,
                             style: TextStyle(
                               fontSize: 18.0,
                               fontWeight: FontWeight.bold,
@@ -72,13 +71,13 @@ class _LoginState extends State<Login> {
                               ),
                               prefixIcon: Icon(Icons.email),
                               hintText:
-                                  AppLocale.of(context).getString('email'),
+                                  AppLocale.of(context)!.getString('email'),
                             ),
                             validator: (value) {
-                              if (value.isEmpty ||
+                              if (value!.isEmpty ||
                                   value.indexOf(".") == -1 ||
                                   value.indexOf("@") == -1) {
-                                return AppLocale.of(context)
+                                return AppLocale.of(context)!
                                     .getString('emptyEmail');
                               }
                               return null;
@@ -109,11 +108,11 @@ class _LoginState extends State<Login> {
                               ),
                               prefixIcon: Icon(Icons.lock),
                               hintText:
-                                  AppLocale.of(context).getString('password'),
+                                  AppLocale.of(context)!.getString('password'),
                             ),
                             validator: (value) {
-                              if (value.isEmpty || value.length < 6) {
-                                return AppLocale.of(context)
+                              if (value!.isEmpty || value.length < 6) {
+                                return AppLocale.of(context)!
                                     .getString("emptyPassword");
                               }
                               return null;
@@ -133,7 +132,7 @@ class _LoginState extends State<Login> {
                             child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
-                                  AppLocale.of(context).getString("login"),
+                                  AppLocale.of(context)!.getString("login")!,
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -220,7 +219,7 @@ class _LoginState extends State<Login> {
   }
 
   void _submit() async {
-    if (!_formKey.currentState.validate()) {
+    if (!_formKey.currentState!.validate()) {
       // Invalid!
       return;
     } else {

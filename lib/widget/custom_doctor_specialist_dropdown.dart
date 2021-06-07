@@ -1,10 +1,7 @@
-import 'package:eshop/model/CityData.dart';
 import 'package:eshop/model/doctor_specialist_data.dart';
-import 'package:eshop/provider/city_provider.dart';
 import 'package:eshop/provider/doctor_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomDoctorDropDownButton extends StatefulWidget {
   @override
@@ -12,11 +9,12 @@ class CustomDoctorDropDownButton extends StatefulWidget {
       _CustomDoctorDropDownButtonState();
 }
 
-class _CustomDoctorDropDownButtonState extends State<CustomDoctorDropDownButton> {
-  String _doctorSpcialistId;
-  List<DoctorSpecialistt> doctorSpeciaList = [];
+class _CustomDoctorDropDownButtonState
+    extends State<CustomDoctorDropDownButton> {
+  String? _doctorSpcialistId;
+  List<DoctorSpecialistt>? doctorSpeciaList = [];
 
-  String _selectedDoctorSpecialist;
+  String? _selectedDoctorSpecialist;
   @override
   void initState() {
     super.initState();
@@ -29,9 +27,8 @@ class _CustomDoctorDropDownButtonState extends State<CustomDoctorDropDownButton>
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5.0),
-     
       ),
-     margin: const EdgeInsets.all(5),
+      margin: const EdgeInsets.all(5),
       padding: const EdgeInsets.only(
         right: 5,
         left: 5,
@@ -51,19 +48,18 @@ class _CustomDoctorDropDownButtonState extends State<CustomDoctorDropDownButton>
                 "التخصص",
               ),
               value: _selectedDoctorSpecialist,
-              onChanged: (newValue) {
+              onChanged: (dynamic newValue) {
                 setState(() {
                   _selectedDoctorSpecialist = newValue;
-                  _doctorSpcialistId = doctorSpeciaList
-                          .firstWhere((speacial) =>
-                              (speacial.name == _selectedDoctorSpecialist))
-                          .id
-                          .toString() ??
-                      "0";
+                  _doctorSpcialistId = doctorSpeciaList!
+                      .firstWhere((speacial) =>
+                          (speacial.name == _selectedDoctorSpecialist))
+                      .id
+                      .toString();
                 });
                 fectchDoctorList();
               },
-              items: doctorSpeciaList
+              items: doctorSpeciaList!
                   .map(
                     (speacial) => DropdownMenuItem(
                       value: speacial.name,
@@ -80,6 +76,7 @@ class _CustomDoctorDropDownButtonState extends State<CustomDoctorDropDownButton>
   }
 
   void fectchDoctorList() {
-    Provider.of<DoctorProvider>(context, listen: false).fetchDoctorList(_doctorSpcialistId);
+    Provider.of<DoctorProvider>(context, listen: false)
+        .fetchDoctorList(_doctorSpcialistId);
   }
 }

@@ -19,13 +19,13 @@ class CartData {
         this.name,
     });
 
-    int id;
-    int qty;
-    int productid;
-    double price;
-    double totaleamount;
-    String image;
-    String name;
+    int? id;
+    int? qty;
+    int? productid;
+    double? price;
+    double? totaleamount;
+    String? image;
+    String? name;
 
     factory CartData.fromJson(Map<String, dynamic> json) => CartData(
         id: json["id"],

@@ -1,12 +1,10 @@
 import 'dart:async';
 
 import 'package:eshop/constant/constant.dart';
-import 'package:eshop/screen/category_screen.dart';
 import 'package:eshop/screen/city/city_screen.dart';
 import 'package:eshop/screen/home/home_screen.dart';
+import 'package:eshop/utils/cache_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:splashscreen/splashscreen.dart';
 
 class SplashAppScreen extends StatefulWidget {
   static const String route = "/splash";
@@ -15,11 +13,11 @@ class SplashAppScreen extends StatefulWidget {
 }
 
 class _SplashAppScreenState extends State<SplashAppScreen> {
-  String cityId = "0";
-  Timer timer;
+  String? cityId = "0";
+  Timer? timer;
   getSharedPrefs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    cityId = prefs.getString("cityId");
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    cityId = CacheHelper.getPrefs(key: "cityId");
     setState(() {});
   }
 

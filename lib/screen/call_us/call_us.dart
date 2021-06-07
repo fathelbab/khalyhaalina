@@ -1,15 +1,13 @@
 import 'package:eshop/constant/constant.dart';
 import 'package:eshop/language/app_locale.dart';
-import 'package:eshop/provider/auth_provider.dart';
 import 'package:eshop/provider/contact_us_provider.dart';
-import 'package:eshop/screen/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CallUsScreen extends StatefulWidget {
   static const String route = "/callus_screen";
 
-  CallUsScreen({Key key}) : super(key: key);
+  CallUsScreen({Key? key}) : super(key: key);
 
   @override
   _CallUsScreenState createState() => _CallUsScreenState();
@@ -93,7 +91,7 @@ class _CallUsScreenState extends State<CallUsScreen> {
                                 hintText: "الاسم الاول",
                               ),
                               validator: (value) {
-                                if (value.isEmpty || value.length < 1) {
+                                if (value!.isEmpty || value.length < 1) {
                                   return "يرجى ادخال الاسم الاول";
                                 }
                                 return null;
@@ -128,7 +126,7 @@ class _CallUsScreenState extends State<CallUsScreen> {
                                 hintText: "اسم العائله",
                               ),
                               validator: (value) {
-                                if (value.isEmpty || value.length < 1) {
+                                if (value!.isEmpty || value.length < 1) {
                                   return "يرجى ادخال الاسم العائله";
                                 }
                                 return null;
@@ -163,7 +161,7 @@ class _CallUsScreenState extends State<CallUsScreen> {
                                 hintText: "البريد الالكترونى",
                               ),
                               validator: (value) {
-                                if (value.isEmpty ||
+                                if (value!.isEmpty ||
                                     value.indexOf(".") == -1 ||
                                     value.indexOf("@") == -1) {
                                   return "يرجى ادخال البريد الالكترونى ";
@@ -201,7 +199,7 @@ class _CallUsScreenState extends State<CallUsScreen> {
                                   hintText: "رقم التليفون",
                                 ),
                                 validator: (value) {
-                                  if (value.isEmpty || value.length < 6) {
+                                  if (value!.isEmpty || value.length < 6) {
                                     return "يرجى ادخال رقم التليفون";
                                   }
 
@@ -236,7 +234,7 @@ class _CallUsScreenState extends State<CallUsScreen> {
                                 hintText: "الشكاوى والاقتراحات",
                               ),
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return "يرجى ادخال الشكاوى والاقتراحات";
                                 }
                                 return null;
@@ -292,7 +290,7 @@ class _CallUsScreenState extends State<CallUsScreen> {
   }
 
   void _submit() async {
-    if (!_formKey.currentState.validate()) {
+    if (!_formKey.currentState!.validate()) {
       // Invalid!
       return;
     } else {
@@ -309,7 +307,7 @@ class _CallUsScreenState extends State<CallUsScreen> {
         if (value == "done") {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text(
-                  AppLocale.of(context).getString("addedMessageSuccess"))));
+                  AppLocale.of(context)!.getString("addedMessageSuccess")!)));
           setState(() {
             _firstNameController.text = "";
             _lastNameController.text = "";
@@ -319,10 +317,12 @@ class _CallUsScreenState extends State<CallUsScreen> {
           });
         } else {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(AppLocale.of(context).getString("addedError"))));
+              content: Text(AppLocale.of(context)!.getString("addedError")!)));
         }
-      }).catchError((e) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(AppLocale.of(context).getString("addedError")))));
+      }).catchError((e) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(AppLocale.of(context)!.getString("addedError")!)));
+      });
     }
   }
 

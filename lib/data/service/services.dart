@@ -9,7 +9,6 @@ import 'package:eshop/model/doctor_details_data.dart';
 import 'package:eshop/model/doctor_specialist_data.dart';
 import 'package:eshop/model/image_data.dart';
 import 'package:eshop/model/notification_data.dart';
-import 'package:eshop/model/order_data.dart';
 import 'package:eshop/model/product_data.dart';
 import 'package:eshop/model/product_details_data.dart' hide Category, Supplier;
 import 'package:eshop/model/service_details_data.dart' hide City;
@@ -20,7 +19,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // headers: {HttpHeaders.contentTypeHeader: "application/json",
 // HttpHeaders.authorizationHeader: "Bearer $token"}
 
-Future<List<Category>> fetchCategory(int offset, int limit) async {
+Future<List<Category>?> fetchCategory(int offset, int limit) async {
   final response = await http
       .get(Uri.parse(apiPath + "/Category/GetAll?Offset=$offset&Limit=$limit"));
   if (response.statusCode == 200) {
@@ -34,7 +33,7 @@ Future<List<Category>> fetchCategory(int offset, int limit) async {
   }
 }
 
-Future<List> fetchProduct(String supplierId, String categoryId,
+Future<List<Product>?> fetchProduct(String? supplierId, String? categoryId,
     String searchTerm, int offset, int limit) async {
   final response = await http.get(Uri.parse(apiPath +
       "/Product/GetAll?CategoryId=$categoryId&SupplierId=$supplierId&SearchTerm=$searchTerm&Offset=1&Limit=$limit"));
@@ -49,7 +48,7 @@ Future<List> fetchProduct(String supplierId, String categoryId,
   }
 }
 
-Future<List> fetchProductHot(
+Future<List<Product>?> fetchProductHot(
     String supplierId, String categoryId, int offset, int limit) async {
   final response = await http.get(Uri.parse(apiPath +
       "/Product/GetAllHot?Offset=1&Limit=200&SupplierId=0&CategoryId=0"));
@@ -62,7 +61,7 @@ Future<List> fetchProductHot(
   }
 }
 
-Future<List> searchWithTerm(String searchTerm, int offset, int limit) async {
+Future<List<Product>?> searchWithTerm(String? searchTerm, int offset, int limit) async {
   try {
     final response = await http.get(Uri.parse(apiPath +
         "/Product/GetAll?SearchTerm=$searchTerm&Offset=$offset&Limit=$limit"));
@@ -86,7 +85,7 @@ Future<List> searchWithTerm(String searchTerm, int offset, int limit) async {
   }
 }
 
-Future<ProductDetailsData> fetchProductById(int productId) async {
+Future<ProductDetailsData> fetchProductById(int? productId) async {
   try {
     final response =
         await http.get(Uri.parse(apiPath + "/Product/getById/$productId"));
@@ -121,14 +120,14 @@ Future<List<CartData>> fetchCartItems(String token) async {
 }
 
 Future<String> addProductToCart(
-    int productId, int quantity, String token) async {
+    int? productId, int quantity, String? token) async {
   try {
     final response = await http.post(Uri.parse(apiPath + "/Carts"),
         body: jsonEncode({
           "productId": productId,
           "quantity": quantity,
         }),
-        headers: {'Content-Type': 'application/json', "access_token": token});
+        headers: {'Content-Type': 'application/json', "access_token": token!});
     // print(response.statusCode);
     // print(response.body.toString());
     if (response.statusCode == 201) {
@@ -144,11 +143,11 @@ Future<String> addProductToCart(
   }
 }
 
-Future<String> removeItemFromCart(int productId, String token) async {
+Future<String> removeItemFromCart(int productId, String? token) async {
   try {
     final response = await http.delete(
       Uri.parse("https://api.khlihaalina.com/api/Carts/$productId"),
-      headers: {'Content-Type': 'application/json', "access_token": token},
+      headers: {'Content-Type': 'application/json', "access_token": token!},
     );
     print(response.statusCode);
     print(productId);
@@ -165,13 +164,13 @@ Future<String> removeItemFromCart(int productId, String token) async {
   }
 }
 
-Future<String> cleartUserCart(String token) async {
+Future<String> cleartUserCart(String? token) async {
   try {
     final response = await http.delete(
       Uri.parse("https://api.khlihaalina.com/api/Orders/DeleteCart"),
       headers: {
         'Content-Type': 'application/json',
-        'access_token': token,
+        'access_token': token!,
       },
     );
     // print(" abdo $token");
@@ -191,7 +190,7 @@ Future<String> createOrderbyUser(
   String address,
   double subTotal,
   List<CartData> listOfProduct,
-  String token,
+  String? token,
 ) async {
   try {
     // print(jsonEncode({
@@ -213,7 +212,7 @@ Future<String> createOrderbyUser(
         "orderdeitalsdto":
             listOfProduct.map((productData) => productData.toJson()).toList()
       }),
-      headers: {"Content-Type": "application/json", "access_token": token},
+      headers: {"Content-Type": "application/json", "access_token": token!},
     );
     // print("abied ${response.statusCode}");
     // print("abied ${response.body.toString()}");
@@ -230,7 +229,7 @@ Future<String> createOrderbyUser(
 }
 
 Future<String> addPharmacy(String name, String address, String phoneNumber,
-    String image, String token) async {
+    String image, String? token) async {
   try {
     final response = await http.post(
         Uri.parse(apiPath + "/Pharmacy/PostPharmacy"),
@@ -240,7 +239,7 @@ Future<String> addPharmacy(String name, String address, String phoneNumber,
           "phoneNumber": phoneNumber,
           "imagePath": image
         }),
-        headers: {'Content-Type': 'application/json', "access_token": token});
+        headers: {'Content-Type': 'application/json', "access_token": token!});
     // print(response.statusCode);
     // print(response.body.toString());
     if (response.statusCode == 200) {
@@ -280,7 +279,7 @@ Future<String> sendCompliatOrSuggestion(String firstName, String lastName,
   }
 }
 
-Future<List<Supplier>> fetchSupplier(
+Future<List<Supplier>?> fetchSupplier(
     String categoryId, String cityId, int offset, int limit) async {
   final response = await http.get(Uri.parse(apiPath +
       "/Supplier/GetAll?CityId=$cityId&CategoryId=$categoryId&Offset=1&Limit=150"));
@@ -297,8 +296,8 @@ Future<List<Supplier>> fetchSupplier(
   }
 }
 
-Future<List<Supplier>> searchSupplier(
-    String searchTerm, String cityId, int offset, int limit) async {
+Future<List<Supplier>?> searchSupplier(
+    String searchTerm, String? cityId, int offset, int limit) async {
   print(cityId);
   final response = await http.get(Uri.parse(apiPath +
       "/Supplier/GetAll?Offset=1&Limit=150&CityId=$cityId&SearchTerm=$searchTerm"));
@@ -317,7 +316,7 @@ Future<List<Supplier>> searchSupplier(
   }
 }
 
-Future<List<AnnouncementData>> fetchAnnouncement() async {
+Future<List<AnnouncementData>?> fetchAnnouncement() async {
   try {
     final response =
         await http.get(Uri.parse(apiPath + "/Announcement/GetAll"));
@@ -335,7 +334,7 @@ Future<List<AnnouncementData>> fetchAnnouncement() async {
   }
 }
 
-Future<List<Notifications>> fetchNotification() async {
+Future<List<Notifications>?> fetchNotification() async {
   try {
     final response = await http
         .get(Uri.parse(apiPath + "/Notifications/GetAll?Offset=1&Limit=100"));
@@ -353,7 +352,7 @@ Future<List<Notifications>> fetchNotification() async {
   }
 }
 
-Future<List<ImageData>> fetchImages() async {
+Future<List<ImageData>?> fetchImages() async {
   try {
     final response = await http.get(Uri.parse(apiPath + "/Image/GetAll"));
 
@@ -370,7 +369,7 @@ Future<List<ImageData>> fetchImages() async {
   }
 }
 
-Future<List<City>> getAllCity(int offset, int limit) async {
+Future<List<City>?> getAllCity(int offset, int limit) async {
   final response = await http
       .get(Uri.parse(apiPath + "/City/GetAll?Offset=$offset&Limit=$limit"));
   try {
@@ -389,8 +388,8 @@ Future<List<City>> getAllCity(int offset, int limit) async {
   }
 }
 
-Future<List<DoctorInfo>> getAllDoctorList(
-    String cityId, String specialistId) async {
+Future<List<DoctorInfo>?> getAllDoctorList(
+    String? cityId, String? specialistId) async {
   try {
     final response = await http.get(Uri.parse(apiPath +
         "/Doctor/GetAll?Offset=1&Limit=100&CityId=$cityId&DoctorSpecialistId=$specialistId"));
@@ -409,8 +408,8 @@ Future<List<DoctorInfo>> getAllDoctorList(
   }
 }
 
-Future<List<ServiceInfo>> getAllServiceInfoList(
-    String cityId, String specialistId) async {
+Future<List<ServiceInfo>?> getAllServiceInfoList(
+    String? cityId, String? specialistId) async {
   try {
     final response = await http.get(Uri.parse(apiPath +
         "/Service/GetAll?Offset=1&Limit=100&CityId=$cityId&ServiceSpecialistId=$specialistId"));
@@ -429,7 +428,7 @@ Future<List<ServiceInfo>> getAllServiceInfoList(
   }
 }
 
-Future<List<DoctorSpecialistt>> getAllDoctorSpecialist() async {
+Future<List<DoctorSpecialistt>?> getAllDoctorSpecialist() async {
   final response = await http
       .get(Uri.parse(apiPath + "/DoctorSpecialist/GetAll?Offset=1&Limit=100"));
   try {
@@ -445,7 +444,7 @@ Future<List<DoctorSpecialistt>> getAllDoctorSpecialist() async {
   }
 }
 
-Future<List<ServiceSpecialist>> getAllServiceSpecialist() async {
+Future<List<ServiceSpecialist>?> getAllServiceSpecialist() async {
   final response = await http
       .get(Uri.parse(apiPath + "/ServiceSpecialist/GetAll?Offset=1&Limit=100"));
   try {
@@ -461,7 +460,7 @@ Future<List<ServiceSpecialist>> getAllServiceSpecialist() async {
   }
 }
 
-Future<DoctorDetailsData> getDoctorByID(String doctorId) async {
+Future<DoctorDetailsData?> getDoctorByID(String doctorId) async {
   final response =
       await http.get(Uri.parse(apiPath + "/Doctor/getById/$doctorId"));
   try {
@@ -504,13 +503,13 @@ Future<void> signIn(String email, String password) async {
   }
 }
 
-Future<String> userGoogleSignIn(String accessToken) async {
+Future<String> userGoogleSignIn(String? accessToken) async {
   try {
     final http.Response response = await http.post(
       Uri.parse(apiPath + "/User/GoogleRegisterLogin"),
       headers: {
         'Content-Type': 'application/json',
-        'access_token': accessToken,
+        'access_token': accessToken!,
       },
     );
     final resultData = json.decode(response.body);
@@ -549,7 +548,7 @@ Future<void> register(
               "lastName": lastName,
               "confirmPassword": password,
             }));
-    final resultData = json.decode(response.body);
+    // final resultData = json.decode(response.body);
     // print(response.body);
     // print(resultData['arrayMessage'].toString());
     if (response.statusCode == 200) {
@@ -563,18 +562,18 @@ Future<void> register(
   }
 }
 
-Future<String> userFacebookSignIn(String email, String authToken, String userId,
-    String name, String firstName, String lastName) async {
+Future<String> userFacebookSignIn(String? email, String authToken,
+    String userId, String? name, String? firstName, String? lastName) async {
   try {
     print("abdo ${json.encode({
-      "authToken": authToken,
-      "email": email,
-      "fristName": firstName,
-      "id": userId,
-      "lastName": lastName,
-      "provider": "FACEBOOK",
-      "name": name
-    })}");
+          "authToken": authToken,
+          "email": email,
+          "fristName": firstName,
+          "id": userId,
+          "lastName": lastName,
+          "provider": "FACEBOOK",
+          "name": name
+        })}");
     final response =
         await http.post(Uri.parse("$apiPath/User/FaceBookRegisterlogin"),
             headers: {
@@ -589,7 +588,7 @@ Future<String> userFacebookSignIn(String email, String authToken, String userId,
               "provider": "FACEBOOK",
               "name": name
             }));
-    ;
+
     print("abdo 111 ${response.statusCode}");
     final resultData = json.decode(response.body);
     print("abdo status code  ${response.statusCode}");

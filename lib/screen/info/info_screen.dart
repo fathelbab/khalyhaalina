@@ -11,7 +11,7 @@ class InfoScreen extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         elevation: 20,
-        title: Text(AppLocale.of(context).getString("info")),
+        title: Text(AppLocale.of(context)!.getString("info")!),
       ),
       body: Container(
         width: double.infinity,
@@ -20,7 +20,7 @@ class InfoScreen extends StatelessWidget {
           children: [
                ListTile(
               title: Text(
-                AppLocale.of(context).getString('location'),
+                AppLocale.of(context)!.getString('location')!,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).primaryColor,
@@ -36,7 +36,7 @@ class InfoScreen extends StatelessWidget {
             ),
             ListTile(
               title: Text(
-                AppLocale.of(context).getString('callUs'),
+                AppLocale.of(context)!.getString('callUs')!,
               ),
               leading: Icon(
                 Icons.phone,
@@ -57,7 +57,7 @@ class InfoScreen extends StatelessWidget {
             ),
             ListTile(
               title: Text(
-                AppLocale.of(context).getString('callUs'),
+                AppLocale.of(context)!.getString('callUs')!,
               ),
               leading: Icon(
                 Icons.phone,

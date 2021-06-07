@@ -1,8 +1,8 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:eshop/model/CityData.dart';
 import 'package:eshop/provider/city_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomCityDropDownButton extends StatefulWidget {
   @override
@@ -12,9 +12,9 @@ class CustomCityDropDownButton extends StatefulWidget {
 
 class _CustomCityDropDownButtonState extends State<CustomCityDropDownButton> {
   String cityId = "0";
-  List<City> cityList = [];
+  List<City>? cityList = [];
 
-  String _selectedCity;
+  String? _selectedCity;
   @override
   void initState() {
     super.initState();
@@ -48,19 +48,17 @@ class _CustomCityDropDownButtonState extends State<CustomCityDropDownButton> {
                 "المدينة",
               ),
               value: _selectedCity,
-              onChanged: (newValue) {
+              onChanged: (dynamic newValue) {
                 setState(() {
                   _selectedCity = newValue;
-                  cityId = cityList
-                          .firstWhere((city) => (city.name == _selectedCity),
-                              orElse: () => null)
-                          .id
-                          .toString() ??
-                      "0";
+                  cityId = cityList!
+                      .firstWhereOrNull((city) => (city.name == _selectedCity))!
+                      .id
+                      .toString();
                 });
                 saveNewValue(cityId);
               },
-              items: cityList
+              items: cityList!
                   .map(
                     (city) => DropdownMenuItem(
                       value: city.name,
@@ -77,7 +75,7 @@ class _CustomCityDropDownButtonState extends State<CustomCityDropDownButton> {
   }
 
   saveNewValue(String cityId) {
-    Provider.of<CityProvider>(context,listen: false).saveUserCity(cityId);
+    Provider.of<CityProvider>(context, listen: false).saveUserCity(cityId);
     // final prefs = await SharedPreferences.getInstance();
     // prefs.setString('cityId', cityId);
     // print(cityId);

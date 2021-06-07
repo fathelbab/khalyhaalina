@@ -1,6 +1,5 @@
 import 'package:eshop/constant/constant.dart';
 import 'package:eshop/language/app_locale.dart';
-import 'package:eshop/model/cart_data.dart';
 import 'package:eshop/provider/cart.dart';
 import 'package:eshop/screen/order/order_screen.dart';
 import 'package:eshop/widget/cart_item.dart';
@@ -19,10 +18,10 @@ class CartScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          AppLocale.of(context).getString('cart'),
+          AppLocale.of(context)!.getString('cart')!,
         ),
       ),
-      body: cart.cartItems == null || cart.cartItems.isEmpty
+      body: cart.cartItems == null || cart.cartItems!.isEmpty
           ? Container(
               width: double.infinity,
               child: Column(
@@ -77,7 +76,7 @@ class CartScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          AppLocale.of(context).getString("total"),
+                          AppLocale.of(context)!.getString("total")!,
                           style: TextStyle(fontSize: 20.0),
                         ),
                         Spacer(),
@@ -101,15 +100,15 @@ class CartScreen extends StatelessWidget {
                 ),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: cart.cartItems.length,
+                    itemCount: cart.cartItems!.length,
                     itemBuilder: (BuildContext context, int index) {
                       return CartItem(
-                        productId: cart.cartItems[index].productid.toString(),
-                        price: cart.cartItems[index].price,
-                        quantity: cart.cartItems[index].qty,
-                        title: cart.cartItems[index].name,
-                        image: cart.cartItems[index].image,
-                        id: cart.cartItems[index].id,
+                        productId: cart.cartItems![index].productid.toString(),
+                        price: cart.cartItems![index].price,
+                        quantity: cart.cartItems![index].qty,
+                        title: cart.cartItems![index].name,
+                        image: cart.cartItems![index].image,
+                        id: cart.cartItems![index].id,
                       );
                     },
                   ),
@@ -132,7 +131,7 @@ class CartScreen extends StatelessWidget {
 class OrderButton extends StatefulWidget {
   final Cart cart;
 
-  OrderButton({@required this.cart});
+  OrderButton({required this.cart});
 
   @override
   _OrderButtonState createState() => _OrderButtonState();
@@ -149,7 +148,7 @@ class _OrderButtonState extends State<OrderButton> {
       },
       child: _isLoading
           ? CircularProgressIndicator()
-          : Text(AppLocale.of(context).getString("orderNow")),
+          : Text(AppLocale.of(context)!.getString("orderNow")!),
       style: TextButton.styleFrom(
         primary: Theme.of(context).primaryColor,
       ),

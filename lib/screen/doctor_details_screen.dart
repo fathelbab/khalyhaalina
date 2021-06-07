@@ -32,7 +32,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                     CachedNetworkImage(
                       width: double.infinity,
                       height: MediaQuery.of(context).size.height / 4,
-                      imageUrl: imagePath + doctorDetails.imagePath ,
+                      imageUrl: imagePath + doctorDetails.imagePath! ,
                       fit: BoxFit.fill,
                       placeholder: (context, url) =>
                           Center(child: CircularProgressIndicator()),
@@ -58,12 +58,12 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                       alignment: Alignment.centerRight,
                       margin: const EdgeInsets.symmetric(
                           horizontal: 15, vertical: 5),
-                      child: Text("المدينة : ${doctorDetails.city.name}"),
+                      child: Text("المدينة : ${doctorDetails.city!.name}"),
                     ),
                     SizedBox(
                       height: 15,
                     ),
-                    doctorDetails.doctorTimeTable.isEmpty
+                    doctorDetails.doctorTimeTable!.isEmpty
                         ? Text("")
                         : DataTable(
                             headingRowColor:
@@ -93,10 +93,10 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                                 style: TextStyle(color: Colors.white),
                               )),
                             ],
-                            rows: doctorDetails.doctorTimeTable
+                            rows: doctorDetails.doctorTimeTable!
                                 .map(
                                   (timeData) => DataRow(cells: [
-                                    DataCell(Text(timeData.doctorDay)),
+                                    DataCell(Text(timeData.doctorDay!)),
                                     DataCell(Text(timeData.doctorTime ?? "")),
                                     DataCell(Text(timeData.toDoctorTime ?? "")),
                                   ]),

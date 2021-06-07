@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 class SignUp extends StatefulWidget {
   static const String route = "/sign_up_screen";
 
-  SignUp({Key key}) : super(key: key);
+  SignUp({Key? key}) : super(key: key);
 
   @override
   _SignUpState createState() => _SignUpState();
@@ -92,7 +92,7 @@ class _SignUpState extends State<SignUp> {
                                 hintText: "الاسم الاول",
                               ),
                               validator: (value) {
-                                if (value.isEmpty || value.length < 1) {
+                                if (value!.isEmpty || value.length < 1) {
                                   return "يرجى ادخال الاسم الاول";
                                 }
                                 return null;
@@ -127,7 +127,7 @@ class _SignUpState extends State<SignUp> {
                                 hintText: "اسم العائله",
                               ),
                               validator: (value) {
-                                if (value.isEmpty || value.length < 1) {
+                                if (value!.isEmpty || value.length < 1) {
                                   return "يرجى ادخال الاسم العائله";
                                 }
                                 return null;
@@ -162,7 +162,7 @@ class _SignUpState extends State<SignUp> {
                                 hintText: "البريد الالكترونى",
                               ),
                               validator: (value) {
-                                if (value.isEmpty ||
+                                if (value!.isEmpty ||
                                     value.indexOf(".") == -1 ||
                                     value.indexOf("@") == -1) {
                                   return "يرجى ادخال البريد الالكترونى ";
@@ -201,7 +201,7 @@ class _SignUpState extends State<SignUp> {
                                   hintText: "كلمة المرور",
                                 ),
                                 validator: (value) {
-                                  if (value.isEmpty || value.length < 6) {
+                                  if (value!.isEmpty || value.length < 6) {
                                     return "يرجى ادخال كلمة المرور";
                                   } else {
                                     if (!regex.hasMatch(value))
@@ -297,7 +297,7 @@ class _SignUpState extends State<SignUp> {
                                             builder: (context) => Login()));
                                   },
                                   child: Text(
-                                    AppLocale.of(context).getString("login"),
+                                    AppLocale.of(context)!.getString("login")!,
                                     style: TextStyle(
                                       fontSize: 15.0,
                                       fontWeight: FontWeight.bold,
@@ -332,7 +332,7 @@ class _SignUpState extends State<SignUp> {
   }
 
   void _submit() async {
-    if (!_formKey.currentState.validate()) {
+    if (!_formKey.currentState!.validate()) {
       // Invalid!
       return;
     } else {

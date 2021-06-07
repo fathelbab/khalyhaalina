@@ -22,16 +22,16 @@ class DoctorDetailsData {
         this.doctorTimeTable,
     });
 
-    int id;
-    String name;
-    String address;
-    String phoneNumber;
-    int cityId;
-    String imagePath;
-    int doctorSpecialistId;
-    DoctorCity city;
-    DoctorDetailsSpecialist doctorSpecialist;
-    List<DoctorTimeTable> doctorTimeTable;
+    int? id;
+    String? name;
+    String? address;
+    String? phoneNumber;
+    int? cityId;
+    String? imagePath;
+    int? doctorSpecialistId;
+    DoctorCity? city;
+    DoctorDetailsSpecialist? doctorSpecialist;
+    List<DoctorTimeTable>? doctorTimeTable;
 
     factory DoctorDetailsData.fromJson(Map<String, dynamic> json) => DoctorDetailsData(
         id: json["id"],
@@ -54,9 +54,9 @@ class DoctorDetailsData {
         "cityId": cityId,
         "imagePath": imagePath,
         "doctorSpecialistId": doctorSpecialistId,
-        "city": city.toJson(),
-        "doctorSpecialist": doctorSpecialist.toJson(),
-        "doctorTimeTable": List<dynamic>.from(doctorTimeTable.map((x) => x.toJson())),
+        "city": city!.toJson(),
+        "doctorSpecialist": doctorSpecialist!.toJson(),
+        "doctorTimeTable": List<dynamic>.from(doctorTimeTable!.map((x) => x.toJson())),
     };
 }
 
@@ -76,16 +76,16 @@ class DoctorCity {
         this.services,
     });
 
-    int id;
+    int? id;
     dynamic order;
-    String createdDate;
-    String updatedDate;
-    bool isActive;
-    bool isDeleted;
+    String? createdDate;
+    String? updatedDate;
+    bool? isActive;
+    bool? isDeleted;
     dynamic createdBy;
     dynamic updatedBy;
-    String name;
-    List<dynamic> suppliers;
+    String? name;
+    List<dynamic>? suppliers;
     dynamic doctors;
     dynamic services;
 
@@ -114,7 +114,7 @@ class DoctorCity {
         "createdBy": createdBy,
         "updatedBy": updatedBy,
         "name": name,
-        "suppliers": List<dynamic>.from(suppliers.map((x) => x)),
+        "suppliers": List<dynamic>.from(suppliers!.map((x) => x)),
         "doctors": doctors,
         "services": services,
     };
@@ -127,8 +127,8 @@ class DoctorDetailsSpecialist {
         this.doctors,
     });
 
-    int id;
-    String name;
+    int? id;
+    String? name;
     dynamic doctors;
 
     factory DoctorDetailsSpecialist.fromJson(Map<String, dynamic> json) => DoctorDetailsSpecialist(
@@ -154,10 +154,10 @@ class DoctorTimeTable {
         this.doctor,
     });
 
-    int id;
-    int doctorId;
-    String doctorDay;
-    String doctorTime;
+    int? id;
+    int? doctorId;
+    String? doctorDay;
+    String? doctorTime;
     dynamic toDoctorTime;
     dynamic doctor;
 

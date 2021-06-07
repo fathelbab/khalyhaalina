@@ -16,10 +16,10 @@ class CityData {
         this.city,
     });
 
-    int offset;
-    int limit;
-    int length;
-    List<City> city;
+    int? offset;
+    int? limit;
+    int? length;
+    List<City>? city;
 
     factory CityData.fromJson(Map<String, dynamic> json) => CityData(
         offset: json["offset"],
@@ -32,7 +32,7 @@ class CityData {
         "offset": offset,
         "limit": limit,
         "length": length,
-        "result": List<dynamic>.from(city.map((x) => x.toJson())),
+        "result": List<dynamic>.from(city!.map((x) => x.toJson())),
     };
 }
 
@@ -44,10 +44,10 @@ class City {
         this.isActive,
     });
 
-    String name;
-    int id;
+    String? name;
+    int? id;
     dynamic order;
-    bool isActive;
+    bool? isActive;
 
     factory City.fromJson(Map<String, dynamic> json) => City(
         name: json["name"],

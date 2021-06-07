@@ -3,11 +3,11 @@ import 'package:flutter/foundation.dart';
 import 'package:eshop/data/service/services.dart';
 
 class AnnouncementProvider extends ChangeNotifier {
-  List<AnnouncementData> _announcementList = [];
+  List<AnnouncementData>? _announcementList = [];
   fetchAnnouncementList() async {
     _announcementList = await fetchAnnouncement();
     notifyListeners();
   }
 
-  List<AnnouncementData> get announcementList => _announcementList;
+  List<AnnouncementData>? get announcementList => _announcementList;
 }

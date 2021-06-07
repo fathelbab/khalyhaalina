@@ -4,20 +4,20 @@ import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Cart with ChangeNotifier {
-  List<CartData> _cartItems;
+  List<CartData>? _cartItems;
   // Map<String, CartItem> get items {
   //   return {...?_items};
   // }
 
   int get itemCount {
-    return _cartItems.length;
+    return _cartItems!.length;
   }
 
   double get totalMount {
     var total = 0.0;
 
-    cartItems.forEach((item) {
-      total += item.price * item.qty;
+    cartItems!.forEach((item) {
+      total += item.price! * item.qty!;
     });
 
     return total;
@@ -29,13 +29,13 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String> addItemToCart(int productId, int quantity) async {
+  Future<String> addItemToCart(int? productId, int quantity) async {
     final token = await _getToken();
     String response = await addProductToCart(productId, quantity, token);
     return response;
   }
 
-  List<CartData> get cartItems => _cartItems;
+  List<CartData>? get cartItems => _cartItems;
 
   Future _getToken() async {
     final prefs = await SharedPreferences.getInstance();

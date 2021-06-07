@@ -18,9 +18,9 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-  List<Product> productList = [];
-  String supplierId = "0";
-  String categoryId = "0";
+  List<Product>? productList = [];
+  String? supplierId = "0";
+  String? categoryId = "0";
   int limit = 20;
   final _searchController = TextEditingController();
   ScrollController _productScrollController = new ScrollController();
@@ -44,19 +44,19 @@ class _ProductScreenState extends State<ProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Map args = ModalRoute.of(context).settings.arguments as Map;
+    Map args = ModalRoute.of(context)!.settings.arguments as Map;
     supplierId = args["supplierId"];
     categoryId = args["categoryId"];
     productList = Provider.of<ProductProvider>(context).productList;
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocale.of(context).getString('product')),
+        title: Text(AppLocale.of(context)!.getString('product')!),
         centerTitle: true,
         actions: [
           Consumer<Cart>(
             builder: (_, cart, child) => Badge(
-              value: cart.cartItems != null && cart.cartItems.length > 0
-                  ? cart.cartItems.length.toString()
+              value: cart.cartItems != null && cart.cartItems!.length > 0
+                  ? cart.cartItems!.length.toString()
                   : "0",
               child: child,
               color: Colors.red,
@@ -138,23 +138,31 @@ class _ProductScreenState extends State<ProductScreen> {
                   ? Center(
                       child: CircularProgressIndicator(),
                     )
-                  : productList.length == 0
+                  : productList!.length == 0
                       // ? Center(child: Text('لايوجد منتجات متاحة'))
                       ? Center(
                           child: CircularProgressIndicator(),
                         )
-                      : GridView.builder(
-                          controller: _productScrollController,
-                          itemCount: productList.length,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisSpacing: 5,
-                                  mainAxisSpacing: 5,
-                                  crossAxisCount: 2),
-                          itemBuilder: (context, index) {
-                            return ProductItems(
-                                product: productList[index], index: index);
-                          }),
+                      : LayoutBuilder(
+                          builder: (context, constraints) {
+                            return GridView.builder(
+                                controller: _productScrollController,
+                                itemCount: productList!.length,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisSpacing: 4,
+                                  mainAxisSpacing: 4,
+                                  crossAxisCount:
+                                      constraints.maxWidth > 480 ? 4 : 2,
+                                  childAspectRatio: 0.8,
+                                ),
+                                itemBuilder: (context, index) {
+                                  return ProductItems(
+                                      product: productList![index],
+                                      index: index);
+                                });
+                          },
+                        ),
             ),
           ),
         ],

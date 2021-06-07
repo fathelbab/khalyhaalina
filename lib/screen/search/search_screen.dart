@@ -21,9 +21,9 @@ class _SearchScreenState extends State<SearchScreen> {
     // 'sphagite',
     // 'tomato',
   ];
-  List<String> filteredSearchHistory;
-  String selectedTerm;
-  List<String> filterSearchTerm({@required String filter}) {
+  late List<String> filteredSearchHistory;
+  String? selectedTerm;
+  List<String> filterSearchTerm({required String? filter}) {
     if (filter != null && filter.isNotEmpty) {
       return _searchHistory.reversed
           .where((term) => term.startsWith(filter))
@@ -73,10 +73,10 @@ class _SearchScreenState extends State<SearchScreen> {
         transition: CircularFloatingSearchBarTransition(),
         physics: const BouncingScrollPhysics(),
         title: Text(
-          selectedTerm ?? AppLocale.of(context).getString('searchTitle'),
+          selectedTerm ?? AppLocale.of(context)!.getString('searchTitle')!,
           style: Theme.of(context).textTheme.headline6,
         ),
-        hint: AppLocale.of(context).getString('searchTitle'),
+        hint: AppLocale.of(context)!.getString('searchTitle'),
         actions: [
           FloatingSearchBarAction.searchToClear(),
         ],
@@ -115,7 +115,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     height: 56,
                     alignment: Alignment.center,
                     child: Text(
-                      AppLocale.of(context).getString('startSearch'),
+                      AppLocale.of(context)!.getString('startSearch')!,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.caption,
                     ),

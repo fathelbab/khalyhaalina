@@ -10,10 +10,10 @@ ProductData productDataFromJson(String str) =>
 String productDataToJson(ProductData data) => json.encode(data.toJson());
 
 class ProductData {
-  int offset;
-  int limit;
-  int length;
-  List<Product> product;
+  int? offset;
+  int? limit;
+  int? length;
+  List<Product>? product;
 
   ProductData({
     this.offset,
@@ -34,7 +34,7 @@ class ProductData {
         "offset": offset,
         "limit": limit,
         "length": length,
-        "result": List<dynamic>.from(product.map((x) => x.toJson())),
+        "result": List<dynamic>.from(product!.map((x) => x.toJson())),
       };
 }
 
@@ -54,18 +54,18 @@ class Product {
     this.isHot,
   });
 
-  int id;
-  String name;
+  int? id;
+  String? name;
   dynamic order;
-  String imagePath;
-  double price;
-  double oldPrice;
-  String categoryName;
-  String supplierName;
-  int quantity;
-  int categoryId;
-  int supplierId;
-  bool isHot;
+  String? imagePath;
+  double? price;
+  double? oldPrice;
+  String? categoryName;
+  String? supplierName;
+  int? quantity;
+  int? categoryId;
+  int? supplierId;
+  bool? isHot;
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
         id: json["id"],

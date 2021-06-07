@@ -3,10 +3,10 @@ import 'package:eshop/provider/bar_style.dart';
 import 'package:flutter/material.dart';
 
 class AnimatedBottomBar extends StatefulWidget {
-  final List<BarItem> barItems;
+  final List<BarItem>? barItems;
   final Duration animationDuration;
-  final Function onBarTap;
-  final BarStyle barStyle;
+  final Function? onBarTap;
+  final BarStyle? barStyle;
 
   AnimatedBottomBar(
       {this.barItems,
@@ -40,15 +40,15 @@ class _AnimatedBottomBarState extends State<AnimatedBottomBar>
   List<Widget> _buildBarItems() {
     List<Widget> _barItems = [];
 
-    for (int i = 0; i < widget.barItems.length; i++) {
-      BarItem item = widget.barItems[i];
+    for (int i = 0; i < widget.barItems!.length; i++) {
+      BarItem item = widget.barItems![i];
       bool isSelected = selectedBarIndex == i;
       _barItems.add(InkWell(
         splashColor: Colors.transparent,
         onTap: () {
           setState(() {
             selectedBarIndex = i;
-            widget.onBarTap(selectedBarIndex);
+            widget.onBarTap!(selectedBarIndex);
           });
         },
         child: AnimatedContainer(
@@ -61,14 +61,14 @@ class _AnimatedBottomBarState extends State<AnimatedBottomBar>
               ),
             ),
             color:
-                isSelected ? item.color.withOpacity(0.15) : Colors.transparent,
+                isSelected ? item.color!.withOpacity(0.15) : Colors.transparent,
           ),
           child: Row(
             children: [
               Icon(
                 item.iconData,
                 color: isSelected ? item.color : Colors.grey[700],
-                size: widget.barStyle.iconSize,
+                size: widget.barStyle!.iconSize,
               ),
               SizedBox(
                 width: 5,
@@ -78,11 +78,11 @@ class _AnimatedBottomBarState extends State<AnimatedBottomBar>
                 vsync: this,
                 curve: Curves.easeInOut,
                 child: Text(
-                  isSelected ? item.text : "",
+                  isSelected ? item.text! : "",
                   style: TextStyle(
                     color: item.color,
-                    fontWeight: widget.barStyle.fontWeight,
-                    fontSize: widget.barStyle.fontSize,
+                    fontWeight: widget.barStyle!.fontWeight,
+                    fontSize: widget.barStyle!.fontSize,
                   ),
                 ),
               ),

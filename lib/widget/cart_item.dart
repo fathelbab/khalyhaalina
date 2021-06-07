@@ -3,15 +3,16 @@ import 'package:eshop/constant/constant.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/provider/cart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 class CartItem extends StatelessWidget {
-  final int id;
-  final String productId;
-  final double price;
-  final int quantity;
-  final String title;
-  final String image;
+  final int? id;
+  final String? productId;
+  final double? price;
+  final int? quantity;
+  final String? title;
+  final String? image;
 
   const CartItem({
     this.id,
@@ -42,13 +43,13 @@ class CartItem extends StatelessWidget {
           context: context,
           builder: (cxt) => AlertDialog(
             // title: Text(AppLocale.of(context).getString("alert")),
-            content: Text(AppLocale.of(context).getString("alertBody")),
+            content: Text(AppLocale.of(context)!.getString("alertBody")!),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text(AppLocale.of(context).getString("no")),
+                child: Text(AppLocale.of(context)!.getString("no")!),
               ),
               TextButton(
                 onPressed: () {
@@ -57,7 +58,7 @@ class CartItem extends StatelessWidget {
                       .removeItems(id.toString());
                   Provider.of<Cart>(context, listen: false).fetchCartList();
                 },
-                child: Text(AppLocale.of(context).getString("yes")),
+                child: Text(AppLocale.of(context)!.getString("yes")!),
               ),
             ],
           ),
@@ -75,22 +76,23 @@ class CartItem extends StatelessWidget {
             leading: ClipRRect(
               child: FittedBox(
                 child: CachedNetworkImage(
-                  imageUrl: imagePath + image,
+                  imageUrl: imagePath + image!,
                   fit: BoxFit.fill,
                   placeholder: (context, url) =>
-                      Center(child: CircularProgressIndicator()),
+                      Center(child:  const SpinKitChasingDots(
+                                color: Color(0XFFE5A352)),),
                   errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
               ),
             ),
             title: Text(
-              title,
+              title!,
               style: TextStyle(fontSize: 13),
             ),
             subtitle: Text(
-                '${AppLocale.of(context).getString("total")} ${price * quantity} ج.م'),
+                '${AppLocale.of(context)!.getString("total")} ${price! * quantity!} ج.م'),
             trailing: Text(
-                '${AppLocale.of(context).getString("quantity")} : $quantity '),
+                '${AppLocale.of(context)!.getString("quantity")} : $quantity '),
           ),
         ),
       ),

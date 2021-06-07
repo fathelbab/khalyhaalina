@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SupplierProvider extends ChangeNotifier {
-  List<Supplier> _supplierList = [];
+  List<Supplier>? _supplierList = [];
   String cityId = "";
   String currentCategoryId = "0";
  Future fetchSupplierList(String categoryId, int offset, int limit) async {
@@ -48,7 +48,7 @@ class SupplierProvider extends ChangeNotifier {
     return cityId;
   }
 
-  List<Supplier> get supplierList => _supplierList;
+  List<Supplier>? get supplierList => _supplierList;
 
   searchSupplierByCity(String searchTerm, int offset, int limit) async {
     final cityId = await getCityId();

@@ -4,14 +4,14 @@ import 'package:eshop/model/order_data.dart';
 import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/order_provider.dart';
 import 'package:eshop/screen/category_screen.dart';
+import 'package:eshop/widget/progress_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-
-import 'package:toast/toast.dart';
 
 class OrderScreen extends StatefulWidget {
   static const route = "/order";
-  OrderScreen({Key key}) : super(key: key);
+  OrderScreen({Key? key}) : super(key: key);
 
   @override
   _OrderScreenState createState() => _OrderScreenState();
@@ -48,7 +48,7 @@ class _OrderScreenState extends State<OrderScreen> {
       child: Scaffold(
         backgroundColor: Colors.grey[100],
         appBar: AppBar(
-          title: Text(AppLocale.of(context).getString('confirmOrder')),
+          title: Text(AppLocale.of(context)!.getString('confirmOrder')!),
           centerTitle: true,
           backgroundColor: primaryColor,
         ),
@@ -65,7 +65,7 @@ class _OrderScreenState extends State<OrderScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        AppLocale.of(context).getString("totalPrice"),
+                        AppLocale.of(context)!.getString("totalPrice")!,
                         style: TextStyle(fontSize: 20.0),
                       ),
                       Spacer(),
@@ -105,12 +105,12 @@ class _OrderScreenState extends State<OrderScreen> {
                                 .requestFocus(_userAddressFocusNode);
                           },
                           decoration: InputDecoration(
-                            hintText: AppLocale.of(context).getString('name'),
+                            hintText: AppLocale.of(context)!.getString('name'),
                             border: InputBorder.none,
                           ),
                           validator: (value) {
-                            if (value.isEmpty || value.length < 1) {
-                              return AppLocale.of(context)
+                            if (value!.isEmpty || value.length < 1) {
+                              return AppLocale.of(context)!
                                   .getString("emptyName");
                             }
                             return null;
@@ -134,12 +134,12 @@ class _OrderScreenState extends State<OrderScreen> {
                           },
                           decoration: InputDecoration(
                             hintText:
-                                AppLocale.of(context).getString('address'),
+                                AppLocale.of(context)!.getString('address'),
                             border: InputBorder.none,
                           ),
                           validator: (value) {
-                            if (value.isEmpty) {
-                              return AppLocale.of(context)
+                            if (value!.isEmpty) {
+                              return AppLocale.of(context)!
                                   .getString('emptyAddress');
                             }
                             return null;
@@ -177,14 +177,14 @@ class _OrderScreenState extends State<OrderScreen> {
                           controller: userPhoneNumberText,
                           decoration: InputDecoration(
                             hintText:
-                                AppLocale.of(context).getString('phoneNumber'),
+                                AppLocale.of(context)!.getString('phoneNumber'),
                             border: InputBorder.none,
                           ),
                           keyboardType: TextInputType.phone,
                           focusNode: _userPhoneNumberFocusNode,
                           validator: (value) {
-                            if (value.isEmpty) {
-                              return AppLocale.of(context)
+                            if (value!.isEmpty) {
+                              return AppLocale.of(context)!
                                   .getString('emptyPhoneNumber');
                             }
                             return null;
@@ -204,7 +204,8 @@ class _OrderScreenState extends State<OrderScreen> {
                           child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                AppLocale.of(context).getString("confirmOrder"),
+                                AppLocale.of(context)!
+                                    .getString("confirmOrder")!,
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
@@ -225,20 +226,22 @@ class _OrderScreenState extends State<OrderScreen> {
 
   void confirmUserOrder(BuildContext context, Cart cart) async {
     if (!await checkContection()) {
-      Toast.show(
-        AppLocale.of(context).getString("checkInternetConnection"),
-        context,
-        duration: Toast.LENGTH_LONG,
-        gravity: Toast.BOTTOM,
-      );
+      Fluttertoast.showToast(
+          msg: AppLocale.of(context)!.getString("checkInternetConnection")!,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 4,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
     }
-    bool validator = _formkey.currentState.validate();
+    bool validator = _formkey.currentState!.validate();
 
     if (userAddressText.text.isNotEmpty &&
         userNameText.text.isNotEmpty &&
         userPhoneNumberText.text.isNotEmpty &&
         validator) {
-      List<Orderdeitalsdto> listOfProduct = cart.cartItems
+      List<Orderdeitalsdto> listOfProduct = cart.cartItems!
           .map((product) => Orderdeitalsdto(
                 productId: product.id,
                 price: product.price,
@@ -250,44 +253,57 @@ class _OrderScreenState extends State<OrderScreen> {
       if (couponText.text.isEmpty) {
         couponText.text = "";
       }
-      bool validator = _formkey.currentState.validate();
+      bool validator = _formkey.currentState!.validate();
       if (userAddressText.text.isNotEmpty &&
           userNameText.text.isNotEmpty &&
           userPhoneNumberText.text.isNotEmpty &&
           validator) {
-        final response = await Provider.of<OrderProvider>(context,
-                listen: false)
-            .createOrder(
-                userNameText.text,
-                userPhoneNumberText.text,
-                "${userAddressText.text}/${couponText.text}",
-                cart.totalMount,
-                cart.cartItems)
-            .then((value) {
+        showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) {
+              return ProgressDialog(
+                message: "...جارى تنفيذ طلبك ,يرجى الانتظار",
+              );
+            });
+        final dynamic response =
+            await Provider.of<OrderProvider>(context, listen: false)
+                .createOrder(
+                    userNameText.text,
+                    userPhoneNumberText.text,
+                    "${userAddressText.text}/${couponText.text}",
+                    cart.totalMount,
+                    cart.cartItems!)
+                .then((value) {
           print(value);
           if (value == "done") {
+            Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(
-                    AppLocale.of(context).getString("orderSuccessMessage"))));
+                    AppLocale.of(context)!.getString("orderSuccessMessage")!)));
             Provider.of<Cart>(context, listen: false).clearCart();
             Provider.of<Cart>(context, listen: false).fetchCartList();
             Navigator.of(context).pushReplacementNamed(CategoryScreen.route);
           } else {
+            Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(
-                    AppLocale.of(context).getString("orderErrorMessage"))));
+                    AppLocale.of(context)!.getString("orderErrorMessage")!)));
           }
-        }).catchError((e) => ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                    content:
-                        Text(AppLocale.of(context).getString("addedError")))));
+        }).catchError((e) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content:
+                  Text("${AppLocale.of(context)!.getString("addedError")}")));
+        });
       } else {
-        Toast.show(
-          AppLocale.of(context).getString("emptyData"),
-          context,
-          duration: Toast.LENGTH_LONG,
-          gravity: Toast.BOTTOM,
-        );
+        Fluttertoast.showToast(
+            msg: AppLocale.of(context)!.getString("emptyData")!,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 4,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
       }
     }
   }

@@ -1,6 +1,5 @@
 import 'package:eshop/constant/constant.dart';
 import 'package:eshop/language/app_locale.dart';
-import 'package:eshop/model/product_data.dart';
 import 'package:eshop/model/product_details_data.dart';
 import 'package:eshop/provider/auth_provider.dart';
 import 'package:eshop/provider/cart.dart';
@@ -13,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 final List<String> imgList = [
   'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
@@ -38,7 +36,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   Widget build(BuildContext context) {
     // final productId = ModalRoute.of(context).settings.arguments;
     final size = MediaQuery.of(context).size;
-    ProductDetailsData productDetails =
+    ProductDetailsData? productDetails =
         Provider.of<ProductProvider>(context).productData;
     // print(productId);
     return Scaffold(
@@ -51,8 +49,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               }),
           Consumer<Cart>(
             builder: (_, cart, child) => Badge(
-              value: cart.cartItems != null && cart.cartItems.length > 0
-                  ? cart.cartItems.length.toString()
+              value: cart.cartItems != null && cart.cartItems!.length > 0
+                  ? cart.cartItems!.length.toString()
                   : "0",
               child: child,
               color: Colors.red,
@@ -78,29 +76,29 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       child: Column(
                         children: [
                           productDetails.productGalleries != null &&
-                                  productDetails.productGalleries.isEmpty
+                                  productDetails.productGalleries!.isEmpty
                               ? Hero(
-                                  tag: productDetails.id,
+                                  tag: productDetails.id!,
                                   child: Image.network(
-                                    imagePath + productDetails.imagePath,
+                                    imagePath + productDetails.imagePath!,
                                     fit: BoxFit.contain,
                                     width: double.infinity,
-                                    height: size.height / 3,
+                                    height: size.height / 3+50,
                                   ),
                                 )
                               : Hero(
-                                  tag: productDetails.id,
+                                  tag: productDetails.id!,
                                   child: Container(
                                     height:
-                                        MediaQuery.of(context).size.height / 3,
+                                        MediaQuery.of(context).size.height / 3+50,
                                     width: MediaQuery.of(context).size.width,
                                     child: CarouselSlider.builder(
                                       itemCount: productDetails
-                                          .productGalleries.length,
+                                          .productGalleries!.length,
                                       itemBuilder: (BuildContext context,
                                           int index, int realIndex) {
                                         return sliderBuilder(index,
-                                            productDetails.productGalleries);
+                                            productDetails.productGalleries!);
                                       },
                                       // items: imageSliders,
                                       options: CarouselOptions(
@@ -186,8 +184,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         child: Row(
                           children: [
                             Text(
-                              AppLocale.of(context).getString("total") +
-                                  " ${quantity * productDetails.price}",
+                              AppLocale.of(context)!.getString("total")! +
+                                  " ${quantity * productDetails.price!}",
                               style: TextStyle(
                                 fontSize: 18,
                                 color: Colors.white,
@@ -198,7 +196,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             Container(
                               margin: const EdgeInsets.all(3),
                               child: Text(
-                                AppLocale.of(context).getString("add_to_cart"),
+                                AppLocale.of(context)!.getString("add_to_cart")!,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
@@ -232,7 +230,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               color: primaryColor,
               boxShadow: [
                 BoxShadow(
-                    color: Colors.grey[200],
+                    color: Colors.grey[200]!,
                     spreadRadius: 3,
                     blurRadius: 7,
                     offset: Offset(0, 1))
@@ -272,7 +270,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               color: primaryColor,
               boxShadow: [
                 BoxShadow(
-                    color: Colors.grey[200],
+                    color: Colors.grey[200]!,
                     spreadRadius: 5,
                     blurRadius: 7,
                     offset: Offset(0, 1))
@@ -306,7 +304,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           borderRadius: BorderRadius.all(Radius.circular(5.0)),
           child: Stack(
             children: <Widget>[
-              Image.network(imagePath + productGalleries[index].imagePath,
+              Image.network(imagePath + productGalleries[index].imagePath!,
                   fit: BoxFit.contain, width: double.infinity),
               // Positioned(
               //   bottom: 0.0,
@@ -341,7 +339,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
-  void addToCart(int quantity, int id) async {
+  void addToCart(int quantity, int? id) async {
     Provider.of<Cart>(context, listen: false)
         .addItemToCart(id, quantity)
         .then((value) {
@@ -349,18 +347,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       if (value == "done") {
         Provider.of<Cart>(context, listen: false).fetchCartList();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(AppLocale.of(context).getString("addedSuccess"))));
+            content: Text(AppLocale.of(context)!.getString("addedSuccess")!)));
       } else if (value == "auth") {
         Provider.of<Auth>(context).logout();
         Navigator.pushNamedAndRemoveUntil(
             context, Login.route, (Route<dynamic> route) => false);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(AppLocale.of(context).getString("addedError"))));
+            content: Text(AppLocale.of(context)!.getString("addedError")!)));
       }
     }).catchError((e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(AppLocale.of(context).getString("addedError"))));
+          content: Text(AppLocale.of(context)!.getString("addedError")!)));
     });
   }
 }

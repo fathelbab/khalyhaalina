@@ -5,13 +5,12 @@ import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/provider/pharmacy_provider.dart';
 import 'package:eshop/widget/progress_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-
-import 'package:toast/toast.dart';
 import 'package:image_picker/image_picker.dart';
 
 class PharmacyScreen extends StatefulWidget {
-  PharmacyScreen({Key key}) : super(key: key);
+  PharmacyScreen({Key? key}) : super(key: key);
 
   @override
   _PharmacyScreenState createState() => _PharmacyScreenState();
@@ -20,7 +19,7 @@ class PharmacyScreen extends StatefulWidget {
 class _PharmacyScreenState extends State<PharmacyScreen> {
   var checkActive = false;
   var isLoading = false;
-  File _image;
+  File? _image;
   final picker = ImagePicker();
   TextEditingController pharmacyNameText = TextEditingController();
   TextEditingController pharmacyAddressText = TextEditingController();
@@ -35,9 +34,9 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
-        print(_image.path.toString());
+        print(_image!.path.toString());
       } else {
-        print(AppLocale.of(context).getString('emptyImage'));
+        print(AppLocale.of(context)!.getString('emptyImage'));
       }
     });
   }
@@ -49,9 +48,9 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
         // uploadImageFile(_image);
-        print(_image.path.toString());
+        print(_image!.path.toString());
       } else {
-        print(AppLocale.of(context).getString('emptyImage'));
+        print(AppLocale.of(context)!.getString('emptyImage'));
       }
     });
   }
@@ -73,7 +72,7 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
       child: Scaffold(
         backgroundColor: Colors.grey[100],
         appBar: AppBar(
-          title: Text(AppLocale.of(context).getString('pharmacy')),
+          title: Text(AppLocale.of(context)!.getString('pharmacy')!),
           centerTitle: true,
           backgroundColor: primaryColor,
         ),
@@ -100,12 +99,12 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
                                 .requestFocus(_pharmacyAddressFocusNode);
                           },
                           decoration: InputDecoration(
-                            hintText: AppLocale.of(context).getString('name'),
+                            hintText: AppLocale.of(context)!.getString('name'),
                             border: InputBorder.none,
                           ),
                           validator: (value) {
-                            if (value.isEmpty || value.length < 1) {
-                              return AppLocale.of(context)
+                            if (value!.isEmpty || value.length < 1) {
+                              return AppLocale.of(context)!
                                   .getString("emptyName");
                             }
                             return null;
@@ -128,12 +127,12 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
                           },
                           decoration: InputDecoration(
                             hintText:
-                                AppLocale.of(context).getString('address'),
+                                AppLocale.of(context)!.getString('address'),
                             border: InputBorder.none,
                           ),
                           validator: (value) {
-                            if (value.isEmpty) {
-                              return AppLocale.of(context)
+                            if (value!.isEmpty) {
+                              return AppLocale.of(context)!
                                   .getString('emptyAddress');
                             }
                             return null;
@@ -150,14 +149,14 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
                           controller: pharmacyPhoneNumberText,
                           decoration: InputDecoration(
                             hintText:
-                                AppLocale.of(context).getString('phoneNumber'),
+                                AppLocale.of(context)!.getString('phoneNumber'),
                             border: InputBorder.none,
                           ),
                           keyboardType: TextInputType.phone,
                           focusNode: _pharmacyPhoneNumberFocusNode,
                           validator: (value) {
-                            if (value.isEmpty) {
-                              return AppLocale.of(context)
+                            if (value!.isEmpty) {
+                              return AppLocale.of(context)!
                                   .getString('emptyPhoneNumber');
                             }
                             return null;
@@ -181,9 +180,9 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
                         margin: EdgeInsets.all(5.0),
                         child: (_image == null)
                             ? Text(
-                                AppLocale.of(context).getString('emptyImage'))
+                                AppLocale.of(context)!.getString('emptyImage')!)
                             : Image.file(
-                                _image,
+                                _image!,
                                 width: 150,
                                 height: 150,
                                 fit: BoxFit.cover,
@@ -194,7 +193,6 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
                       // :
                       MaterialButton(
                         onPressed: () {
-                       
                           savePharmacyData(
                             context,
                           );
@@ -208,7 +206,7 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
                           child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                AppLocale.of(context).getString("save"),
+                                AppLocale.of(context)!.getString("save")!,
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
@@ -229,14 +227,17 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
 
   void savePharmacyData(BuildContext context) async {
     if (!await checkContection()) {
-      Toast.show(
-        AppLocale.of(context).getString("checkInternetConnection"),
-        context,
-        duration: Toast.LENGTH_LONG,
-        gravity: Toast.BOTTOM,
-      );
+    
+      Fluttertoast.showToast(
+          msg: AppLocale.of(context)!.getString("checkInternetConnection")!,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 4,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
     }
-    bool validator = _formkey.currentState.validate();
+    bool validator = _formkey.currentState!.validate();
 
     if (pharmacyAddressText.text.isNotEmpty &&
         pharmacyNameText.text.isNotEmpty &&
@@ -244,7 +245,6 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
         validator) {
       isLoading = true;
       showDialog(
-        
           context: context,
           barrierDismissible: false,
           builder: (context) {
@@ -252,7 +252,7 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
               message: "...جارى تنفيذ طلبك ,يرجى الانتظار",
             );
           });
-      String imageBase64String = base64Encode(_image.readAsBytesSync());
+      String imageBase64String = base64Encode(_image!.readAsBytesSync());
       Provider.of<PharmacyProvider>(context, listen: false)
           .addPharmacyItem(
         pharmacyNameText.text,
@@ -265,7 +265,7 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
         if (value == "done") {
           Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(AppLocale.of(context).getString("addedSuccess"))));
+              content: Text(AppLocale.of(context)!.getString("addedSuccess")!)));
           setState(() {
             isLoading = false;
             pharmacyNameText.text = "";
@@ -276,12 +276,12 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
         } else {
           Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(AppLocale.of(context).getString("addedError"))));
+              content: Text(AppLocale.of(context)!.getString("addedError")!)));
         }
       }).catchError((e) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(AppLocale.of(context).getString("addedError"))));
+            content: Text(AppLocale.of(context)!.getString("addedError")!)));
       });
       // Map arr = {
       //   "cat_name": categoryNameText.text,
@@ -293,12 +293,15 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
       //     arr, "category/insert_category.php", context, () => Category());
 
     } else {
-      Toast.show(
-        AppLocale.of(context).getString("emptyData"),
-        context,
-        duration: Toast.LENGTH_LONG,
-        gravity: Toast.BOTTOM,
-      );
+    
+           Fluttertoast.showToast(
+          msg: AppLocale.of(context)!.getString("emptyData")!,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 4,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
     }
   }
 
@@ -311,7 +314,7 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
               children: [
                 ListTile(
                   leading: Icon(Icons.image),
-                  title: Text(AppLocale.of(context).getString("imageGallery")),
+                  title: Text(AppLocale.of(context)!.getString("imageGallery")!),
                   onTap: () {
                     getImageGallery();
                     Navigator.pop(context);
@@ -319,7 +322,7 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
                 ),
                 ListTile(
                   leading: Icon(Icons.camera),
-                  title: Text(AppLocale.of(context).getString("camera")),
+                  title: Text(AppLocale.of(context)!.getString("camera")!),
                   onTap: () {
                     getImageCamera();
                     Navigator.pop(context);

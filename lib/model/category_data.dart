@@ -16,10 +16,10 @@ class CategoryData {
     this.result,
   });
 
-  int offset;
-  int limit;
-  int length;
-  List<Category> result;
+  int? offset;
+  int? limit;
+  int? length;
+  List<Category>? result;
 
   factory CategoryData.fromJson(Map<String, dynamic> json) => CategoryData(
     offset: json["offset"],
@@ -32,7 +32,7 @@ class CategoryData {
     "offset": offset,
     "limit": limit,
     "length": length,
-    "result": List<dynamic>.from(result.map((x) => x.toJson())),
+    "result": List<dynamic>.from(result!.map((x) => x.toJson())),
   };
 }
 
@@ -43,9 +43,9 @@ class Category {
     this.order,
   });
 
-  int id;
-  String name;
-  int order;
+  int? id;
+  String? name;
+  int? order;
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
     id: json["id"],

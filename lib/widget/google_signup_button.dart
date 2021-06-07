@@ -1,5 +1,4 @@
 import 'package:eshop/provider/auth_provider.dart';
-import 'package:eshop/screen/category_screen.dart';
 import 'package:eshop/screen/city/city_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -8,11 +7,11 @@ import 'package:provider/provider.dart';
 class GoogleSignupButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    bool isGoogleLogin = Provider.of<Auth>(context).isSigningIn;
+    bool? isGoogleLogin = Provider.of<Auth>(context).isSigningIn;
     return InkWell(
       onTap: () {
         final provider = Provider.of<Auth>(context, listen: false);
-        if (isGoogleLogin) {
+        if (isGoogleLogin!) {
           provider.logout();
         } else {
           provider.googleLogin().then((value) {

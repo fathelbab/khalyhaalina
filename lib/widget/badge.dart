@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
 class Badge extends StatelessWidget {
-  final Widget child;
+  final Widget? child;
   final String value;
-  final Color color;
+  final Color? color;
 
   const Badge({
-    @required this.value,
+    required this.value,
     this.color,
-    @required this.child,
+    required this.child,
   });
   @override
   Widget build(BuildContext context) {
     return Stack(
       alignment: Alignment.center,
       children: [
-        child,
+        child!,
         Positioned(
           top: 8,
           right: 8,

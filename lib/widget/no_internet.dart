@@ -21,7 +21,7 @@ class NoInternet extends StatelessWidget {
             ),
           ),
           Text(
-            AppLocale.of(context).getString("noInternetConnection"),
+            AppLocale.of(context)!.getString("noInternetConnection")!,
             style: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.bold,
@@ -31,7 +31,7 @@ class NoInternet extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(15),
             child: Text(
-              AppLocale.of(context).getString("checkInternet"),
+              AppLocale.of(context)!.getString("checkInternet")!,
               style: TextStyle(
                 color: Colors.grey,
                 fontSize: 16.0,

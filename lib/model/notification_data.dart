@@ -18,10 +18,10 @@ class NotificationsData {
     this.length,
   });
 
-  int offset;
-  List<Notifications> notification;
-  int limit;
-  int length;
+  int? offset;
+  List<Notifications>? notification;
+  int? limit;
+  int? length;
 
   factory NotificationsData.fromJson(Map<String, dynamic> json) =>
       NotificationsData(
@@ -34,7 +34,7 @@ class NotificationsData {
 
   Map<String, dynamic> toJson() => {
         "offset": offset,
-        "result": List<dynamic>.from(notification.map((x) => x.toJson())),
+        "result": List<dynamic>.from(notification!.map((x) => x.toJson())),
         "limit": limit,
         "length": length,
       };
@@ -54,16 +54,16 @@ class Notifications {
     this.imagePath,
   });
 
-  int id;
+  int? id;
   dynamic order;
-  String createdDate;
-  String updatedDate;
-  bool isActive;
-  bool isDeleted;
+  String? createdDate;
+  String? updatedDate;
+  bool? isActive;
+  bool? isDeleted;
   dynamic createdBy;
   dynamic updatedBy;
-  String text;
-  String imagePath;
+  String? text;
+  String? imagePath;
 
   factory Notifications.fromJson(Map<String, dynamic> json) => Notifications(
         id: json["id"],

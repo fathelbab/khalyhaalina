@@ -22,11 +22,11 @@ import 'package:eshop/screen/product_screen.dart';
 import 'package:eshop/screen/search/search_screen.dart';
 import 'package:eshop/screen/signup/signup.dart';
 import 'package:eshop/screen/splash/splash_app_screen.dart';
+import 'package:eshop/utils/cache_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:splashscreen/splashscreen.dart';
 
 import 'language/app_locale.dart';
 import 'provider/announcement_provider.dart';
@@ -37,6 +37,7 @@ import 'screen/services/services_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await CacheHelper.init();
   final prefs = await SharedPreferences.getInstance();
   String token = prefs.getString('token') ?? "";
   print(token);

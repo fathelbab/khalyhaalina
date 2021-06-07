@@ -1,15 +1,13 @@
 import 'package:eshop/constant/constant.dart';
 import 'package:eshop/language/app_locale.dart';
-import 'package:eshop/provider/auth_provider.dart';
 import 'package:eshop/provider/contact_us_provider.dart';
-import 'package:eshop/screen/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ServicesScreen extends StatefulWidget {
   static const String route = "/services_screen";
 
-  ServicesScreen({Key key}) : super(key: key);
+  ServicesScreen({Key? key}) : super(key: key);
 
   @override
   _ServicesScreenState createState() => _ServicesScreenState();
@@ -20,7 +18,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
       r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
   final GlobalKey<FormState> _formKey = GlobalKey();
   final _phoneNumberText = TextEditingController();
-  final  _userAddressController = TextEditingController();
+  final _userAddressController = TextEditingController();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _userMessageController = TextEditingController();
@@ -30,12 +28,11 @@ class _ServicesScreenState extends State<ServicesScreen> {
   String serviceName = "";
   @override
   Widget build(BuildContext context) {
-    final Map service = ModalRoute.of(context).settings.arguments as Map;
-    serviceName = service != null ? service["serviceName"] ?? "" : "";
-    serviceAddress = service != null ? service["serviceAddress"] ?? "" : "";
-    name = service != null ? service["name"] ?? "" : "";
-    servicePhoneNumber =
-        service != null ? service["servicePhoneNumber"] ?? "" : "";
+    final Map? service = ModalRoute.of(context)!.settings.arguments as Map?;
+    serviceName = service != null ? service["serviceName"] : "";
+    serviceAddress = service != null ? service["serviceAddress"] : "";
+    name = service != null ? service["name"] : "";
+    servicePhoneNumber = service != null ? service["servicePhoneNumber"] : "";
     return Container(
       child: Scaffold(
         backgroundColor: Colors.grey[100],
@@ -103,14 +100,14 @@ class _ServicesScreenState extends State<ServicesScreen> {
                                 hintText: "الاسم ",
                               ),
                               validator: (value) {
-                                if (value.isEmpty || value.length < 1) {
+                                if (value!.isEmpty || value.length < 1) {
                                   return "يرجى ادخال الاسم ";
                                 }
                                 return null;
                               },
                             ),
                           ),
-                          
+
                           Container(
                             margin: EdgeInsets.all(5.0),
                             decoration: BoxDecoration(
@@ -118,7 +115,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: TextFormField(
-                              controller:  _userAddressController,
+                              controller: _userAddressController,
                               decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.add_location),
                                 hintStyle: TextStyle(fontSize: 13),
@@ -136,10 +133,10 @@ class _ServicesScreenState extends State<ServicesScreen> {
                                     const Radius.circular(10.0),
                                   ),
                                 ),
-                                hintText:  "العنوان",
+                                hintText: "العنوان",
                               ),
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return "يرجى ادخال العنوان ";
                                 }
                                 return null;
@@ -175,7 +172,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
                                   hintText: "رقم التليفون",
                                 ),
                                 validator: (value) {
-                                  if (value.isEmpty || value.length < 6) {
+                                  if (value!.isEmpty || value.length < 6) {
                                     return "يرجى ادخال رقم التليفون";
                                   }
 
@@ -208,7 +205,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
                                     const Radius.circular(10.0),
                                   ),
                                 ),
-                                hintText: name??"",
+                                hintText: name,
                               ),
                             ),
                           ),
@@ -238,7 +235,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
                                     const Radius.circular(10.0),
                                   ),
                                 ),
-                                hintText: serviceName ?? "",
+                                hintText: serviceName,
                               ),
                             ),
                           ),
@@ -283,7 +280,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
   @override
   void dispose() {
     super.dispose();
-     _userAddressController.dispose();
+    _userAddressController.dispose();
     _phoneNumberText.dispose();
     _userMessageController.dispose();
     _firstNameController.dispose();
@@ -291,7 +288,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
   }
 
   void _submit() async {
-    if (!_formKey.currentState.validate()) {
+    if (!_formKey.currentState!.validate()) {
       // Invalid!
       return;
     } else {
@@ -299,7 +296,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
           .sendUserCompliatOrSuggestion(
         _firstNameController.text.toString(),
         name,
-         _userAddressController.text.toString(),
+        _userAddressController.text.toString(),
         _phoneNumberText.text.toString(),
         "$servicePhoneNumber/$serviceName/$serviceAddress",
       )
@@ -308,14 +305,17 @@ class _ServicesScreenState extends State<ServicesScreen> {
         if (value == "done") {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text(
-                  AppLocale.of(context).getString("orderSuccessMessage"))));
+                  AppLocale.of(context)!.getString("orderSuccessMessage")!)));
           Navigator.pop(context);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(AppLocale.of(context).getString("addedError"))));
+              content: Text(AppLocale.of(context)!.getString("addedError")!)));
         }
-      }).catchError((e) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(AppLocale.of(context).getString("addedError")))));
+      }).catchError((e) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content:
+                Text("${AppLocale.of(context)!.getString("addedError")}")));
+      });
     }
   }
 }

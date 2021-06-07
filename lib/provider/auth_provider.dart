@@ -3,21 +3,20 @@ import 'package:http/http.dart' as http;
 import 'package:eshop/data/service/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class Auth with ChangeNotifier {
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
-  bool _isSigningIn;
+  bool? _isSigningIn;
   Auth() {
     _isSigningIn = false;
   }
 
-  bool get isSigningIn => _isSigningIn;
+  bool? get isSigningIn => _isSigningIn;
 
-  set isSigningIn(bool isSigningIn) {
+  set isSigningIn(bool? isSigningIn) {
     _isSigningIn = isSigningIn;
     notifyListeners();
   }
@@ -69,47 +68,48 @@ class Auth with ChangeNotifier {
     return "failed";
   }
 
+  String prettyPrint(Map json) {
+    JsonEncoder encoder = new JsonEncoder.withIndent('  ');
+    String pretty = encoder.convert(json);
+    return pretty;
+  }
+
   Future<String> facebookLogin() async {
     try {
-      final FacebookLogin facebookSignIn = FacebookLogin();
-      final FacebookLoginResult result =
-          await facebookSignIn.logIn(['email', 'public_profile']);
-      print("abdo ${result.status}");
+      // Map<String, dynamic> _userData;
+      AccessToken? _accessToken;
 
-      switch (result.status) {
-        case FacebookLoginStatus.loggedIn:
-          final FacebookAccessToken accessToken = result.accessToken;
-          final graphResponse = await http.get(Uri.parse(
-              'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture&access_token=${accessToken.token}'));
-          print("abdo ${accessToken.token.toString()}");
-          final profile = json.decode(graphResponse.body);
-          final response = await userFacebookSignIn(
-              profile['email'],
-              accessToken.token,
-              accessToken.userId,
-              profile['name'],
-              profile['first_name'],
-              profile['last_name']);
-          print("abdo ${response.toString()}");
-          return response;
-          break;
-        case FacebookLoginStatus.cancelledByUser:
-          print('Login cancelled by the user.');
-          return "failed";
+      final result = await FacebookAuth.instance.login(permissions: [
+        'email',
+        'public_profile',
+      ]);
+      if (result.status == LoginStatus.success) {
+        _accessToken = result.accessToken;
+        // final userData = await FacebookAuth.i.getUserData(
+        //   fields: "name,first_name,last_name,email,picture.width(200)",
+        // );
 
-          break;
-        case FacebookLoginStatus.error:
-          print('Something went wrong with the login process.\n'
-              'Here\'s the error Facebook gave us: ${result.errorMessage}');
-          return "failed";
+        final graphResponse = await http.get(Uri.parse(
+            'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture&access_token=${_accessToken!.token}'));
+        // print("abdo ${_accessToken.token.toString()}");
+        final profile = json.decode(graphResponse.body);
+        final response = await userFacebookSignIn(
+            profile['email'],
+            _accessToken.token,
+            _accessToken.userId,
+            profile['name'],
+            profile['first_name'],
+            profile['last_name']);
 
-          break;
+        // print("abdo ${response.toString()}");
+        return response;
+      } else {
+        return "failed";
       }
     } catch (e) {
-      print("abdo exception ${e.toString()}");
+      // print("abdo exception ${e.toString()}");
       return "failed";
     }
-    return "failed";
   }
 
   void logout() async {
@@ -117,16 +117,3 @@ class Auth with ChangeNotifier {
     await prefs.clear();
   }
 }
-//  print('''
-//    Logged in!
-//    firstName: ${profile['first_name']}
-
-//    lastname: ${profile['last_name']}
-//    image: ${profile['picture']['data']['url']}
-
-//    Token: ${accessToken.token}
-//    User id: ${accessToken.userId}
-//    Expires: ${accessToken.expires}
-//    Permissions: ${accessToken.permissions}
-//    Declined permissions: ${accessToken.declinedPermissions}
-//    ''');
