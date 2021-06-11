@@ -20,9 +20,13 @@ class FacebookSignupButton extends StatelessWidget {
         });
       },
       child: Container(
-        margin: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.circle,
+        ),
         child: FaIcon(
-          FontAwesomeIcons.facebook,
+          FontAwesomeIcons.facebookF,
           color: Colors.blue,
           size: 30,
         ),

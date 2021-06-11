@@ -17,8 +17,13 @@
     "total": "الاجمالى",
     "totalPrice": "اجمالى الفاتورة",
     "emptyPassword": "يرجى ادخال كلمة المرور",
+    "correctPassword":"رجى ادخال كلمة السر بطريقة صحيحه",
     "emptyEmail": "يرجى ادخال البريد الالكترونى",
     "email": "البريد الالكترونى",
+    "familyName": "اسم العائله",
+    "familyNameError": "يرجى ادخال الاسم العائله",
+    "firstName": "الاسم الاول",
+    "firstNameError": "يرجى ادخال الاسم الاول",
     "password": "كلمة المرور",
     "loginText": "الدخول لحسابى ",
     "name": "الاسم",
@@ -46,5 +51,13 @@
     "alertBody": "هل انت متاكد من حذف المنتج؟",
     "no": "رفض",
     "yes": "تاكيد",
-    "addedMessageSuccess":"تم ارسال اقتراحك بنجاح"
+    "addedMessageSuccess": "تم ارسال اقتراحك بنجاح",
+    "or": "الدخول بواسطة",
+    "forgetPassword": "نسيت كلمة المرور",
+    "accountNotExists": "ليس لديك حساب ؟",
+    "createAccount": "انشاء حساب",
+    "termsAndConditions": "الشروط والأحكام",
+    "termsAgreement": "من خلال الاشتراك ، فإنك توافق على",
+    "aleardyHaveAccount": "لدى حساب بالفعل",
+    "confirmPassword": "تاكيد كلمة المرور"
 }

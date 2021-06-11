@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
@@ -6,8 +7,9 @@ import 'package:flutter/material.dart';
 const String apiPath = "https://api.khlihaalina.com/api";
 // const String imagePath = "http://eshop5827-001-site3.etempurl.com";
 const String imagePath = "https://api.khlihaalina.com/";
- const Color primaryColor=Color(0xFF5c8bb0);
- Future<bool> checkContection() async {
+const Color primaryColor = Color(0xFF5c8bb0);
+const Color secondaryColor = Color(0XFFE5A352);
+Future<bool> checkContection() async {
   try {
     final result = await InternetAddress.lookup("google.com");
     if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
@@ -20,4 +22,25 @@ const String imagePath = "https://api.khlihaalina.com/";
   } on SocketException catch (_) {
     return false;
   }
+}
+
+Widget generateBluredImage() {
+  return Container(
+    decoration: BoxDecoration(
+      image: DecorationImage(
+        image: NetworkImage(
+            'https://f6j7u7c7.stackpathcdn.com/wp-content/uploads/2018/01/Ecommerce-Website-1.jpeg'),
+        fit: BoxFit.fill,
+      ),
+    ),
+
+    //I blured the parent container to blur background image, you can get rid of this part
+    child: BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
+      child: Container(
+        //you can change opacity with color here(I used black) for background.
+        decoration: new BoxDecoration(color: primaryColor.withOpacity(0.9)),
+      ),
+    ),
+  );
 }

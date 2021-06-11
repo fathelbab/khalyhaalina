@@ -2,6 +2,8 @@ import 'package:eshop/constant/constant.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/provider/auth_provider.dart';
 import 'package:eshop/screen/login/login.dart';
+import 'package:eshop/widget/default_button.dart';
+import 'package:eshop/widget/default_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,301 +25,175 @@ class _SignUpState extends State<SignUp> {
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _passwordConfirmController = TextEditingController();
+  bool isPassword = true;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Scaffold(
-        backgroundColor: Colors.grey[100],
-        appBar: AppBar(
+    return Stack(
+      children: [
+        generateBluredImage(),
+        Scaffold(
           backgroundColor: Colors.transparent,
-          elevation: 0.0,
-          leading: IconButton(
-            color: primaryColor,
-            icon: Icon(Icons.arrow_back_ios),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-        body: Directionality(
-          textDirection: TextDirection.rtl,
-          child: Container(
-            padding: EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                Expanded(
-                  child: Form(
-                    key: _formKey,
-                    child: Center(
-                      child: ListView(
-                        shrinkWrap: true,
-                        children: [
-                          Container(
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.all(10.0),
-                            child: Text(
-                              "انشاء حساب جديد",
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                                color: primaryColor,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.all(5.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white,
-                            ),
-                            child: TextFormField(
-                              controller: _firstNameController,
-                              decoration: InputDecoration(
-                                prefixIcon: Icon(Icons.person),
-                                hintStyle: TextStyle(fontSize: 13),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Theme.of(context).primaryColor),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                border: new OutlineInputBorder(
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(10.0),
-                                  ),
-                                ),
-                                hintText: "الاسم الاول",
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty || value.length < 1) {
-                                  return "يرجى ادخال الاسم الاول";
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.all(5.0),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: TextFormField(
-                              controller: _lastNameController,
-                              decoration: InputDecoration(
-                                prefixIcon: Icon(Icons.person),
-                                hintStyle: TextStyle(fontSize: 13),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Theme.of(context).primaryColor),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                border: new OutlineInputBorder(
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(10.0),
-                                  ),
-                                ),
-                                hintText: "اسم العائله",
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty || value.length < 1) {
-                                  return "يرجى ادخال الاسم العائله";
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.all(5.0),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: TextFormField(
-                              controller: _emailController,
-                              decoration: InputDecoration(
-                                prefixIcon: Icon(Icons.mail),
-                                hintStyle: TextStyle(fontSize: 13),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Theme.of(context).primaryColor),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                border: new OutlineInputBorder(
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(10.0),
-                                  ),
-                                ),
-                                hintText: "البريد الالكترونى",
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty ||
-                                    value.indexOf(".") == -1 ||
-                                    value.indexOf("@") == -1) {
-                                  return "يرجى ادخال البريد الالكترونى ";
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-
-                          Container(
-                            margin: EdgeInsets.all(5.0),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: TextFormField(
-                                obscureText: true,
-                                controller: _passwordController,
-                                decoration: InputDecoration(
-                                  prefixIcon: Icon(Icons.lock),
-                                  hintStyle: TextStyle(fontSize: 13),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Theme.of(context).primaryColor),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  border: new OutlineInputBorder(
-                                    borderRadius: const BorderRadius.all(
-                                      const Radius.circular(10.0),
-                                    ),
-                                  ),
-                                  hintText: "كلمة المرور",
-                                ),
-                                validator: (value) {
-                                  if (value!.isEmpty || value.length < 6) {
-                                    return "يرجى ادخال كلمة المرور";
-                                  } else {
-                                    if (!regex.hasMatch(value))
-                                      return 'يرجى ادخال كلمة السر بطريقة صحيحه';
-                                    else
-                                      return null;
-                                  }
-                                }),
-                          ),
-                          Container(
-                            margin: EdgeInsets.all(5.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white,
-                            ),
-                            child: TextFormField(
-                              obscureText: true,
-                              controller: _passwordConfirmController,
-                              decoration: InputDecoration(
-                                prefixIcon: Icon(Icons.lock),
-                                hintStyle: TextStyle(fontSize: 13),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Theme.of(context).primaryColor),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                border: new OutlineInputBorder(
-                                  borderRadius: const BorderRadius.all(
-                                    const Radius.circular(10.0),
-                                  ),
-                                ),
-                                hintText: "تاكيد كلمة المرور",
-                              ),
-                              validator: (value) {
-                                if (_passwordConfirmController.text !=
-                                    _passwordController.text) {
-                                  return "يرجى تاكيد كلمة المرور";
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                          MaterialButton(
-                            onPressed: () {
-                              _submit();
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: primaryColor,
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "انشاء حساب",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15),
-                                  )),
-                            ),
-                          ),
-                          // Container(
-                          //   margin: EdgeInsets.all(5.0),
-                          //   child: Text("Agree to our terms and conditions"),
-                          // )
-                          Container(
-                            margin: const EdgeInsets.only(top: 15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "لدى حساب بالفعل",
-                                  style: TextStyle(
-                                    fontSize: 15.0,
-                                    color: primaryColor,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 5.0,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Login()));
-                                  },
-                                  child: Text(
-                                    AppLocale.of(context)!.getString("login")!,
-                                    style: TextStyle(
-                                      fontSize: 15.0,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.grey[800],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
+          body: Container(
+            margin: const EdgeInsets.all(10),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    margin:
+                        const EdgeInsets.only(top: kToolbarHeight, bottom: 15),
+                    width: 200,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          spreadRadius: 1,
+                          blurRadius: 10,
+                          offset: Offset(0, 1), // changes position of shadow
+                        ),
+                      ],
+                      image: DecorationImage(
+                          image: AssetImage("assets/images/app_logo.png"),
+                          fit: BoxFit.fill),
                     ),
                   ),
-                ),
-              ],
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        DefaultFormField(
+                          controller: _firstNameController,
+                          prefixIcon: Icons.person,
+                          hint: AppLocale.of(context)!.getString("firstName")!,
+                          validatorFunction: (value) {
+                            if (value!.isEmpty || value.length < 1) {
+                              return AppLocale.of(context)!
+                                  .getString("firstNameError")!;
+                            }
+                            return null;
+                          },
+                        ),
+                        DefaultFormField(
+                          controller: _lastNameController,
+                          prefixIcon: Icons.person,
+                          hint: AppLocale.of(context)!.getString("familyName")!,
+                          validatorFunction: (value) {
+                            if (value!.isEmpty || value.length < 1) {
+                              return AppLocale.of(context)!
+                                  .getString("familyNameError")!;
+                            }
+                            return null;
+                          },
+                        ),
+                        DefaultFormField(
+                          controller: _emailController,
+                          hint: AppLocale.of(context)!.getString("email")!,
+                          prefixIcon: Icons.mail_outline,
+                          validatorFunction: (value) {
+                            if (value!.isEmpty ||
+                                value.indexOf(".") == -1 ||
+                                value.indexOf("@") == -1) {
+                              return AppLocale.of(context)!
+                                  .getString("emptyEmail")!;
+                            }
+                            return null;
+                          },
+                        ),
+                        DefaultFormField(
+                            isPassword: isPassword,
+                            suffixIcon: isPassword
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            suffixPressed: () {
+                              setState(() {
+                                isPassword = !isPassword;
+                              });
+                            },
+                            prefixIcon: Icons.lock_outline,
+                            controller: _passwordController,
+                            hint: AppLocale.of(context)!.getString("password")!,
+                            validatorFunction: (value) {
+                              if (value!.isEmpty || value.length < 6) {
+                                return AppLocale.of(context)!
+                                    .getString("emptyPassword")!;
+                              } else {
+                                if (!regex.hasMatch(value))
+                                  return AppLocale.of(context)!
+                                      .getString("correctPassword")!;
+                                else
+                                  return null;
+                              }
+                            }),
+                        DefaultFormField(
+                          prefixIcon: Icons.lock,
+                          controller: _passwordConfirmController,
+                          hint: AppLocale.of(context)!
+                              .getString("confirmPassword")
+                              .toString(),
+                          validatorFunction: (value) {
+                            if (_passwordConfirmController.text !=
+                                _passwordController.text) {
+                              return AppLocale.of(context)!
+                                  .getString("emptyPassword")
+                                  .toString();
+                            }
+                            return null;
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  DefaultButton(
+                    text: AppLocale.of(context)!.getString("signUp")!,
+                    function: () {
+                      _submit();
+                    },
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          AppLocale.of(context)!
+                              .getString("aleardyHaveAccount")!,
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5.0,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Login()));
+                          },
+                          child: Text(
+                            AppLocale.of(context)!.getString("login")!,
+                            style: TextStyle(
+                              fontSize: 19.0,
+                              fontWeight: FontWeight.bold,
+                              color: secondaryColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
-      ),
+      ],
     );
   }
 

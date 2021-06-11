@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:core';
 
 import 'package:eshop/data/service/services.dart';
@@ -31,7 +30,7 @@ class ProductProvider extends ChangeNotifier {
       categoryId,
       offset,
       limit,
-    ) as FutureOr<List<Product>?>);
+    ) );
     notifyListeners();
   }
 
@@ -40,7 +39,7 @@ class ProductProvider extends ChangeNotifier {
       searchTerm,
       offset,
       limit,
-    ) as FutureOr<List<Product>?>);
+    ) );
     print(_searchProductList!.length);
     notifyListeners();
   }

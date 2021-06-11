@@ -25,7 +25,11 @@ class GoogleSignupButton extends StatelessWidget {
         }
       },
       child: Container(
-        margin: const EdgeInsets.all(10),
+         padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.circle,
+        ),
         child: FaIcon(
           FontAwesomeIcons.google,
           color: Colors.red,

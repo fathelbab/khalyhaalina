@@ -9,6 +9,7 @@ import 'package:eshop/provider/order_provider.dart';
 import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/provider/service_provider.dart';
 import 'package:eshop/provider/supplier_provider.dart';
+import 'package:eshop/provider/theme_provider.dart';
 import 'package:eshop/screen/call_us/call_us.dart';
 import 'package:eshop/screen/cart/cart_screen.dart';
 import 'package:eshop/screen/category_screen.dart';
@@ -22,7 +23,9 @@ import 'package:eshop/screen/product_screen.dart';
 import 'package:eshop/screen/search/search_screen.dart';
 import 'package:eshop/screen/signup/signup.dart';
 import 'package:eshop/screen/splash/splash_app_screen.dart';
+import 'package:eshop/utils/app_routes.dart';
 import 'package:eshop/utils/cache_helper.dart';
+import 'package:eshop/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -96,58 +99,47 @@ class MyApp extends StatelessWidget {
         // ),
         ChangeNotifierProvider(
           create: (context) => NotificationProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ThemeProvider(),
         )
       ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primaryColor: primaryColor,
-          fontFamily: 'Lato',
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          accentColor: Colors.blueGrey,
-        ),
-        supportedLocales: [
-          Locale('en', ''),
-          Locale('ar', ''),
-        ],
-        locale: Locale('ar', ''),
-        localizationsDelegates: [
-          AppLocale.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        // this method localeResolutionCallback return  device current locale
-        localeResolutionCallback: (currentLocale, supportedLocales) {
-          if (currentLocale != null) {
-            print(currentLocale.languageCode);
-            for (Locale locale in supportedLocales) {
-              if (currentLocale.languageCode == locale.languageCode) {
-                return currentLocale;
+      child: Consumer<ThemeProvider>(
+        builder: (context, theme, child) {
+          return MaterialApp(
+            title: 'Flutter Demo',
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme().lightTheme,
+            darkTheme: AppTheme().darkTheme,
+            themeMode: theme.isDark ? ThemeMode.dark : ThemeMode.light,
+            supportedLocales: [
+              Locale('en', ''),
+              Locale('ar', ''),
+            ],
+            locale: Locale('ar', ''),
+            localizationsDelegates: [
+              AppLocale.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            // this method localeResolutionCallback return  device current locale
+            localeResolutionCallback: (currentLocale, supportedLocales) {
+              if (currentLocale != null) {
+                print(currentLocale.languageCode);
+                for (Locale locale in supportedLocales) {
+                  if (currentLocale.languageCode == locale.languageCode) {
+                    return currentLocale;
+                  }
+                }
               }
-            }
-          }
-          return supportedLocales.first;
-        },
-        initialRoute:
-            token == "" || token == null ? Login.route : SplashAppScreen.route,
-        routes: {
-          // '/': (context) => HomeScreen(),
-          Login.route: (context) => Login(),
-          HomeScreen.route: (context) => HomeScreen(),
-          CategoryScreen.route: (context) => CategoryScreen(),
-          ProductScreen.route: (context) => ProductScreen(),
-          ProductDetailsScreen.route: (context) => ProductDetailsScreen(),
-          SignUp.route: (context) => SignUp(),
-          SplashAppScreen.route: (context) => SplashAppScreen(),
-          SearchScreen.route: (context) => SearchScreen(),
-          CartScreen.route: (context) => CartScreen(),
-          OrderScreen.route: (context) => OrderScreen(),
-          CityScreen.route: (context) => CityScreen(),
-          CallUsScreen.route: (context) => CallUsScreen(),
-          DoctorDetailsScreen.route: (context) => DoctorDetailsScreen(),
-          ServicesScreen.route: (context) => ServicesScreen(),
+              return supportedLocales.first;
+            },
+            initialRoute: token == "" || token == null
+                ? Login.route
+                : SplashAppScreen.route,
+            routes: appRoutes(context),
+          );
         },
       ),
     );

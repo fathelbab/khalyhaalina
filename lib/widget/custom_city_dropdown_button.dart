@@ -26,8 +26,14 @@ class _CustomCityDropDownButtonState extends State<CustomCityDropDownButton> {
 
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5.0),
+        borderRadius: BorderRadius.circular(15.0),
         color: Theme.of(context).primaryColor,
+        
+        border: Border.all(
+        
+          width: 3,
+          color: Color(0XFFE5A352),
+        ),
       ),
       padding: const EdgeInsets.only(
         right: 5,
@@ -36,39 +42,44 @@ class _CustomCityDropDownButtonState extends State<CustomCityDropDownButton> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          DropdownButton(
-              iconEnabledColor: Colors.white,
-              dropdownColor: Theme.of(context).primaryColor,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-              hint: Text(
-                "المدينة",
-              ),
-              value: _selectedCity,
-              onChanged: (dynamic newValue) {
-                setState(() {
-                  _selectedCity = newValue;
-                  cityId = cityList!
-                      .firstWhereOrNull((city) => (city.name == _selectedCity))!
-                      .id
-                      .toString();
-                });
-                saveNewValue(cityId);
-              },
-              items: cityList!
-                  .map(
-                    (city) => DropdownMenuItem(
-                      value: city.name,
-                      child: Text(
-                        city.name ?? "",
-                        style: TextStyle(color: Colors.white),
+          DropdownButtonHideUnderline(
+            child: DropdownButton(
+              elevation: 16,
+                iconEnabledColor: Colors.white,
+                dropdownColor: Theme.of(context).primaryColor,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+                hint: Text(
+                  "المدينة",
+                  style: TextStyle(color: Colors.white),
+                ),
+                value: _selectedCity,
+                onChanged: (dynamic newValue) {
+                  setState(() {
+                    _selectedCity = newValue;
+                    cityId = cityList!
+                        .firstWhereOrNull(
+                            (city) => (city.name == _selectedCity))!
+                        .id
+                        .toString();
+                  });
+                  saveNewValue(cityId);
+                },
+                items: cityList!
+                    .map(
+                      (city) => DropdownMenuItem(
+                        value: city.name,
+                        child: Text(
+                          city.name ?? "",
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
-                    ),
-                  )
-                  .toList()),
+                    )
+                    .toList()),
+          ),
         ],
       ),
     );

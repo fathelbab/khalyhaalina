@@ -43,53 +43,57 @@ class _AnimatedBottomBarState extends State<AnimatedBottomBar>
     for (int i = 0; i < widget.barItems!.length; i++) {
       BarItem item = widget.barItems![i];
       bool isSelected = selectedBarIndex == i;
-      _barItems.add(InkWell(
-        splashColor: Colors.transparent,
-        onTap: () {
-          setState(() {
-            selectedBarIndex = i;
-            widget.onBarTap!(selectedBarIndex);
-          });
-        },
-        child: AnimatedContainer(
-          duration: widget.animationDuration,
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(
-                30,
-              ),
-            ),
-            color:
-                isSelected ? item.color!.withOpacity(0.15) : Colors.transparent,
-          ),
-          child: Row(
-            children: [
-              Icon(
-                item.iconData,
-                color: isSelected ? item.color : Colors.grey[700],
-                size: widget.barStyle!.iconSize,
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              AnimatedSize(
-                duration: widget.animationDuration,
-                vsync: this,
-                curve: Curves.easeInOut,
-                child: Text(
-                  isSelected ? item.text! : "",
-                  style: TextStyle(
-                    color: item.color,
-                    fontWeight: widget.barStyle!.fontWeight,
-                    fontSize: widget.barStyle!.fontSize,
-                  ),
+      _barItems.add(
+        InkWell(
+          splashColor: Colors.transparent,
+          onTap: () {
+            setState(() {
+              selectedBarIndex = i;
+              widget.onBarTap!(selectedBarIndex);
+            });
+          },
+          child: AnimatedContainer(
+            duration: widget.animationDuration,
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(
+                Radius.circular(
+                  30,
                 ),
               ),
-            ],
+              color: isSelected
+                  ? item.color!.withOpacity(0.15)
+                  : Colors.transparent,
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  item.iconData,
+                  color: isSelected ? item.color : Colors.grey[700],
+                  size: widget.barStyle!.iconSize,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                AnimatedSize(
+                  duration: widget.animationDuration,
+                  vsync: this,
+                  curve: Curves.easeInOut,
+                  child: Text(
+                    isSelected ? item.text! : "",
+                    style: TextStyle(
+                      color: item.color,
+                      fontWeight: widget.barStyle!.fontWeight,
+                      fontSize: widget.barStyle!.fontSize,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ));
+      );
     }
     return _barItems;
   }

@@ -1,8 +1,12 @@
+import 'dart:ui';
+
 import 'package:eshop/constant/constant.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/provider/auth_provider.dart';
 import 'package:eshop/screen/city/city_screen.dart';
 import 'package:eshop/screen/signup/signup.dart';
+import 'package:eshop/widget/default_button.dart';
+import 'package:eshop/widget/default_form_field.dart';
 import 'package:eshop/widget/facebook_signup_button.dart';
 import 'package:eshop/widget/google_signup_button.dart';
 import 'package:flutter/material.dart';
@@ -21,200 +25,228 @@ class _LoginState extends State<Login> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final _passwordController = TextEditingController();
   final _emailController = TextEditingController();
+  bool isPassword = true;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Scaffold(
-        body: Container(
-          padding: EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              Expanded(
-                child: Form(
-                  key: _formKey,
-                  child: Center(
-                    child: ListView(
-                      shrinkWrap: true,
+    return Stack(
+      children: [
+        generateBluredImage(),
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Container(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 50, bottom: 25),
+                    width: 200,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      
+                      boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          spreadRadius: 1,
+                          blurRadius: 10,
+                          offset: Offset(0, 1), // changes position of shadow
+                        ),
+                      ],
+                      image: DecorationImage(
+                          image: AssetImage("assets/images/app_logo.png"),
+                          fit: BoxFit.fill),
+                    ),
+                  ),
+           
+                  Form(
+                    key: _formKey,
+                    child: Column(
                       children: [
-                        Container(
-                          margin: EdgeInsets.all(10.0),
-                          alignment: Alignment.center,
-                          child: Text(
-                            AppLocale.of(context)!.getString("login")!,
-                            style: TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
-                              color: primaryColor,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.all(5.0),
-                          padding: EdgeInsets.only(right: 10, left: 10),
-                          child: TextFormField(
-                            controller: _emailController,
-                            decoration: InputDecoration(
-                              hintStyle: TextStyle(fontSize: 13),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Theme.of(context).primaryColor),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              border: new OutlineInputBorder(
-                                borderRadius: const BorderRadius.all(
-                                  const Radius.circular(10.0),
-                                ),
-                              ),
-                              prefixIcon: Icon(Icons.email),
-                              hintText:
-                                  AppLocale.of(context)!.getString('email'),
-                            ),
-                            validator: (value) {
-                              if (value!.isEmpty ||
-                                  value.indexOf(".") == -1 ||
-                                  value.indexOf("@") == -1) {
-                                return AppLocale.of(context)!
-                                    .getString('emptyEmail');
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.all(5.0),
-                          padding: EdgeInsets.only(right: 10, left: 10),
-                          child: TextFormField(
-                            obscureText: true,
-                            controller: _passwordController,
-                            decoration: InputDecoration(
-                              hintStyle: TextStyle(fontSize: 13),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Theme.of(context).primaryColor),
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey),
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              border: new OutlineInputBorder(
-                                borderRadius: const BorderRadius.all(
-                                  const Radius.circular(10.0),
-                                ),
-                              ),
-                              prefixIcon: Icon(Icons.lock),
-                              hintText:
-                                  AppLocale.of(context)!.getString('password'),
-                            ),
-                            validator: (value) {
-                              if (value!.isEmpty || value.length < 6) {
-                                return AppLocale.of(context)!
-                                    .getString("emptyPassword");
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        MaterialButton(
-                          onPressed: () {
-                            _submit();
+                        DefaultFormField(
+                          controller: _emailController,
+                          hint: AppLocale.of(context)!
+                              .getString('email')
+                              .toString(),
+                          validatorFunction: (value) {
+                            if (value!.isEmpty ||
+                                value.indexOf(".") == -1 ||
+                                value.indexOf("@") == -1) {
+                              return AppLocale.of(context)!
+                                  .getString('emptyEmail');
+                            }
+                            return null;
                           },
-                          child: Container(
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: primaryColor,
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  AppLocale.of(context)!.getString("login")!,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15),
-                                )),
-                          ),
+                          prefixIcon: Icons.email,
                         ),
-                        SizedBox(
-                          height: 10,
+                        DefaultFormField(
+                          controller: _passwordController,
+                          hint: AppLocale.of(context)!
+                              .getString('password')
+                              .toString(),
+                          validatorFunction: (value) {
+                            if (value!.isEmpty || value.length < 6) {
+                              return AppLocale.of(context)!
+                                  .getString("emptyPassword");
+                            }
+                            return null;
+                          },
+                          isPassword: isPassword,
+                          suffixIcon: isPassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          suffixPressed: () {
+                            setState(() {
+                              isPassword = !isPassword;
+                            });
+                          },
+                          prefixIcon: Icons.lock,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 5),
-                              height: 1,
-                              width: MediaQuery.of(context).size.width / 3,
-                              color: Colors.grey,
-                            ),
-                            Text("او"),
-                            Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 5),
-                              height: 1,
-                              width: MediaQuery.of(context).size.width / 3,
-                              color: Colors.grey,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            FacebookSignupButton(),
-                            GoogleSignupButton(),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                "ليس لديك حساب؟",
-                                style: TextStyle(
-                                  fontSize: 15.0,
-                                  color: primaryColor,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 5.0,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => SignUp()));
-                                },
-                                child: Text(
-                                  "انشاء حساب",
-                                  style: TextStyle(
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey[800],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
                       ],
                     ),
                   ),
-                ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  DefaultButton(
+                    text: AppLocale.of(context)!.getString("login")!,
+                    function: () {
+                      _submit();
+                    },
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    alignment: Alignment.topRight,
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    child: TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        AppLocale.of(context)!
+                            .getString("forgetPassword")
+                            .toString(),
+                        style: TextStyle(
+                            fontSize: 18.0,
+                            color: secondaryColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 5),
+                        height: 1,
+                        width: MediaQuery.of(context).size.width / 3,
+                        color: Colors.white,
+                      ),
+                      Text(
+                        AppLocale.of(context)!.getString("or").toString(),
+                        style: TextStyle(
+                            fontSize: 16.0,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 5),
+                        height: 1,
+                        width: MediaQuery.of(context).size.width / 3,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      FacebookSignupButton(),
+                      GoogleSignupButton(),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          AppLocale.of(context)!
+                              .getString("accountNotExists")
+                              .toString(),
+                          style: TextStyle(
+                              fontSize: 17.0,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          width: 5.0,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignUp()));
+                          },
+                          child: Text(
+                            AppLocale.of(context)!
+                                .getString("createAccount")
+                                .toString(),
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                              color: secondaryColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                    alignment: Alignment.topRight,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          AppLocale.of(context)!
+                              .getString("termsAgreement")
+                              .toString(),
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          width: 5.0,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                       
+                          },
+                          child: Text(
+                            AppLocale.of(context)!
+                                .getString("termsAndConditions")
+                                .toString(),
+                            style: TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                              color: secondaryColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
-            ],
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 
@@ -258,3 +290,5 @@ class _LoginState extends State<Login> {
     _passwordController.dispose();
   }
 }
+
+
