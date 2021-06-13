@@ -39,117 +39,123 @@ class _ProductItemsState extends State<ProductItems> {
             ProductDetailsScreen.route,
           );
         },
-        child: Container(
-          padding: const EdgeInsets.all(3.0),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(15.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                spreadRadius: 3.0,
-                blurRadius: 5.0,
-              ),
-            ],
-          ),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Column(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Hero(
-                      tag: widget.product.id!,
-                      child: Container(
-                        child: CachedNetworkImage(
-                          imageUrl: imagePath + widget.product.imagePath!,
-                          fit: BoxFit.fill,
-                          placeholder: (context, url) => Center(
-                            child: const SpinKitChasingDots(
-                                color: Color(0XFFE5A352)),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8.0),
+        
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 3.0,
+                  blurRadius: 5.0,
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Stack(
+                    children: [
+                      Hero(
+                        tag: widget.product.id!,
+                        child: Container(
+                          child: CachedNetworkImage(
+                            imageUrl: imagePath + widget.product.imagePath!,
+                            fit: BoxFit.fill,
+                            placeholder: (context, url) => Center(
+                              child: const SpinKitChasingDots(
+                                  color: Color(0XFFE5A352)),
+                            ),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
                           ),
-                          errorWidget: (context, url, error) =>
-                              Icon(Icons.error),
                         ),
                       ),
-                    ),
+                      Positioned(
+                        top: 1,
+                        right: 1,
+                        child: Column(
+                          children: [
+                            GestureDetector(
+                                onTap: () {
+                                  // _displayTextInputDialog(context);
+                                  addToCart(1, widget.product.id);
+                                },
+                                child: Icon(
+                                  Icons.favorite_outline,
+                                  size: 30,
+                                  color: secondaryColor,
+                                )),
+                            IconButton(
+                              onPressed: () {},
+                              icon: Icon(
+                                Icons.share_outlined,
+                                size: 30,
+                              ),
+                              color: secondaryColor,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 3.0),
-                  Text(
-                    '${widget.product.price}ج.م',
-                    style: TextStyle(color: Color(0xFFCC8053), fontSize: 15.0),
+                ),
+                Text(
+                  widget.product.name!,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Color(0xFF575E67),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15.0),
+                ),
+                // SizedBox(height: 3.0),
+                Container(
+                  color: primaryColor,
+                  child: Row(
+                    children: [
+                      Container(
+                        color: Color(0xFFF8973D),
+                        child: IconButton(
+                          onPressed: () {},
+                          icon: Icon(Icons.shopping_cart),
+                          color: Colors.white,
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Text(
+                              '${widget.product.price}ج.م',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            if (widget.product.oldPrice != widget.product.price)
+                              Text(
+                                '${widget.product.oldPrice}ج.م',
+                                style: TextStyle(
+                                    color: Color(0xFFFABC83),
+                                    fontSize: 13.0,
+                                    decoration: TextDecoration.lineThrough),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    widget.product.name!,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Color(0xFF575E67),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15.0),
-                  ),
-                ],
-              ),
-              Positioned(
-                top: 1,
-                right: 1,
-                child: GestureDetector(
-                    onTap: () {
-                      // _displayTextInputDialog(context);
-                      addToCart(1, widget.product.id);
-                    },
-                    child: Icon(
-                      Icons.shopping_cart,
-                      size: 30,
-                      color: Color(0XFFE5A352),
-                    )),
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
-
-  // Future<void> _displayTextInputDialog(BuildContext context) async {
-  //   return showDialog(
-  //       context: context,
-  //       builder: (context) {
-  //         return AlertDialog(
-  //           content: TextField(
-  //             controller: _textFieldController,
-  //             decoration: InputDecoration(
-  //                 hintText:
-  //                     AppLocale.of(context)!.getString('quantity_message')),
-  //           ),
-  //           actions: <Widget>[
-  //             TextButton.icon(
-  //               icon: Icon(
-  //                 Icons.shopping_cart,
-  //               ),
-  //               label: Text(AppLocale.of(context)!.getString("add_to_cart")!),
-  //               style: TextButton.styleFrom(
-  //                   primary: Theme.of(context).primaryColor),
-  //               onPressed: () {
-  //                 print(_textFieldController.text.toString());
-  //                 _textFieldController.clear();
-  //                 Navigator.pop(context);
-  //               },
-  //             ),
-  //             TextButton(
-  //               child: Text(AppLocale.of(context)!.getString("cancel")!),
-  //               style: TextButton.styleFrom(primary: Colors.red),
-  //               onPressed: () {
-  //                 print(_textFieldController.text.toString());
-  //                 _textFieldController.clear();
-  //                 Navigator.pop(context);
-  //               },
-  //             ),
-  //           ],
-  //         );
-  //       });
-  // }
 
   @override
   void dispose() {
@@ -176,83 +182,3 @@ class _ProductItemsState extends State<ProductItems> {
     });
   }
 }
-// Container(
-//       width: MediaQuery.of(context).size.width - 30.0,
-//       child: Padding(
-//         padding: EdgeInsets.only(top: 5.0, bottom: 5.0, right: 5.0, left: 5.0),
-//         child: InkWell(
-//           onTap: () {
-//             Provider.of<ProductProvider>(context, listen: false)
-//                 .clearProductData();
-
-//                 Provider.of<ProductProvider>(context, listen: false)
-//                 .getProductById(widget.product.id);
-//             Navigator.of(context).pushNamed(
-//               ProductDetailsScreen.route,
-//             );
-//           },
-//           child: Container(
-//             decoration: BoxDecoration(
-//               color: Colors.white,
-//               borderRadius: BorderRadius.circular(15.0),
-//               boxShadow: [
-//                 BoxShadow(
-//                   color: Colors.grey.withOpacity(0.2),
-//                   spreadRadius: 3.0,
-//                   blurRadius: 5.0,
-//                 ),
-//               ],
-//             ),
-//             child: Column(
-//               children: [
-//                 Padding(
-//                   padding: EdgeInsets.all(3.0),
-//                   child: Row(
-//                     mainAxisAlignment: MainAxisAlignment.start,
-//                     children: [
-//                       GestureDetector(
-//                           onTap: () {
-//                             // _displayTextInputDialog(context);
-//                             addToCart(1, widget.product.id);
-//                           },
-//                           child: Icon(
-//                             Icons.shopping_cart,
-//                             color: Colors.grey,
-//                           ))
-//                     ],
-//                   ),
-//                 ),
-//                 Hero(
-//                   tag: widget.product.id,
-//                   child: Container(
-//                     height: 75.0,
-//                     width: 65.0,
-//                     child: CachedNetworkImage(
-//                       imageUrl: imagePath + widget.product.imagePath,
-//                       fit: BoxFit.fill,
-//                       placeholder: (context, url) =>
-//                           Center(child: CircularProgressIndicator()),
-//                       errorWidget: (context, url, error) => Icon(Icons.error),
-//                     ),
-//                   ),
-//                 ),
-//                 SizedBox(height: 5.0),
-//                 Text(
-//                   '${widget.product.price}ج.م',
-//                   style: TextStyle(color: Color(0xFFCC8053), fontSize: 12.0),
-//                 ),
-//                 Text(
-//                   widget.product.name,
-//                   overflow: TextOverflow.ellipsis,
-//                   textAlign: TextAlign.center,
-//                   style: TextStyle(
-//                       color: Color(0xFF575E67),
-//                       fontWeight: FontWeight.bold,
-//                       fontSize: 12.0),
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//     )

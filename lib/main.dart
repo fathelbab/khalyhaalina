@@ -1,4 +1,4 @@
-import 'package:eshop/constant/constant.dart';
+
 import 'package:eshop/provider/auth_provider.dart';
 import 'package:eshop/provider/category_provider.dart';
 import 'package:eshop/provider/city_provider.dart';
@@ -10,18 +10,9 @@ import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/provider/service_provider.dart';
 import 'package:eshop/provider/supplier_provider.dart';
 import 'package:eshop/provider/theme_provider.dart';
-import 'package:eshop/screen/call_us/call_us.dart';
-import 'package:eshop/screen/cart/cart_screen.dart';
-import 'package:eshop/screen/category_screen.dart';
-import 'package:eshop/screen/city/city_screen.dart';
-import 'package:eshop/screen/doctor_details_screen.dart';
-import 'package:eshop/screen/home/home_screen.dart';
+
 import 'package:eshop/screen/login/login.dart';
-import 'package:eshop/screen/order/order_screen.dart';
-import 'package:eshop/screen/product_details/product_details_screen.dart';
-import 'package:eshop/screen/product_screen.dart';
-import 'package:eshop/screen/search/search_screen.dart';
-import 'package:eshop/screen/signup/signup.dart';
+
 import 'package:eshop/screen/splash/splash_app_screen.dart';
 import 'package:eshop/utils/app_routes.dart';
 import 'package:eshop/utils/cache_helper.dart';
@@ -30,13 +21,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'language/app_locale.dart';
 import 'provider/announcement_provider.dart';
 import 'provider/cart.dart';
 import 'provider/contact_us_provider.dart';
 import 'provider/pharmacy_provider.dart';
-import 'screen/services/services_screen.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

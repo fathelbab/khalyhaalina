@@ -6,7 +6,6 @@ import 'package:eshop/screen/info/info_screen.dart';
 import 'package:eshop/screen/pharmacy/pharmacy_screen.dart';
 import 'package:eshop/widget/animated_button.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String route = "/home_screen";

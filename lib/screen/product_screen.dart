@@ -21,6 +21,7 @@ class _ProductScreenState extends State<ProductScreen> {
   List<Product>? productList = [];
   String? supplierId = "0";
   String? categoryId = "0";
+  String? supplierName = "";
   int limit = 20;
   final _searchController = TextEditingController();
   ScrollController _productScrollController = new ScrollController();
@@ -47,11 +48,13 @@ class _ProductScreenState extends State<ProductScreen> {
     Map args = ModalRoute.of(context)!.settings.arguments as Map;
     supplierId = args["supplierId"];
     categoryId = args["categoryId"];
+    supplierName = args["supplierName"];
     productList = Provider.of<ProductProvider>(context).productList;
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocale.of(context)!.getString('product')!),
-        centerTitle: true,
+        title: Text(supplierName != null
+            ? supplierName.toString()
+            : AppLocale.of(context)!.getString('product')!),
         actions: [
           Consumer<Cart>(
             builder: (_, cart, child) => Badge(

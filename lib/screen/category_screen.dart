@@ -527,15 +527,16 @@ class _CategoryScreenState extends State<CategoryScreen> {
         : LayoutBuilder(
             builder: (context, constraints) {
               return Container(
-                color: Colors.transparent,
-                margin: const EdgeInsets.only(right: 5.0, left: 5),
+                color: Colors.grey[300],
+                padding: const EdgeInsets.all(5),
+                margin: const EdgeInsets.only(top: 5,bottom: 5),
                 child: GridView.builder(
                     itemCount: productHotList!.length,
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisSpacing: 4,
-                      mainAxisSpacing: 4,
+                      crossAxisSpacing: 5,
+                      mainAxisSpacing: 5,
                       crossAxisCount: constraints.maxWidth > 480 ? 4 : 2,
                       childAspectRatio: 0.8,
                     ),
@@ -766,11 +767,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                         limit);
                                 print(limit);
                                 Navigator.pushNamed(
-                                    context, ProductScreen.route, arguments: {
-                                  "supplierId":
-                                      supplierList![index].id.toString(),
-                                  "categoryId": categoryId
-                                });
+                                    context, ProductScreen.route,
+                                    arguments: {
+                                      "supplierId":
+                                          supplierList![index].id.toString(),
+                                      "categoryId": categoryId,
+                                      "supplierName":
+                                          supplierList![index].name.toString(),
+                                    });
                               },
                               child: Container(
                                 decoration: BoxDecoration(

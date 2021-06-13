@@ -41,6 +41,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     // print(productId);
     return Scaffold(
       appBar: AppBar(
+        title: Text(
+          productDetails?.name != null ? productDetails!.name.toString() : "",
+          overflow: TextOverflow.ellipsis,
+        ),
         actions: [
           IconButton(
               icon: Icon(Icons.search),
@@ -83,14 +87,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     imagePath + productDetails.imagePath!,
                                     fit: BoxFit.contain,
                                     width: double.infinity,
-                                    height: size.height / 3+50,
+                                    height: size.height / 3 + 50,
                                   ),
                                 )
                               : Hero(
                                   tag: productDetails.id!,
                                   child: Container(
                                     height:
-                                        MediaQuery.of(context).size.height / 3+50,
+                                        MediaQuery.of(context).size.height / 3 +
+                                            50,
                                     width: MediaQuery.of(context).size.width,
                                     child: CarouselSlider.builder(
                                       itemCount: productDetails
@@ -196,7 +201,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             Container(
                               margin: const EdgeInsets.all(3),
                               child: Text(
-                                AppLocale.of(context)!.getString("add_to_cart")!,
+                                AppLocale.of(context)!
+                                    .getString("add_to_cart")!,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
