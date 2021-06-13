@@ -767,14 +767,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                         limit);
                                 print(limit);
                                 Navigator.pushNamed(
-                                    context, ProductScreen.route,
-                                    arguments: {
-                                      "supplierId":
-                                          supplierList![index].id.toString(),
-                                      "categoryId": categoryId,
-                                      "supplierName":
-                                          supplierList![index].name.toString(),
-                                    });
+                                    context, ProductScreen.route, arguments: {
+                                  "supplierId":
+                                      supplierList![index].id.toString(),
+                                  "categoryId": categoryId,
+                                  "supplierName":  supplierList![index].name.toString(),
+                                });
                               },
                               child: Container(
                                 decoration: BoxDecoration(
