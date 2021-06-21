@@ -12,12 +12,13 @@ class DoctorProvider extends ChangeNotifier {
   List<DoctorInfo>? get doctorList => _doctorList;
   DoctorDetailsData? _doctorDetailsData;
   DoctorDetailsData? get doctorDetailsData => _doctorDetailsData;
-  fetchDoctorSpecialist() async {
+  Future<List<DoctorSpecialistt>?> fetchDoctorSpecialist() async {
     _doctorSpecialistList = await getAllDoctorSpecialist();
     notifyListeners();
+    return _doctorSpecialistList;
   }
 
-  fetchDoctorList(String? doctorSpcialistId) async {
+  Future fetchDoctorList(String? doctorSpcialistId) async {
     final cityId = await getCityId();
     _doctorList = await getAllDoctorList(cityId, doctorSpcialistId);
     notifyListeners();
@@ -32,7 +33,7 @@ class DoctorProvider extends ChangeNotifier {
     _doctorDetailsData = null;
     notifyListeners();
   }
-  
+
   Future getCityId() async {
     final prefs = await SharedPreferences.getInstance();
     final cityId = prefs.getString('cityId');

@@ -1,6 +1,6 @@
 import 'package:eshop/screen/call_us/call_us.dart';
 import 'package:eshop/screen/cart/cart_screen.dart';
-import 'package:eshop/screen/category_screen.dart';
+import 'package:eshop/screen/home/category_screen.dart';
 import 'package:eshop/screen/city/city_screen.dart';
 import 'package:eshop/screen/doctor_details_screen.dart';
 import 'package:eshop/screen/home/home_screen.dart';

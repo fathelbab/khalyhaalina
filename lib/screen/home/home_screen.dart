@@ -1,11 +1,14 @@
+import 'package:eshop/constant/constant.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/model/bar_item.dart';
 import 'package:eshop/provider/bar_style.dart';
-import 'package:eshop/screen/category_screen.dart';
+import 'package:eshop/screen/call_us/call_us.dart';
+import 'package:eshop/screen/home/category_screen.dart';
 import 'package:eshop/screen/info/info_screen.dart';
 import 'package:eshop/screen/pharmacy/pharmacy_screen.dart';
 import 'package:eshop/widget/animated_button.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String route = "/home_screen";
@@ -20,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Widget> _screens = [
     CategoryScreen(),
     InfoScreen(),
-    // CallUsScreen(),
+    CallUsScreen(),
     PharmacyScreen()
   ];
   @override
@@ -37,11 +40,12 @@ class _HomeScreenState extends State<HomeScreen> {
         iconData: Icons.info,
         color: Color(0xFF5c8bb0),
       ),
+      BarItem(
+        text: AppLocale.of(context)!.getString('callUs'),
+        iconData: FontAwesomeIcons.whatsapp,
+        color: Colors.yellow.shade900,
+      ),
       // BarItem(
-      //   text: AppLocale.of(context)!.getString('callUs'),
-      //   iconData: FontAwesomeIcons.whatsapp,
-      //   color: Colors.yellow.shade900,
-      // ), BarItem(
       //   text: AppLocale.of(context)!.getString('callUs'),
       //   // iconData: Icons.apps,
       //   iconData: Icons.clear_all_sharp,
@@ -65,20 +69,53 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _screens[_selectedPageIndex],
-      bottomNavigationBar: AnimatedBottomBar(
-        barItems: barItems,
-        animationDuration: const Duration(milliseconds: 150),
-        barStyle: BarStyle(
-          fontSize: 16.0,
-          iconSize: 25,
-          fontWeight: FontWeight.w600,
-        ),
-        onBarTap: (index) {
-          setState(() {
-            _selectedPageIndex = index;
-          });
-        },
-      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButton: FloatingActionButton(
+          backgroundColor: primaryColor,
+          onPressed: () {},
+          child: Icon(Icons.shopping_cart)),
+      bottomNavigationBar: BottomAppBar(
+          color: primaryColor,
+          shape: CircularNotchedRectangle(),
+          notchMargin: 10,
+          child: Container(
+            height: 56,
+            margin: EdgeInsets.only(left: 8),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: Container(
+                    // color: Colors.amber,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: barItems!
+                          .map(
+                            (e) => IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _selectedPageIndex = barItems!.indexOf(e);
+                                });
+                              },
+                              icon: Icon(
+                                e.iconData,
+                                color: Colors.white,
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                      // color: Colors.indigo,
+                      ),
+                ),
+              ],
+            ),
+          )),
     );
   }
 

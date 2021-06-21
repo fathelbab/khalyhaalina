@@ -1,4 +1,8 @@
+import 'dart:ui';
+
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:eshop/constant/constant.dart';
+import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/model/CityData.dart';
 import 'package:eshop/provider/city_provider.dart';
 import 'package:flutter/material.dart';
@@ -25,62 +29,63 @@ class _CustomCityDropDownButtonState extends State<CustomCityDropDownButton> {
     cityList = Provider.of<CityProvider>(context).cityList;
 
     return Container(
+      margin: const EdgeInsets.only(right: 20, left: 20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.0),
-        color: Theme.of(context).primaryColor,
-        
+        color: Colors.white.withOpacity(0.5),
         border: Border.all(
-        
           width: 3,
-          color: Color(0XFFE5A352),
+          color: Colors.black,
         ),
+        boxShadow: [
+          BoxShadow(
+              color: Colors.black.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 1,
+              offset: Offset(1, 2))
+        ],
       ),
       padding: const EdgeInsets.only(
-        right: 5,
-        left: 5,
+        right: 15,
+        left: 15,
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          DropdownButtonHideUnderline(
-            child: DropdownButton(
-              elevation: 16,
-                iconEnabledColor: Colors.white,
-                dropdownColor: Theme.of(context).primaryColor,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-                hint: Text(
-                  "المدينة",
-                  style: TextStyle(color: Colors.white),
-                ),
-                value: _selectedCity,
-                onChanged: (dynamic newValue) {
-                  setState(() {
-                    _selectedCity = newValue;
-                    cityId = cityList!
-                        .firstWhereOrNull(
-                            (city) => (city.name == _selectedCity))!
-                        .id
-                        .toString();
-                  });
-                  saveNewValue(cityId);
-                },
-                items: cityList!
-                    .map(
-                      (city) => DropdownMenuItem(
-                        value: city.name,
-                        child: Text(
-                          city.name ?? "",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    )
-                    .toList()),
-          ),
-        ],
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton(
+            isExpanded: true,
+            elevation: 16,
+            iconEnabledColor: Colors.black,
+            dropdownColor: Colors.white,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+            hint: Text(
+              AppLocale.of(context)!.getString("selectCity").toString(),
+              style: TextStyle(color: Colors.black),
+            ),
+            value: _selectedCity,
+            onChanged: (dynamic newValue) {
+              setState(() {
+                _selectedCity = newValue;
+                cityId = cityList!
+                    .firstWhereOrNull((city) => (city.name == _selectedCity))!
+                    .id
+                    .toString();
+              });
+              saveNewValue(cityId);
+            },
+            items: cityList!
+                .map(
+                  (city) => DropdownMenuItem(
+                    value: city.name,
+                    child: Text(
+                      city.name ?? "",
+                      style: TextStyle(color: Colors.black, fontSize: 20),
+                    ),
+                  ),
+                )
+                .toList()),
       ),
     );
   }

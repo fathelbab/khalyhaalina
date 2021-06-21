@@ -3,7 +3,7 @@ import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/model/order_data.dart';
 import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/order_provider.dart';
-import 'package:eshop/screen/category_screen.dart';
+import 'package:eshop/screen/home/category_screen.dart';
 import 'package:eshop/widget/progress_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';

@@ -59,5 +59,8 @@
     "termsAndConditions": "Terms&Conditions",
     "termsAgreement": "By signing up, you agree with our",
     "aleardyHaveAccount": "I already have an account",
-    "confirmPassword": "confirm password"
+    "confirmPassword": "confirm password",
+    "selectCity": "Select your city",
+    "customerService": "Customer service",
+    "serviceRequest": "Request"
 }

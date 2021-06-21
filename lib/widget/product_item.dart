@@ -76,7 +76,7 @@ class _ProductItemsState extends State<ProductItems> {
                     ),
                     Positioned(
                       top: 1,
-                      right: 1,
+                      left: 1,
                       child: Column(
                         children: [
                           IconButton(
@@ -92,7 +92,7 @@ class _ProductItemsState extends State<ProductItems> {
                           IconButton(
                             onPressed: () {},
                             icon: Icon(
-                              Icons.share_outlined,
+                              Icons.share,
                               size: 30,
                             ),
                             color: secondaryColor,
@@ -101,14 +101,16 @@ class _ProductItemsState extends State<ProductItems> {
                       ),
                     ),
                     Positioned(
-                      left: 1,
-                      bottom: 1,
+                      top: 1,
+                      right: 1,
                       child: productDiscount != 0
                           ? Container(
-                              padding: EdgeInsets.all(15),
+                              padding:const EdgeInsets.only(
+                                  right: 10, left: 10, top: 5, bottom: 5),
+                                  margin:const EdgeInsets.all(5) ,
                               decoration: BoxDecoration(
                                 color: Color(0xFFF8973D),
-                                shape: BoxShape.circle,
+                                shape: BoxShape.rectangle,
                               ),
                               child: Text(
                                 "${productDiscount.toString()} %",
@@ -129,46 +131,31 @@ class _ProductItemsState extends State<ProductItems> {
                 style: TextStyle(
                     color: Color(0xFF575E67),
                     fontWeight: FontWeight.bold,
-                    fontSize: 15.0),
+                    fontSize: 16.0),
               ),
               // SizedBox(height: 3.0),
-              Container(
-                color: primaryColor,
-                child: Row(
-                  children: [
-                    Container(
-                      color: Color(0xFFF8973D),
-                      child: IconButton(
-                        onPressed: () {
-                          addToCart(1, widget.product.id);
-                        },
-                        icon: Icon(Icons.shopping_cart),
-                        color: Colors.white,
-                      ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    '${widget.product.price}ج.م',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
                     ),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Text(
-                            '${widget.product.price}ج.م',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          if (widget.product.oldPrice != widget.product.price)
-                            Text(
-                              '${widget.product.oldPrice}ج.م',
-                              style: TextStyle(
-                                  color: Color(0xFFFABC83),
-                                  fontSize: 13.0,
-                                  decoration: TextDecoration.lineThrough),
-                            ),
-                        ],
-                      ),
+                  ),
+                  // if (widget.product.oldPrice != widget.product.price)
+                  Text(
+                    '${widget.product.oldPrice}ج.م',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 16.0,
+                      decoration: TextDecoration.lineThrough,
+                      fontWeight: FontWeight.bold,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ],
           ),

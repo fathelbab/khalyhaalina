@@ -21,12 +21,11 @@ import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/provider/service_provider.dart';
 import 'package:eshop/provider/supplier_provider.dart';
 import 'package:eshop/screen/city/city_screen.dart';
+import 'package:eshop/screen/home/doctor_section.dart';
+import 'package:eshop/screen/home/service_section.dart';
 import 'package:eshop/screen/login/login.dart';
 import 'package:eshop/screen/product_screen.dart';
-import 'package:eshop/screen/services/services_screen.dart';
 import 'package:eshop/widget/badge.dart';
-import 'package:eshop/widget/custom_doctor_specialist_dropdown.dart';
-import 'package:eshop/widget/custom_service_dropdown_button.dart';
 import 'package:eshop/widget/product_item.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -34,10 +33,8 @@ import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eshop/model/notification_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'cart/cart_screen.dart';
-import 'doctor_details_screen.dart';
-import 'search/search_screen.dart';
+import '../cart/cart_screen.dart';
+import '../search/search_screen.dart';
 
 class CategoryScreen extends StatefulWidget {
   static const String route = "/category_screen";
@@ -127,19 +124,33 @@ class _CategoryScreenState extends State<CategoryScreen> {
     // Provider.of<CategoryProvider>(context, listen: false)
     //     .fetchCategoryList(1, limit);
 
-//car service service provider
+    /**
+     * first load all service list from api
+     * second load first service provider or service shop 
+     */
+    // Provider.of<ServiceProvider>(context, listen: false)
+    //     .fetchServiceInfoList("0");
     Provider.of<ServiceProvider>(context, listen: false)
-        .fetchServiceInfoList("0");
-    Provider.of<ServiceProvider>(context, listen: false)
-        .fetchServiceSpecialist();
+        .fetchServiceSpecialist()
+        .then((serviceSpecialistList) {
+      Provider.of<ServiceProvider>(context, listen: false)
+          .fetchServiceInfoList(serviceSpecialistList![0].id.toString());
+    });
+
+    //load all doctor with All specialties
+    // Provider.of<DoctorProvider>(context, listen: false).fetchDoctorList("0");
+    Provider.of<DoctorProvider>(context, listen: false)
+        .fetchDoctorSpecialist()
+        .then((value) {
+      Provider.of<DoctorProvider>(context, listen: false)
+          .fetchDoctorList(value![0].id.toString());
+    });
 
     Provider.of<ProductProvider>(context, listen: false)
         .fetchProductHotList("0", categoryId, 1, limit);
-    Provider.of<DoctorProvider>(context, listen: false).fetchDoctorList("0");
-
     Provider.of<Cart>(context, listen: false).fetchCartList();
     Provider.of<CityProvider>(context, listen: false).fetchCityList(1, limit);
-    Provider.of<DoctorProvider>(context, listen: false).fetchDoctorSpecialist();
+
     Provider.of<AnnouncementProvider>(context, listen: false)
         .fetchAnnouncementList();
     Provider.of<SupplierProvider>(context, listen: false)
@@ -169,7 +180,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     imageList = Provider.of<ImagesProvider>(context).imagesList;
     supplierList = Provider.of<SupplierProvider>(context).supplierList;
     doctorList = Provider.of<DoctorProvider>(context).doctorList;
-    serviceList = Provider.of<ServiceProvider>(context).serviceList;
+
     productHotList = Provider.of<ProductProvider>(context).productHotList;
 
     return buildScaffold(supplierList);
@@ -180,6 +191,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Scaffold buildScaffold(supplierList) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         // centerTitle: true,
         title: SizedBox(
           height: kToolbarHeight,
@@ -529,7 +541,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
               return Container(
                 color: Colors.grey[300],
                 padding: const EdgeInsets.all(5),
-                margin: const EdgeInsets.only(top: 5,bottom: 5),
+                margin: const EdgeInsets.only(top: 5, bottom: 5),
                 child: GridView.builder(
                     itemCount: productHotList!.length,
                     shrinkWrap: true,
@@ -767,12 +779,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                         limit);
                                 print(limit);
                                 Navigator.pushNamed(
-                                    context, ProductScreen.route, arguments: {
-                                  "supplierId":
-                                      supplierList![index].id.toString(),
-                                  "categoryId": categoryId,
-                                  "supplierName":  supplierList![index].name.toString(),
-                                });
+                                    context, ProductScreen.route,
+                                    arguments: {
+                                      "supplierId":
+                                          supplierList![index].id.toString(),
+                                      "categoryId": categoryId,
+                                      "supplierName":
+                                          supplierList![index].name.toString(),
+                                    });
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -839,238 +853,129 @@ class _CategoryScreenState extends State<CategoryScreen> {
         ),
       );
     else if (isDoctor == true && isService == false)
-      return SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: [
-              // isDoctor=true
-              CustomDoctorDropDownButton(),
-              doctorList == null || doctorList!.isEmpty
-                  ? Center(child: Text("لايوجد طبيب متاح فى هذه المنطقة"))
-                  : LayoutBuilder(
-                      builder: (context, constraints) {
-                        return GridView.builder(
-                          padding: const EdgeInsets.all(5),
-                          itemCount: doctorList!.length,
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          scrollDirection: Axis.vertical,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisSpacing: 4,
-                            mainAxisSpacing: 4,
-                            crossAxisCount: constraints.maxWidth > 480 ? 4 : 2,
-                            childAspectRatio: 0.8,
-                          ),
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                Provider.of<DoctorProvider>(context,
-                                        listen: false)
-                                    .clearDoctorData();
-                                Provider.of<DoctorProvider>(context,
-                                        listen: false)
-                                    .getDoctorById(
-                                        doctorList![index].id.toString());
-                                Navigator.pushNamed(
-                                  context,
-                                  DoctorDetailsScreen.route,
-                                );
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(8.0),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(15.0),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.2),
-                                      spreadRadius: 3.0,
-                                      blurRadius: 5.0,
-                                    ),
-                                  ],
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height: 70.0,
-                                      width: 65.0,
-                                      child: CachedNetworkImage(
-                                        imageUrl: imagePath +
-                                            doctorList![index].imagePath!,
-                                        fit: BoxFit.fill,
-                                        placeholder: (context, url) => Center(
-                                            child: CircularProgressIndicator()),
-                                        errorWidget: (context, url, error) =>
-                                            Icon(Icons.error),
-                                      ),
-                                    ),
-                                    SizedBox(height: 5.0),
-                                    Text(
-                                      doctorList![index].name!,
-                                      textAlign: TextAlign.center,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Theme.of(context).primaryColor,
-                                          fontSize: 15.0),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          doctorList![index]
-                                                      .phoneNumber!
-                                                      .length >
-                                                  12
-                                              ? doctorList![index]
-                                                  .phoneNumber!
-                                                  .substring(12)
-                                              : doctorList![index]
-                                                      .phoneNumber ??
-                                                  "",
-                                          style: TextStyle(
-                                              color: Color(0xFF575E67),
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 14.0),
-                                        ),
-                                        SizedBox(
-                                          width: 2,
-                                        ),
-                                        Icon(
-                                          Icons.phone,
-                                          color: Theme.of(context).primaryColor,
-                                          size: 15,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    )
-            ],
-          ),
-        ),
-      );
+      return DoctorSection();
+    // return SingleChildScrollView(
+    //   child: Container(
+    //     child: Column(
+    //       children: [
+    //         // isDoctor=true
+    //         CustomDoctorDropDownButton(),
+    //         doctorList == null || doctorList!.isEmpty
+    //             ? Center(child: Text("لايوجد طبيب متاح فى هذه المنطقة"))
+    //             : LayoutBuilder(
+    //                 builder: (context, constraints) {
+    //                   return GridView.builder(
+    //                     padding: const EdgeInsets.all(5),
+    //                     itemCount: doctorList!.length,
+    //                     shrinkWrap: true,
+    //                     physics: NeverScrollableScrollPhysics(),
+    //                     scrollDirection: Axis.vertical,
+    //                     gridDelegate:
+    //                         SliverGridDelegateWithFixedCrossAxisCount(
+    //                       crossAxisSpacing: 4,
+    //                       mainAxisSpacing: 4,
+    //                       crossAxisCount: constraints.maxWidth > 480 ? 4 : 2,
+    //                       childAspectRatio: 0.8,
+    //                     ),
+    //                     itemBuilder: (context, index) {
+    //                       return GestureDetector(
+    //                         onTap: () {
+    //                           Provider.of<DoctorProvider>(context,
+    //                                   listen: false)
+    //                               .clearDoctorData();
+    //                           Provider.of<DoctorProvider>(context,
+    //                                   listen: false)
+    //                               .getDoctorById(
+    //                                   doctorList![index].id.toString());
+    //                           Navigator.pushNamed(
+    //                             context,
+    //                             DoctorDetailsScreen.route,
+    //                           );
+    //                         },
+    //                         child: Container(
+    //                           padding: const EdgeInsets.all(8.0),
+    //                           decoration: BoxDecoration(
+    //                             color: Colors.white,
+    //                             borderRadius: BorderRadius.circular(15.0),
+    //                             boxShadow: [
+    //                               BoxShadow(
+    //                                 color: Colors.grey.withOpacity(0.2),
+    //                                 spreadRadius: 3.0,
+    //                                 blurRadius: 5.0,
+    //                               ),
+    //                             ],
+    //                           ),
+    //                           child: Column(
+    //                             mainAxisAlignment: MainAxisAlignment.center,
+    //                             children: [
+    //                               Container(
+    //                                 height: 70.0,
+    //                                 width: 65.0,
+    //                                 child: CachedNetworkImage(
+    //                                   imageUrl: imagePath +
+    //                                       doctorList![index].imagePath!,
+    //                                   fit: BoxFit.fill,
+    //                                   placeholder: (context, url) => Center(
+    //                                       child: CircularProgressIndicator()),
+    //                                   errorWidget: (context, url, error) =>
+    //                                       Icon(Icons.error),
+    //                                 ),
+    //                               ),
+    //                               SizedBox(height: 5.0),
+    //                               Text(
+    //                                 doctorList![index].name!,
+    //                                 textAlign: TextAlign.center,
+    //                                 maxLines: 2,
+    //                                 overflow: TextOverflow.ellipsis,
+    //                                 style: TextStyle(
+    //                                     fontWeight: FontWeight.bold,
+    //                                     color: Theme.of(context).primaryColor,
+    //                                     fontSize: 15.0),
+    //                               ),
+    //                               Row(
+    //                                 mainAxisAlignment:
+    //                                     MainAxisAlignment.center,
+    //                                 children: [
+    //                                   Text(
+    //                                     doctorList![index]
+    //                                                 .phoneNumber!
+    //                                                 .length >
+    //                                             12
+    //                                         ? doctorList![index]
+    //                                             .phoneNumber!
+    //                                             .substring(12)
+    //                                         : doctorList![index]
+    //                                                 .phoneNumber ??
+    //                                             "",
+    //                                     style: TextStyle(
+    //                                         color: Color(0xFF575E67),
+    //                                         fontWeight: FontWeight.bold,
+    //                                         fontSize: 14.0),
+    //                                   ),
+    //                                   SizedBox(
+    //                                     width: 2,
+    //                                   ),
+    //                                   Icon(
+    //                                     Icons.phone,
+    //                                     color: Theme.of(context).primaryColor,
+    //                                     size: 15,
+    //                                   ),
+    //                                 ],
+    //                               ),
+    //                             ],
+    //                           ),
+    //                         ),
+    //                       );
+    //                     },
+    //                   );
+    //                 },
+    //               )
+    //       ],
+    //     ),
+    //   ),
+    // );
     else if (isService == true && isDoctor == false) {
-      return SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: [
-              // isDoctor=true
-              CustomServiceDropDownButton(),
-              serviceList == null || serviceList!.isEmpty
-                  ? Center(child: Text("لايوجد خدمات متاح فى هذه المنطقة"))
-                  : LayoutBuilder(
-                      builder: (context, constraints) {
-                        return GridView.builder(
-                          padding: const EdgeInsets.all(5),
-                          itemCount: serviceList!.length,
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          scrollDirection: Axis.vertical,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisSpacing: 4,
-                            mainAxisSpacing: 4,
-                            crossAxisCount: constraints.maxWidth > 480 ? 4 : 2,
-                            childAspectRatio: 0.8,
-                          ),
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, ServicesScreen.route,
-                                    arguments: {
-                                      "name": serviceList![index].name,
-                                      "serviceName": serviceList![index]
-                                          .serviceSpecialist!
-                                          .name,
-                                      "serviceAddress":
-                                          serviceList![index].address,
-                                      "servicePhoneNumber":
-                                          serviceList![index].phoneNumber,
-                                    });
-                                // Provider.of<DoctorProvider>(context, listen: false)
-                                //     .getDoctorById(serviceList[index].id.toString());
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(15.0),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.2),
-                                      spreadRadius: 3.0,
-                                      blurRadius: 5.0,
-                                    ),
-                                  ],
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height: 65.0,
-                                      width: 65.0,
-                                      child: CachedNetworkImage(
-                                        imageUrl: imagePath +
-                                            serviceList![index].imagePath!,
-                                        fit: BoxFit.fill,
-                                        placeholder: (context, url) => Center(
-                                            child: CircularProgressIndicator()),
-                                        errorWidget: (context, url, error) =>
-                                            Icon(Icons.error),
-                                      ),
-                                    ),
-                                    SizedBox(height: 5.0),
-                                    Text(
-                                      serviceList![index].name!,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Theme.of(context).primaryColor,
-                                          fontSize: 15.0),
-                                    ),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        primary: Theme.of(context).primaryColor,
-                                      ),
-                                      onPressed: () {
-                                        Navigator.pushNamed(
-                                            context, ServicesScreen.route,
-                                            arguments: {
-                                              "name": serviceList![index].name,
-                                              "serviceName": serviceList![index]
-                                                  .serviceSpecialist!
-                                                  .name,
-                                              "serviceAddress":
-                                                  serviceList![index].address,
-                                              "servicePhoneNumber":
-                                                  serviceList![index]
-                                                      .phoneNumber,
-                                            });
-                                      },
-                                      child: Text("اطلب خدمة"),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    )
-            ],
-          ),
-        ),
-      );
+      return ServiceSection();
     }
   }
 }

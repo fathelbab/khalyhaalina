@@ -1,4 +1,3 @@
-
 import 'package:eshop/model/service_details_data.dart';
 import 'package:eshop/model/service_specialist_data.dart';
 import 'package:flutter/foundation.dart';
@@ -11,14 +10,16 @@ class ServiceProvider extends ChangeNotifier {
   List<ServiceSpecialist>? get serviceSpecialistList => _serviceSpecialistList;
   List<ServiceInfo>? get serviceList => _serviceDetailsList;
 
-  fetchServiceSpecialist() async {
+  Future<List<ServiceSpecialist>?> fetchServiceSpecialist() async {
     _serviceSpecialistList = await getAllServiceSpecialist();
     notifyListeners();
+    return _serviceSpecialistList;
   }
 
-  fetchServiceInfoList(String? serviceSpcialistId) async {
+  Future fetchServiceInfoList(String? serviceSpcialistId) async {
     final cityId = await getCityId();
-    _serviceDetailsList = await getAllServiceInfoList(cityId, serviceSpcialistId);
+    _serviceDetailsList =
+        await getAllServiceInfoList(cityId, serviceSpcialistId);
     notifyListeners();
   }
 
