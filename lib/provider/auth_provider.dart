@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:eshop/utils/cache_helper.dart';
 import 'package:http/http.dart' as http;
 import 'package:eshop/data/service/services.dart';
 import 'package:flutter/widgets.dart';
@@ -113,7 +114,6 @@ class Auth with ChangeNotifier {
   }
 
   void logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
+    CacheHelper.clearAll();
   }
 }

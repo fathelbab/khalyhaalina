@@ -1,41 +1,33 @@
 {
   "project_info": {
-    "project_number": "144936619048",
-    "project_id": "eshop-4f347",
-    "storage_bucket": "eshop-4f347.appspot.com"
+    "project_number": "250829080799",
+    "project_id": "khliha-alina",
+    "storage_bucket": "khliha-alina.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:144936619048:android:aafdef9dd0a85e9360791d",
+        "mobilesdk_app_id": "1:250829080799:android:1e828f528319ced7adc16a",
         "android_client_info": {
           "package_name": "com.kira.eshop"
         }
       },
       "oauth_client": [
         {
-          "client_id": "144936619048-6rbvsnfhiljvdbgg83d51eial2a0uji7.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.kira.eshop",
-            "certificate_hash": "512a22f93599dcc5bf4b3a84fe0234518f11d680"
-          }
-        },
-        {
-          "client_id": "144936619048-2ahipm64iao4707qdqgankjen4g5uo7m.apps.googleusercontent.com",
+          "client_id": "250829080799-4ucjriog005mi61qcdoblji6n3r24ofv.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCFTJr6cBcB8vdTXWoqK86tBIhq75uGcrE"
+          "current_key": "AIzaSyCkATEMPNOjrVubLZPlaN-51doE0v2dKhU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "144936619048-2ahipm64iao4707qdqgankjen4g5uo7m.apps.googleusercontent.com",
+              "client_id": "250829080799-4ucjriog005mi61qcdoblji6n3r24ofv.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

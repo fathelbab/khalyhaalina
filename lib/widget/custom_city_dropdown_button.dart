@@ -1,9 +1,7 @@
 import 'dart:ui';
-
 import 'package:collection/collection.dart' show IterableExtension;
-import 'package:eshop/constant/constant.dart';
 import 'package:eshop/language/app_locale.dart';
-import 'package:eshop/model/CityData.dart';
+import 'package:eshop/model/city_data.dart';
 import 'package:eshop/provider/city_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -92,8 +90,5 @@ class _CustomCityDropDownButtonState extends State<CustomCityDropDownButton> {
 
   saveNewValue(String cityId) {
     Provider.of<CityProvider>(context, listen: false).saveUserCity(cityId);
-    // final prefs = await SharedPreferences.getInstance();
-    // prefs.setString('cityId', cityId);
-    // print(cityId);
   }
 }

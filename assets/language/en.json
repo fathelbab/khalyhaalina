@@ -62,5 +62,20 @@
     "confirmPassword": "confirm password",
     "selectCity": "Select your city",
     "customerService": "Customer service",
-    "serviceRequest": "Request"
+    "serviceRequest": "Request",
+    "from": "from",
+    "to": "to",
+    "notes": "Notes",
+    "myAccount": "Account",
+    "changeLocation": "Change location",
+    "startShoping": "Start shopping",
+    "profile": "Profile",
+    "aboutUs": "About us",
+    "favourite": "Favourite",
+    "rateUs": "Rate us",
+    "share": "Share",
+    "governateError": "Please select your governate!",
+    "governate": "Governate",
+    "logout": "Logout",
+    "cityError": "Please select your city!"
 }

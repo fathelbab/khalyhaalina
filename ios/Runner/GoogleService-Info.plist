@@ -3,23 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>144936619048-c7to7b422mskr2ib6fkk5930uhr23b7d.apps.googleusercontent.com</string>
+	<string>250829080799-lhv50le0t3p0tbnh51umsmkpkjaj453p.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.144936619048-c7to7b422mskr2ib6fkk5930uhr23b7d</string>
+	<string>com.googleusercontent.apps.250829080799-lhv50le0t3p0tbnh51umsmkpkjaj453p</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>144936619048-73m98a26qoqsnjvudu8gqj8q7ivvr833.apps.googleusercontent.com</string>
+	<string>250829080799-33s2c00u6uj3l2llvj6dks3kbi7l2fag.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDdHRrxfCVW6YF9bzFNVwOdIv5pWwj-QVM</string>
+	<string>AIzaSyDZIo0rs4D709OHlRIVICYzZ3z8GC-KMTc</string>
 	<key>GCM_SENDER_ID</key>
-	<string>144936619048</string>
+	<string>250829080799</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.kira.eshop</string>
 	<key>PROJECT_ID</key>
-	<string>eshop-4f347</string>
+	<string>khliha-alina</string>
 	<key>STORAGE_BUCKET</key>
-	<string>eshop-4f347.appspot.com</string>
+	<string>khliha-alina.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:144936619048:ios:6c4ad1acd245160e60791d</string>
+	<string>1:250829080799:ios:4fe50f26fc3b9b4cadc16a</string>
 </dict>
 </plist>

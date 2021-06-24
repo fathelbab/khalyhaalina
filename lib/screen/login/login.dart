@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:eshop/constant/constant.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/provider/auth_provider.dart';
-import 'package:eshop/screen/city/city_screen.dart';
+import 'package:eshop/screen/address/city_screen.dart';
 import 'package:eshop/screen/signup/signup.dart';
 import 'package:eshop/widget/default_button.dart';
 import 'package:eshop/widget/default_form_field.dart';

@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:eshop/constant/constant.dart';
-import 'package:eshop/screen/city/city_screen.dart';
+import 'package:eshop/screen/address/city_screen.dart';
+import 'package:eshop/screen/address/governorate_screen.dart';
 import 'package:eshop/screen/home/home_screen.dart';
 import 'package:eshop/utils/cache_helper.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,7 @@ class _SplashAppScreenState extends State<SplashAppScreen> {
     timer = Timer(
       const Duration(seconds: 4),
       () => Navigator.of(context).pushReplacementNamed(
-        cityId == "0" ? CityScreen.route : HomeScreen.route,
+        cityId == "0" ? GovernorateScreen.route : HomeScreen.route,
       ),
     );
   }

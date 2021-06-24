@@ -369,24 +369,24 @@ Future<List<ImageData>?> fetchImages() async {
   }
 }
 
-Future<List<City>?> getAllCity(int offset, int limit) async {
-  final response = await http
-      .get(Uri.parse(apiPath + "/City/GetAll?Offset=$offset&Limit=$limit"));
-  try {
-    if (response.statusCode == 200) {
-      CityData cityDataFromJson(String str) =>
-          CityData.fromJson(json.decode(str));
+// Future<List<City>?> getAllCity(int offset, int limit) async {
+//   final response = await http
+//       .get(Uri.parse(apiPath + "/City/GetAll?Offset=$offset&Limit=$limit"));
+//   try {
+//     if (response.statusCode == 200) {
+//       CityData cityDataFromJson(String str) =>
+//           CityData.fromJson(json.decode(str));
 
-      // print(response.body);
-      return cityDataFromJson(response.body).city;
-    } else {
-      // print(response.statusCode);
-      return null;
-    }
-  } catch (e) {
-    throw e;
-  }
-}
+//       // print(response.body);
+//       return cityDataFromJson(response.body).city;
+//     } else {
+//       // print(response.statusCode);
+//       return null;
+//     }
+//   } catch (e) {
+//     throw e;
+//   }
+// }
 
 Future<List<DoctorInfo>?> getAllDoctorList(
     String? cityId, String? specialistId) async {

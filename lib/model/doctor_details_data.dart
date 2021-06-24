@@ -158,7 +158,7 @@ class DoctorTimeTable {
     int? doctorId;
     String? doctorDay;
     String? doctorTime;
-    dynamic toDoctorTime;
+    String? toDoctorTime;
     dynamic doctor;
 
     factory DoctorTimeTable.fromJson(Map<String, dynamic> json) => DoctorTimeTable(

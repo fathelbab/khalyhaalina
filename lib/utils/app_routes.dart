@@ -1,7 +1,8 @@
+import 'package:eshop/screen/address/city_screen.dart';
+import 'package:eshop/screen/address/governorate_screen.dart';
 import 'package:eshop/screen/call_us/call_us.dart';
 import 'package:eshop/screen/cart/cart_screen.dart';
 import 'package:eshop/screen/home/category_screen.dart';
-import 'package:eshop/screen/city/city_screen.dart';
 import 'package:eshop/screen/doctor_details_screen.dart';
 import 'package:eshop/screen/home/home_screen.dart';
 import 'package:eshop/screen/login/login.dart';
@@ -33,5 +34,6 @@ Map<String, Widget Function(BuildContext)> appRoutes(context) {
     DoctorDetailsScreen.route: (context) => DoctorDetailsScreen(),
     ServicesScreen.route: (context) => ServicesScreen(),
     SettingsScreen.route: (context) => SettingsScreen(),
+    GovernorateScreen.route: (context) => GovernorateScreen(),
   };
 }

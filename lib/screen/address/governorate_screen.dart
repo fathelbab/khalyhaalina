@@ -1,24 +1,25 @@
 import 'dart:ui';
-
-import 'package:eshop/constant/constant.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/provider/city_provider.dart';
-import 'package:eshop/screen/home/category_screen.dart';
-import 'package:eshop/widget/custom_city_dropdown_button.dart';
+import 'package:eshop/screen/address/city_screen.dart';
+import 'package:eshop/utils/components.dart';
+import 'package:eshop/widget/custom_governate_dropdown_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CityScreen extends StatefulWidget {
-  static const String route = "/city_screen";
+class GovernorateScreen extends StatefulWidget {
+  static const String route = "/governorate";
+
   @override
-  _CityScreenState createState() => _CityScreenState();
+  _GovernorateScreenState createState() => _GovernorateScreenState();
 }
 
-class _CityScreenState extends State<CityScreen> {
+class _GovernorateScreenState extends State<GovernorateScreen> {
   @override
   void initState() {
     super.initState();
-    Provider.of<CityProvider>(context, listen: false).fetchCityList(1, 100);
+    Provider.of<CityProvider>(context, listen: false)
+        .fetchGovernateList(1, 200);
   }
 
   @override
@@ -28,8 +29,7 @@ class _CityScreenState extends State<CityScreen> {
         Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(
-                  'assets/images/delivery_employees.jpg'),
+              image: AssetImage('assets/images/delivery_employees.jpg'),
               fit: BoxFit.fill,
             ),
           ),
@@ -65,7 +65,7 @@ class _CityScreenState extends State<CityScreen> {
                   SizedBox(
                     height: 100,
                   ),
-                  CustomCityDropDownButton(),
+                  GovernateDropDownButton(),
                   SizedBox(
                     height: 15,
                   ),
@@ -75,22 +75,34 @@ class _CityScreenState extends State<CityScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context)
-                            .pushReplacementNamed(CategoryScreen.route);
+                    child: Consumer<CityProvider>(
+                      builder: (context, address, child) {
+                        return ElevatedButton(
+                          onPressed: () {
+                            print("abdo${address.governateId}");
+                            if (address.governateId != "0") {
+                              Navigator.of(context).pushReplacementNamed(
+                                CityScreen.route,
+                              );
+                            } else
+                              showToast(
+                                text: getString(context, "governateError"),
+                                bgColor: Colors.red,
+                              );
+                          },
+                          style: ElevatedButton.styleFrom(
+                              onPrimary: Colors.white,
+                              primary: secondaryColor,
+                              elevation: 15,
+                              shape: StadiumBorder()),
+                          child: Text(
+                            AppLocale.of(context)!.getString("save").toString(),
+                            style: TextStyle(
+                              fontSize: 25,
+                            ),
+                          ),
+                        );
                       },
-                      style: ElevatedButton.styleFrom(
-                          onPrimary: Colors.white,
-                          primary: secondaryColor,
-                          elevation: 15,
-                          shape: StadiumBorder()),
-                      child: Text(
-                        AppLocale.of(context)!.getString("save").toString(),
-                        style: TextStyle(
-                          fontSize: 25,
-                        ),
-                      ),
                     ),
                   ),
                 ],

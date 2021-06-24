@@ -61,6 +61,21 @@
     "aleardyHaveAccount": "لدى حساب بالفعل",
     "confirmPassword": "تاكيد كلمة المرور",
     "selectCity": "المدينة",
-    "customerService":"خدمة العملاء",
-    "serviceRequest":"اطلب خدمة"
+    "customerService": "خدمة العملاء",
+    "serviceRequest": "اطلب خدمة",
+    "from": "من",
+    "to": "الى",
+    "notes": "ملاحظات",
+    "myAccount": "حسابى",
+    "startShoping": "تسوق الان",
+    "profile": "الملف الشخصى",
+    "changeLocation": "تغيير المنطقة",
+    "aboutUs": "معلومات عنا",
+    "favourite": "المفضلة",
+    "rateUs": "اكتب عنا",
+    "share": "شارك مع الاصدقاء",
+    "governateError": "يرجى اختيار المحافظة",
+    "governate": "المحافظة",
+    "logout": "تسجيل الخروج",
+    "cityError": "يرجى اختيار المدينة"
 }
