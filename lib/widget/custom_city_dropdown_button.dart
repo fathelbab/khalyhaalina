@@ -71,7 +71,7 @@ class _CustomCityDropDownButtonState extends State<CustomCityDropDownButton> {
                     .id
                     .toString();
               });
-              saveNewValue(cityId);
+              saveNewValue(cityId,_selectedCity.toString());
             },
             items: cityList!
                 .map(
@@ -88,7 +88,8 @@ class _CustomCityDropDownButtonState extends State<CustomCityDropDownButton> {
     );
   }
 
-  saveNewValue(String cityId) {
-    Provider.of<CityProvider>(context, listen: false).saveUserCity(cityId);
+  saveNewValue(String cityId, String cityName) {
+    Provider.of<CityProvider>(context, listen: false)
+        .saveUserCity(cityId, cityName);
   }
 }

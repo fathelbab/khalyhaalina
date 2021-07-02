@@ -72,7 +72,7 @@ class _GovernateDropDownButtonState extends State<GovernateDropDownButton> {
                     .id
                     .toString();
               });
-              saveNewValue(context, governateId);
+              saveNewValue(context, governateId, _selectedGovernate.toString());
             },
             items: governateList!
                 .map(
@@ -89,9 +89,9 @@ class _GovernateDropDownButtonState extends State<GovernateDropDownButton> {
     );
   }
 
-  saveNewValue(context, String governateId) {
+  saveNewValue(context, String governateId, String governorateName) {
     Provider.of<CityProvider>(context, listen: false)
-        .saveUserGovernate(governateId);
+        .saveUserGovernate(governateId, governorateName);
     Provider.of<CityProvider>(context, listen: false)
         .fetchCityList(1, 200, governateId);
   }

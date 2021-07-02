@@ -3,7 +3,6 @@ import 'package:eshop/constant/constant.dart';
 import 'package:eshop/model/doctor_data.dart';
 import 'package:eshop/model/doctor_specialist_data.dart';
 import 'package:eshop/provider/doctor_provider.dart';
-import 'package:eshop/widget/custom_doctor_specialist_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

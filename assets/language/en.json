@@ -77,5 +77,8 @@
     "governateError": "Please select your governate!",
     "governate": "Governate",
     "logout": "Logout",
-    "cityError": "Please select your city!"
+    "cityError": "Please select your city!",
+    "search": "Search",
+    "deliveryText": "Delivery",
+    "category": "Category"
 }

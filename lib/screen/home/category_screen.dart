@@ -12,19 +12,19 @@ import 'package:eshop/provider/announcement_provider.dart';
 import 'package:eshop/provider/auth_provider.dart';
 import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/category_provider.dart';
-import 'package:eshop/provider/city_provider.dart';
 import 'package:eshop/provider/doctor_provider.dart';
 import 'package:eshop/provider/images_provider.dart';
 import 'package:eshop/provider/notification_provider.dart';
 import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/provider/service_provider.dart';
 import 'package:eshop/provider/supplier_provider.dart';
-import 'package:eshop/screen/address/city_screen.dart';
 import 'package:eshop/screen/address/governorate_screen.dart';
 import 'package:eshop/screen/home/doctor_section.dart';
 import 'package:eshop/screen/home/service_section.dart';
 import 'package:eshop/screen/login/login.dart';
 import 'package:eshop/screen/product_screen.dart';
+import 'package:eshop/screen/search/search_screen.dart';
+import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/contants.dart';
 
@@ -34,7 +34,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eshop/model/notification_data.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CategoryScreen extends StatefulWidget {
   static const String route = "/category_screen";
@@ -52,7 +51,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
     {"id": 5, "name": "أحذيه رجالي"},
     {"id": 6, "name": "أحذيه حريمي"},
     {"id": 7, "name": "أحذيه أطفال"},
-
     {"id": 16, "name": "بصريات"},
     {"id": 8, "name": "الموبايلات"},
     {"id": 9, "name": "الأجهزة ومستلزمات المطبخ "},
@@ -62,10 +60,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
     {"id": 14, "name": " فلاتر المياة والتبريد و التكييف"},
     {"id": 15, "name": "هدايا وأكسسوارات"},
     {"id": 13, "name": "الصيدلية"},
-    // {"id": 23, "name": "حلويات"},
-    // {"id": 21, "name": "العطاره"},
-    // {"id": 20, "name": "مسليات "},
-    // {"id": 19, "name": "قطع غيار سيارات"},
   ];
   List<Map<String, dynamic>> categoryIcon = [
     {"icons": Icons.store, "id": 1},
@@ -106,11 +100,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
   bool isHome = true;
   String? cityId = "0";
   String categoryId = "0";
-  // String? _selectedCity;
-  // String? _doctorSpcialistId;
-
-  // String? _selectedDoctorSpecialist;
+  late String cityName;
+  late String governorateName;
   final _searchController = TextEditingController();
+  final GlobalKey<ScaffoldState> _scaffoldKey =  GlobalKey<ScaffoldState>();
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -136,7 +129,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
       Provider.of<ServiceProvider>(context, listen: false)
           .fetchServiceInfoList(serviceSpecialistList![0].id.toString());
     });
-
+    governorateName = CacheHelper.getPrefs(key: "governorateName") ?? "";
+    cityName = CacheHelper.getPrefs(key: "cityName") ?? "";
     //load all doctor with All specialties
     // Provider.of<DoctorProvider>(context, listen: false).fetchDoctorList("0");
     Provider.of<DoctorProvider>(context, listen: false)
@@ -189,6 +183,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   Scaffold buildScaffold(supplierList) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         elevation: 0,
         // centerTitle: true,
@@ -197,6 +192,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
           child: Image.asset(
             'assets/images/app_logo.png',
             fit: BoxFit.cover,
+          ),
+        ),
+        leading: IconButton(
+          onPressed: () => _scaffoldKey.currentState!.openDrawer(),
+          icon: Icon(
+            FontAwesomeIcons.th
           ),
         ),
         actions: [
@@ -676,11 +677,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
             ));
   }
 
-  Future<void> getCityId() async {
-    final prefs = await SharedPreferences.getInstance();
-    cityId = prefs.getString('cityId');
-  }
-
   Widget buildProductHotList() {
     return productHotList == null || productHotList!.isEmpty
         ? Text("")
@@ -781,10 +777,93 @@ class _CategoryScreenState extends State<CategoryScreen> {
   }
 
   scafoldBody() {
-    if (isDoctor == false && isService == false)
+    if (isDoctor == false && isService == false) {
       return Container(
         child: ListView(
           children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Image.asset(
+                    'assets/images/app_logo.png',
+                    height: 30,
+                    width: 40,
+                    fit: BoxFit.cover,
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(SearchScreen.route);
+                      },
+                      child: Container(
+                        height: 40,
+                        margin: const EdgeInsets.all(5.0),
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.grey,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(15),
+                          color: Colors.white,
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.search_sharp,
+                              color: Colors.grey,
+                            ),
+                            Text(
+                              getString(context, "search"),
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0, right: 8.0),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.location_on_outlined,
+                    color: Colors.grey,
+                    size: 30,
+                  ),
+                  SizedBox(width: 5),
+                  Text(
+                    getString(context, "deliveryText"),
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                  SizedBox(width: 5),
+                  Text(
+                    "$cityName - $governorateName",
+                    style: TextStyle(
+                      color: primaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                  Icon(
+                    Icons.arrow_drop_down,
+                    color: Colors.grey,
+                  ),
+                ],
+              ),
+            ),
             !isHome
                 ? Container(
                     margin: const EdgeInsets.only(right: 15, left: 15, top: 5),
@@ -797,21 +876,22 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       children: [
                         Expanded(
                           child: Container(
-                              child: TextField(
-                            controller: _searchController,
-                            onSubmitted: (value) {
-                              // print(value);
-                              Provider.of<SupplierProvider>(context,
-                                      listen: false)
-                                  .searchSupplierByCity(value, 1, limit);
-                            },
-                            decoration: InputDecoration(
-                                hintText: 'البحث',
-                                hintStyle: TextStyle(
-                                    color: primaryColor,
-                                    fontWeight: FontWeight.bold),
-                                border: InputBorder.none),
-                          )),
+                            child: TextField(
+                              controller: _searchController,
+                              onSubmitted: (value) {
+                                // print(value);
+                                Provider.of<SupplierProvider>(context,
+                                        listen: false)
+                                    .searchSupplierByCity(value, 1, limit);
+                              },
+                              decoration: InputDecoration(
+                                  hintText: 'البحث',
+                                  hintStyle: TextStyle(
+                                      color: primaryColor,
+                                      fontWeight: FontWeight.bold),
+                                  border: InputBorder.none),
+                            ),
+                          ),
                         ),
                         Container(
                           margin: const EdgeInsets.all(5),
@@ -840,17 +920,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                           listen: false)
                                       .fetchCurrentSupplierList(1, limit);
                                 }
-                                // setState(() {
-                                //   // isSearch
-                                //   //     ? Provider.of<SupplierProvider>(context,
-                                //   //         listen: false).searchSupplier();
-                                //   //     : Provider.of<SupplierProvider>(context,
-                                //   //             listen: false)
-                                //   //         .fetchSupplierList(
-                                //   //             "0", 1, limit);
-
-                                //   isSearch = !isSearch;
-                                // });
                               },
                             ),
                           ),
@@ -974,7 +1043,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
           ],
         ),
       );
-    else if (isDoctor == true && isService == false)
+    } else if (isDoctor == true && isService == false)
       return DoctorSection();
     else if (isService == true && isDoctor == false) {
       return ServiceSection();

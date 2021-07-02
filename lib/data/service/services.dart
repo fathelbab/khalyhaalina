@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:eshop/constant/constant.dart';
-import 'package:eshop/model/CityData.dart';
+
 import 'package:eshop/model/announcement_data.dart';
 import 'package:eshop/model/cart_data.dart';
 import 'package:eshop/model/category_data.dart';

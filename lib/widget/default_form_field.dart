@@ -21,8 +21,8 @@ class DefaultFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(5.0),
-      padding: EdgeInsets.only(right: 10, left: 10),
+      margin: const EdgeInsets.all(5.0),
+      padding: const EdgeInsets.only(right: 10, left: 10),
       child: TextFormField(
         obscureText: isPassword,
         controller: controller,

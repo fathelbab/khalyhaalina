@@ -10,9 +10,7 @@ import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/provider/service_provider.dart';
 import 'package:eshop/provider/supplier_provider.dart';
 import 'package:eshop/provider/theme_provider.dart';
-
-import 'package:eshop/screen/login/login.dart';
-
+import 'package:eshop/screen/intro/intro_screen.dart';
 import 'package:eshop/screen/splash/splash_app_screen.dart';
 import 'package:eshop/utils/app_routes.dart';
 import 'package:eshop/utils/cache_helper.dart';
@@ -126,7 +124,7 @@ class MyApp extends StatelessWidget {
               return supportedLocales.first;
             },
             initialRoute: token == "" || token == null
-                ? Login.route
+                ? IntroScreen.route
                 : SplashAppScreen.route,
             routes: appRoutes(context),
           );

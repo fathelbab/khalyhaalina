@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:eshop/constant/constant.dart';
-import 'package:eshop/screen/address/city_screen.dart';
 import 'package:eshop/screen/address/governorate_screen.dart';
 import 'package:eshop/screen/home/home_screen.dart';
 import 'package:eshop/utils/cache_helper.dart';

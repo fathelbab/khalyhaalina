@@ -4,13 +4,13 @@ import 'package:eshop/model/governate_data.dart';
 import 'package:eshop/utils/cache_helper.dart';
 import 'package:flutter/foundation.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
-
 class CityProvider extends ChangeNotifier {
   List<City>? _cityList = [];
   List<Governate>? _governateList = [];
   String governateId = "0";
-  String cityId = "0";
+  String userGovernate = "0";
+  String cityId = "";
+  String userCity = "";
   fetchGovernateList(int offset, int limit) async {
     _governateList = await getAllGovernate(offset, limit);
     notifyListeners();
@@ -21,15 +21,17 @@ class CityProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  saveUserGovernate(String governateID) {
-    CacheHelper.savePrefs(key: "governateId", value: governateID);
+  saveUserGovernate(String governorateID, String governorateName) {
+    CacheHelper.savePrefs(key: "governorateId", value: governorateID);
+    CacheHelper.savePrefs(key: "governorateName", value: governorateName);
     cityId = "0";
-    governateId = governateID;
+    governateId = governorateID;
     notifyListeners();
   }
 
-  saveUserCity(String cityID) {
+  saveUserCity(String cityID, String cityName) {
     CacheHelper.savePrefs(key: "cityId", value: cityID);
+    CacheHelper.savePrefs(key: "cityName", value: cityName);
     cityId = cityID;
     notifyListeners();
   }

@@ -5,7 +5,6 @@ import 'package:eshop/model/service_details_data.dart';
 import 'package:eshop/model/service_specialist_data.dart';
 import 'package:eshop/provider/service_provider.dart';
 import 'package:eshop/screen/services/services_screen.dart';
-import 'package:eshop/widget/custom_service_dropdown_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

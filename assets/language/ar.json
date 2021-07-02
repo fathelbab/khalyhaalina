@@ -77,5 +77,8 @@
     "governateError": "يرجى اختيار المحافظة",
     "governate": "المحافظة",
     "logout": "تسجيل الخروج",
-    "cityError": "يرجى اختيار المدينة"
+    "cityError": "يرجى اختيار المدينة",
+    "search": "البحث",
+    "deliveryText":"توصيل",
+    "category":"الاقسام"
 }

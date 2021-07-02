@@ -1,17 +1,14 @@
 import 'package:eshop/constant/constant.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/model/bar_item.dart';
-import 'package:eshop/provider/bar_style.dart';
 import 'package:eshop/provider/cart.dart';
 import 'package:eshop/screen/call_us/call_us.dart';
 import 'package:eshop/screen/cart/cart_screen.dart';
 import 'package:eshop/screen/home/category_screen.dart';
 import 'package:eshop/screen/info/info_screen.dart';
 import 'package:eshop/screen/pharmacy/pharmacy_screen.dart';
-import 'package:eshop/widget/animated_button.dart';
 import 'package:eshop/widget/badge.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -40,15 +37,15 @@ class _HomeScreenState extends State<HomeScreen> {
         color: Color(0xFF5c8bb0),
       ),
       BarItem(
-        text: AppLocale.of(context)!.getString('info'),
-        iconData: Icons.info,
+        text: AppLocale.of(context)!.getString('category'),
+        iconData: Icons.view_module_rounded,
         color: Color(0xFF5c8bb0),
       ),
-      BarItem(
-        text: AppLocale.of(context)!.getString('callUs'),
-        iconData: FontAwesomeIcons.whatsapp,
-        color: Colors.yellow.shade900,
-      ),
+      // BarItem(
+      //   text: AppLocale.of(context)!.getString('callUs'),
+      //   iconData: FontAwesomeIcons.whatsapp,
+      //   color: Colors.yellow.shade900,
+      // ),
       // BarItem(
       //   text: AppLocale.of(context)!.getString('callUs'),
       //   // iconData: Icons.apps,
@@ -98,8 +95,8 @@ class _HomeScreenState extends State<HomeScreen> {
           shape: CircularNotchedRectangle(),
           notchMargin: 10,
           child: Container(
-            height: 56,
-            margin: EdgeInsets.only(left: 8),
+            height: 60,
+            margin: EdgeInsets.only(left: 4),
             child: Row(
               children: [
                 Expanded(
@@ -110,15 +107,25 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: barItems!
                           .map(
-                            (e) => IconButton(
+                            (e) => MaterialButton(
                               onPressed: () {
                                 setState(() {
                                   _selectedPageIndex = barItems!.indexOf(e);
                                 });
                               },
-                              icon: Icon(
-                                e.iconData,
-                                color: Colors.white,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Icon(
+                                    e.iconData,
+                                    color: Colors.white,
+                                  ),
+                                  Text(
+                                    e.text.toString(),
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ],
                               ),
                             ),
                           )

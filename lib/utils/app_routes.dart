@@ -5,6 +5,7 @@ import 'package:eshop/screen/cart/cart_screen.dart';
 import 'package:eshop/screen/home/category_screen.dart';
 import 'package:eshop/screen/doctor_details_screen.dart';
 import 'package:eshop/screen/home/home_screen.dart';
+import 'package:eshop/screen/intro/intro_screen.dart';
 import 'package:eshop/screen/login/login.dart';
 import 'package:eshop/screen/order/order_screen.dart';
 import 'package:eshop/screen/product_details/product_details_screen.dart';
@@ -35,5 +36,6 @@ Map<String, Widget Function(BuildContext)> appRoutes(context) {
     ServicesScreen.route: (context) => ServicesScreen(),
     SettingsScreen.route: (context) => SettingsScreen(),
     GovernorateScreen.route: (context) => GovernorateScreen(),
+    IntroScreen.route: (context) => IntroScreen(),
   };
 }
