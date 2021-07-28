@@ -1,4 +1,3 @@
-
 import 'package:eshop/provider/auth_provider.dart';
 import 'package:eshop/provider/category_provider.dart';
 import 'package:eshop/provider/city_provider.dart';
@@ -15,6 +14,8 @@ import 'package:eshop/screen/splash/splash_app_screen.dart';
 import 'package:eshop/utils/app_routes.dart';
 import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/theme.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -25,14 +26,24 @@ import 'provider/cart.dart';
 import 'provider/contact_us_provider.dart';
 import 'provider/pharmacy_provider.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+ 
+
+  FirebaseMessaging.onBackgroundMessage(fcmBackgroundMessage);
   await CacheHelper.init();
   final prefs = await SharedPreferences.getInstance();
   String token = prefs.getString('token') ?? "";
   print(token);
   runApp(MyApp(token));
+}
+
+
+// this function working when app in background and when terminated
+// to display firebase cloud message
+Future fcmBackgroundMessage(RemoteMessage message) async {
+  print("${message.notification!.body}");
 }
 
 class MyApp extends StatelessWidget {

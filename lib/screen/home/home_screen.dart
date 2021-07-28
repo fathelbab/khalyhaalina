@@ -7,8 +7,13 @@ import 'package:eshop/screen/cart/cart_screen.dart';
 import 'package:eshop/screen/home/category_screen.dart';
 import 'package:eshop/screen/info/info_screen.dart';
 import 'package:eshop/screen/pharmacy/pharmacy_screen.dart';
+import 'package:eshop/utils/local_notification.dart';
 import 'package:eshop/widget/badge.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,6 +24,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
   int _selectedPageIndex = 0;
   List<BarItem>? barItems;
   List<Widget> _screens = [
@@ -64,6 +70,62 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+
+    firebaseMessaging.getToken().then((token) {
+      print("============================");
+      print(token);
+      print("============================");
+    });
+    // this method need to request FCM permission just in ios
+    requestFirebasePermission();
+    getFirebaseToken();
+
+    //when user click message and app in background
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      Navigator.pushNamed(context, HomeScreen.route);
+    });
+    //when user click message and app is terminated
+    initalMessage();
+  }
+
+  initalMessage() async {
+    var message = await FirebaseMessaging.instance.getInitialMessage();
+    if (message != null) {
+      // TODO: do something
+    }
+  }
+
+  void getFirebaseToken() async {
+    FirebaseMessaging.onMessage.listen((notification) {
+      print("${notification.notification!.body}");
+      Fluttertoast.showToast(msg: "${notification.notification!.body}");
+      LocalNotification().showNotification(
+        title: notification.notification!.title.toString(),
+        body: notification.notification!.body.toString(),
+      );
+    });
+  }
+
+  void requestFirebasePermission() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
+      print('User granted provisional permission');
+    } else {
+      print('User declined or has not accepted permission');
+    }
   }
 
   @override
