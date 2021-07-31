@@ -7,6 +7,7 @@ import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/screen/cart/cart_screen.dart';
 import 'package:eshop/screen/login/login.dart';
 import 'package:eshop/screen/search/search_screen.dart';
+import 'package:eshop/utils/contants.dart';
 import 'package:eshop/widget/badge.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -84,7 +85,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ? Hero(
                                   tag: productDetails.id!,
                                   child: Image.network(
-                                    imagePath + productDetails.imagePath!,
+                                   Constants. imagePath + productDetails.imagePath!,
                                     fit: BoxFit.contain,
                                     width: double.infinity,
                                     height: size.height / 3 + 50,
@@ -310,7 +311,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           borderRadius: BorderRadius.all(Radius.circular(5.0)),
           child: Stack(
             children: <Widget>[
-              Image.network(imagePath + productGalleries[index].imagePath!,
+              Image.network(Constants.imagePath + productGalleries[index].imagePath!,
                   fit: BoxFit.contain, width: double.infinity),
               // Positioned(
               //   bottom: 0.0,

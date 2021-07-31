@@ -5,6 +5,7 @@ import 'package:eshop/model/service_details_data.dart';
 import 'package:eshop/model/service_specialist_data.dart';
 import 'package:eshop/provider/service_provider.dart';
 import 'package:eshop/screen/services/services_screen.dart';
+import 'package:eshop/utils/contants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -194,7 +195,7 @@ class ServiceItem extends StatelessWidget {
         leading: CachedNetworkImage(
           height: 70.0,
           width: 70.0,
-          imageUrl: imagePath + service.imagePath!,
+          imageUrl: Constants.imagePath + service.imagePath!,
           fit: BoxFit.fill,
           placeholder: (context, url) =>
               Center(child: CircularProgressIndicator()),
@@ -245,7 +246,7 @@ class ServiceGridItem extends StatelessWidget {
               height: 65.0,
               width: 65.0,
               child: CachedNetworkImage(
-                imageUrl: imagePath + service.imagePath!,
+                imageUrl: Constants.imagePath + service.imagePath!,
                 fit: BoxFit.fill,
                 placeholder: (context, url) =>
                     Center(child: CircularProgressIndicator()),

@@ -39,7 +39,8 @@ class SupplierData {
 class Supplier {
     Supplier({
         this.id,
-        this.name,
+        this.nameAr,
+        this.nameEn,
         this.imagePath,
         this.price,
         this.categoryName,
@@ -52,7 +53,8 @@ class Supplier {
     });
 
     int? id;
-    String? name;
+    String? nameAr;
+    String? nameEn;
     String? imagePath;
     int? price;
     String? categoryName;
@@ -65,7 +67,8 @@ class Supplier {
 
     factory Supplier.fromJson(Map<String, dynamic> json) => Supplier(
         id: json["id"],
-        name: json["name"],
+        nameAr: json["nameAr"],
+        nameEn: json["nameEn"],
         imagePath: json["imagePath"],
         price: json["price"],
         categoryName: json["categoryName"],
@@ -79,7 +82,8 @@ class Supplier {
 
     Map<String, dynamic> toJson() => {
         "id": id,
-        "name": name,
+        "nameAr": nameAr,
+        "nameEn": nameEn,
         "imagePath": imagePath,
         "price": price,
         "categoryName": categoryName,

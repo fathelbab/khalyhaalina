@@ -3,10 +3,11 @@ import 'package:eshop/constant/constant.dart';
 import 'package:eshop/model/doctor_data.dart';
 import 'package:eshop/model/doctor_specialist_data.dart';
 import 'package:eshop/provider/doctor_provider.dart';
+import 'package:eshop/utils/contants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../doctor_details_screen.dart';
+import '../../doctor_details_screen.dart';
 
 class DoctorSection extends StatefulWidget {
   @override
@@ -188,7 +189,7 @@ class DoctorItem extends StatelessWidget {
         leading: CachedNetworkImage(
           height: 60.0,
           width: 60.0,
-          imageUrl: imagePath + doctor.imagePath!,
+          imageUrl: Constants.imagePath + doctor.imagePath!,
           fit: BoxFit.fill,
           placeholder: (context, url) =>
               Center(child: CircularProgressIndicator()),
@@ -239,7 +240,7 @@ class DoctorGridItem extends StatelessWidget {
               height: 70.0,
               width: 65.0,
               child: CachedNetworkImage(
-                imageUrl: imagePath + doctor.imagePath!,
+                imageUrl: Constants.imagePath + doctor.imagePath!,
                 fit: BoxFit.fill,
                 placeholder: (context, url) =>
                     Center(child: CircularProgressIndicator()),

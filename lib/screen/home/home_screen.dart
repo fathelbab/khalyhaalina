@@ -9,10 +9,8 @@ import 'package:eshop/screen/info/info_screen.dart';
 import 'package:eshop/screen/pharmacy/pharmacy_screen.dart';
 import 'package:eshop/utils/local_notification.dart';
 import 'package:eshop/widget/badge.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
@@ -75,6 +73,9 @@ class _HomeScreenState extends State<HomeScreen> {
       print("============================");
       print(token);
       print("============================");
+    });
+    firebaseMessaging.onTokenRefresh.listen((token) {
+      print(token);
     });
     // this method need to request FCM permission just in ios
     requestFirebasePermission();

@@ -5,6 +5,7 @@ import 'package:eshop/model/product_data.dart';
 import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/screen/product_details/product_details_screen.dart';
+import 'package:eshop/utils/contants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -63,7 +64,7 @@ class _ProductItemsState extends State<ProductItems> {
                       tag: widget.product.id!,
                       child: Container(
                         child: CachedNetworkImage(
-                          imageUrl: imagePath + widget.product.imagePath!,
+                          imageUrl: Constants.imagePath + widget.product.imagePath!,
                           fit: BoxFit.contain,
                           placeholder: (context, url) => Center(
                             child: const SpinKitChasingDots(

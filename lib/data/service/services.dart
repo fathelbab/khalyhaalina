@@ -1,12 +1,6 @@
 import 'dart:convert';
-import 'package:eshop/constant/constant.dart';
-
 import 'package:eshop/model/announcement_data.dart';
 import 'package:eshop/model/cart_data.dart';
-import 'package:eshop/model/category_data.dart';
-import 'package:eshop/model/doctor_data.dart' hide City;
-import 'package:eshop/model/doctor_details_data.dart';
-import 'package:eshop/model/doctor_specialist_data.dart';
 import 'package:eshop/model/image_data.dart';
 import 'package:eshop/model/notification_data.dart';
 import 'package:eshop/model/product_data.dart';
@@ -14,28 +8,15 @@ import 'package:eshop/model/product_details_data.dart' hide Category, Supplier;
 import 'package:eshop/model/service_details_data.dart' hide City;
 import 'package:eshop/model/service_specialist_data.dart';
 import 'package:eshop/model/supplier_data.dart';
+import 'package:eshop/utils/contants.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 // headers: {HttpHeaders.contentTypeHeader: "application/json",
 // HttpHeaders.authorizationHeader: "Bearer $token"}
 
-Future<List<Category>?> fetchCategory(int offset, int limit) async {
-  final response = await http
-      .get(Uri.parse(apiPath + "/Category/GetAll?Offset=$offset&Limit=$limit"));
-  if (response.statusCode == 200) {
-    CategoryData categoryDataFromJson(String str) =>
-        CategoryData.fromJson(json.decode(str));
-    // print(categoryDataFromJson(response.body).result[0].name);
-    return categoryDataFromJson(response.body).result;
-  } else {
-    // print(response.statusCode);
-    return null;
-  }
-}
-
 Future<List<Product>?> fetchProduct(String? supplierId, String? categoryId,
     String searchTerm, int offset, int limit) async {
-  final response = await http.get(Uri.parse(apiPath +
+  final response = await http.get(Uri.parse(Constants.apiPath +
       "/Product/GetAll?CategoryId=$categoryId&SupplierId=$supplierId&SearchTerm=$searchTerm&Offset=1&Limit=$limit"));
   // print(apiPath
   //     "/Product/GetAll?CategoryId=$categoryId&SupplierId=$supplierId&Offset=1&Limit=100");
@@ -50,7 +31,7 @@ Future<List<Product>?> fetchProduct(String? supplierId, String? categoryId,
 
 Future<List<Product>?> fetchProductHot(
     String supplierId, String categoryId, int offset, int limit) async {
-  final response = await http.get(Uri.parse(apiPath +
+  final response = await http.get(Uri.parse(Constants.apiPath +
       "/Product/GetAllHot?Offset=1&Limit=200&SupplierId=0&CategoryId=0"));
   // print("abdo ${response.body}");
   if (response.statusCode == 200) {
@@ -61,9 +42,10 @@ Future<List<Product>?> fetchProductHot(
   }
 }
 
-Future<List<Product>?> searchWithTerm(String? searchTerm, int offset, int limit) async {
+Future<List<Product>?> searchWithTerm(
+    String? searchTerm, int offset, int limit) async {
   try {
-    final response = await http.get(Uri.parse(apiPath +
+    final response = await http.get(Uri.parse(Constants.apiPath +
         "/Product/GetAll?SearchTerm=$searchTerm&Offset=$offset&Limit=$limit"));
     // print(apiPath +
     //     "/Product/GetAll?CategoryId=$categoryId&SupplierId=$supplierId&Offset=1&Limit=100");
@@ -87,8 +69,8 @@ Future<List<Product>?> searchWithTerm(String? searchTerm, int offset, int limit)
 
 Future<ProductDetailsData> fetchProductById(int? productId) async {
   try {
-    final response =
-        await http.get(Uri.parse(apiPath + "/Product/getById/$productId"));
+    final response = await http
+        .get(Uri.parse(Constants.apiPath + "/Product/getById/$productId"));
     // print(response.body.toString());
     if (response.statusCode == 200) {
       print(productDetailsDataFromJson(response.body).name);
@@ -104,7 +86,8 @@ Future<ProductDetailsData> fetchProductById(int? productId) async {
 
 Future<List<CartData>> fetchCartItems(String token) async {
   try {
-    final response = await http.get(Uri.parse(apiPath + "/Carts"), headers: {
+    final response =
+        await http.get(Uri.parse(Constants.apiPath + "/Carts"), headers: {
       "access_token": token,
     });
     print("token" + token);
@@ -122,7 +105,7 @@ Future<List<CartData>> fetchCartItems(String token) async {
 Future<String> addProductToCart(
     int? productId, int quantity, String? token) async {
   try {
-    final response = await http.post(Uri.parse(apiPath + "/Carts"),
+    final response = await http.post(Uri.parse(Constants.apiPath + "/Carts"),
         body: jsonEncode({
           "productId": productId,
           "quantity": quantity,
@@ -203,7 +186,7 @@ Future<String> createOrderbyUser(
     //       listOfProduct.map((productData) => productData.toJson()).toList(),
     // }));
     final response = await http.post(
-      Uri.parse(apiPath + "/Orders/PostOrderOrderDitales"),
+      Uri.parse(Constants.apiPath + "/Orders/PostOrderOrderDitales"),
       body: jsonEncode({
         "customerName": customerName.toString(),
         "phoneNumber": phoneNumber.toString(),
@@ -232,7 +215,7 @@ Future<String> addPharmacy(String name, String address, String phoneNumber,
     String image, String? token) async {
   try {
     final response = await http.post(
-        Uri.parse(apiPath + "/Pharmacy/PostPharmacy"),
+        Uri.parse(Constants.apiPath + "/Pharmacy/PostPharmacy"),
         body: jsonEncode({
           "name": name,
           "address": address,
@@ -256,8 +239,8 @@ Future<String> addPharmacy(String name, String address, String phoneNumber,
 Future<String> sendCompliatOrSuggestion(String firstName, String lastName,
     String email, String phoneNumber, String userMessage) async {
   try {
-    final response =
-        await http.post(Uri.parse(apiPath + "/ContactUs/PostPharmacy"),
+    final response = await http
+        .post(Uri.parse(Constants.apiPath + "/ContactUs/PostPharmacy"),
             body: jsonEncode({
               "email": email,
               "firstName": firstName,
@@ -281,8 +264,8 @@ Future<String> sendCompliatOrSuggestion(String firstName, String lastName,
 
 Future<List<Supplier>?> fetchSupplier(
     String categoryId, String cityId, int offset, int limit) async {
-  final response = await http.get(Uri.parse(apiPath +
-      "/Supplier/GetAll?CityId=$cityId&CategoryId=$categoryId&Offset=1&Limit=150"));
+  final response = await http.get(Uri.parse(Constants.apiPath +
+      "/Supplier/GetAll?CityId=$cityId&CategoryId=$categoryId&Offset=1&Limit=$limit"));
 
   if (response.statusCode == 200) {
     SupplierData supplierDataFromJson(String str) =>
@@ -299,7 +282,7 @@ Future<List<Supplier>?> fetchSupplier(
 Future<List<Supplier>?> searchSupplier(
     String searchTerm, String? cityId, int offset, int limit) async {
   print(cityId);
-  final response = await http.get(Uri.parse(apiPath +
+  final response = await http.get(Uri.parse(Constants.apiPath +
       "/Supplier/GetAll?Offset=1&Limit=150&CityId=$cityId&SearchTerm=$searchTerm"));
   print(cityId);
   print(response.body);
@@ -319,11 +302,10 @@ Future<List<Supplier>?> searchSupplier(
 Future<List<AnnouncementData>?> fetchAnnouncement() async {
   try {
     final response =
-        await http.get(Uri.parse(apiPath + "/Announcement/GetAll"));
-
+        await http.get(Uri.parse(Constants.apiPath + "/Announcement/GetAll"));
+    print(response.statusCode);
+    print(response.body);
     if (response.statusCode == 200) {
-      // print(response.statusCode);
-      // print(response.body);
       return announcementDataFromJson(response.body);
     } else {
       // print(response.statusCode);
@@ -336,8 +318,8 @@ Future<List<AnnouncementData>?> fetchAnnouncement() async {
 
 Future<List<Notifications>?> fetchNotification() async {
   try {
-    final response = await http
-        .get(Uri.parse(apiPath + "/Notifications/GetAll?Offset=1&Limit=100"));
+    final response = await http.get(Uri.parse(
+        Constants.apiPath + "/Notifications/GetAll?Offset=1&Limit=100"));
 
     if (response.statusCode == 200) {
       // print(response.statusCode);
@@ -354,7 +336,8 @@ Future<List<Notifications>?> fetchNotification() async {
 
 Future<List<ImageData>?> fetchImages() async {
   try {
-    final response = await http.get(Uri.parse(apiPath + "/Image/GetAll"));
+    final response =
+        await http.get(Uri.parse(Constants.apiPath + "/Image/GetAll"));
 
     if (response.statusCode == 200) {
       // print(response.statusCode);
@@ -388,30 +371,10 @@ Future<List<ImageData>?> fetchImages() async {
 //   }
 // }
 
-Future<List<DoctorInfo>?> getAllDoctorList(
-    String? cityId, String? specialistId) async {
-  try {
-    final response = await http.get(Uri.parse(apiPath +
-        "/Doctor/GetAll?Offset=1&Limit=100&CityId=$cityId&DoctorSpecialistId=$specialistId"));
-
-    // print("done${response.body}");
-
-    if (response.statusCode == 200) {
-      // print("done${response.body}");
-      return doctorDataFromJson(response.body).result;
-    } else {
-      // print(response.statusCode);
-      return null;
-    }
-  } catch (e) {
-    throw e;
-  }
-}
-
 Future<List<ServiceInfo>?> getAllServiceInfoList(
     String? cityId, String? specialistId) async {
   try {
-    final response = await http.get(Uri.parse(apiPath +
+    final response = await http.get(Uri.parse(Constants.apiPath +
         "/Service/GetAll?Offset=1&Limit=100&CityId=$cityId&ServiceSpecialistId=$specialistId"));
 
     // print("done${response.body}");
@@ -428,25 +391,9 @@ Future<List<ServiceInfo>?> getAllServiceInfoList(
   }
 }
 
-Future<List<DoctorSpecialistt>?> getAllDoctorSpecialist() async {
-  final response = await http
-      .get(Uri.parse(apiPath + "/DoctorSpecialist/GetAll?Offset=1&Limit=100"));
-  try {
-    if (response.statusCode == 200) {
-      // print(response.body);
-      return doctorSpecialistDataFromJson(response.body).doctorSpecialist;
-    } else {
-      // print(response.statusCode);
-      return null;
-    }
-  } catch (e) {
-    throw e;
-  }
-}
-
 Future<List<ServiceSpecialist>?> getAllServiceSpecialist() async {
-  final response = await http
-      .get(Uri.parse(apiPath + "/ServiceSpecialist/GetAll?Offset=1&Limit=100"));
+  final response = await http.get(Uri.parse(
+      Constants.apiPath + "/ServiceSpecialist/GetAll?Offset=1&Limit=100"));
   try {
     if (response.statusCode == 200) {
       // print(response.body);
@@ -460,26 +407,11 @@ Future<List<ServiceSpecialist>?> getAllServiceSpecialist() async {
   }
 }
 
-Future<DoctorDetailsData?> getDoctorByID(String doctorId) async {
-  final response =
-      await http.get(Uri.parse(apiPath + "/Doctor/getById/$doctorId"));
-  try {
-    if (response.statusCode == 200) {
-      // print(response.body);
-      return doctorDetailsDataFromJson(response.body);
-    } else {
-      return null;
-    }
-  } catch (e) {
-    throw e;
-  }
-}
-
 Future<void> signIn(String email, String password) async {
   // print(email + " " + password);
   try {
     final http.Response response = await http.post(
-        Uri.parse(apiPath + "/User/OnPost/authenticate"),
+        Uri.parse(Constants.apiPath + "/User/OnPost/authenticate"),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -506,7 +438,7 @@ Future<void> signIn(String email, String password) async {
 Future<String> userGoogleSignIn(String? accessToken) async {
   try {
     final http.Response response = await http.post(
-      Uri.parse(apiPath + "/User/GoogleRegisterLogin"),
+      Uri.parse(Constants.apiPath + "/User/GoogleRegisterLogin"),
       headers: {
         'Content-Type': 'application/json',
         'access_token': accessToken!,
@@ -537,7 +469,7 @@ Future<void> register(
   // print(email + " " + password + " " + firstName + " " + lastName);
   try {
     final http.Response response =
-        await http.post(Uri.parse(apiPath + "/User/PostUser"),
+        await http.post(Uri.parse(Constants.apiPath + "/User/PostUser"),
             headers: {
               'Content-Type': 'application/json',
             },
@@ -574,20 +506,20 @@ Future<String> userFacebookSignIn(String? email, String authToken,
           "provider": "FACEBOOK",
           "name": name
         })}");
-    final response =
-        await http.post(Uri.parse("$apiPath/User/FaceBookRegisterlogin"),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: json.encode({
-              "authToken": authToken,
-              "email": email,
-              "fristName": firstName,
-              "id": userId,
-              "lastName": lastName,
-              "provider": "FACEBOOK",
-              "name": name
-            }));
+    final response = await http.post(
+        Uri.parse("$Constants.apiPath/User/FaceBookRegisterlogin"),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          "authToken": authToken,
+          "email": email,
+          "fristName": firstName,
+          "id": userId,
+          "lastName": lastName,
+          "provider": "FACEBOOK",
+          "name": name
+        }));
 
     print("abdo 111 ${response.statusCode}");
     final resultData = json.decode(response.body);

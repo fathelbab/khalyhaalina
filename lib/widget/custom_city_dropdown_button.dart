@@ -3,6 +3,7 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/model/city_data.dart';
 import 'package:eshop/provider/city_provider.dart';
+import 'package:eshop/utils/cache_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,11 +16,13 @@ class CustomCityDropDownButton extends StatefulWidget {
 class _CustomCityDropDownButtonState extends State<CustomCityDropDownButton> {
   String cityId = "0";
   List<City>? cityList = [];
+  late String locale;
 
   String? _selectedCity;
   @override
   void initState() {
     super.initState();
+    locale = CacheHelper.getPrefs(key: "locale") ?? "ar";
   }
 
   @override
@@ -66,24 +69,43 @@ class _CustomCityDropDownButtonState extends State<CustomCityDropDownButton> {
             onChanged: (dynamic newValue) {
               setState(() {
                 _selectedCity = newValue;
-                cityId = cityList!
-                    .firstWhereOrNull((city) => (city.name == _selectedCity))!
-                    .id
-                    .toString();
+                locale == "ar"
+                    ? cityId = cityList!
+                        .firstWhereOrNull(
+                            (city) => (city.nameAr == _selectedCity))!
+                        .id
+                        .toString()
+                    : cityId = cityList!
+                        .firstWhereOrNull(
+                            (city) => (city.nameEn == _selectedCity))!
+                        .id
+                        .toString();
               });
-              saveNewValue(cityId,_selectedCity.toString());
+              saveNewValue(cityId, _selectedCity.toString());
             },
-            items: cityList!
-                .map(
-                  (city) => DropdownMenuItem(
-                    value: city.name,
-                    child: Text(
-                      city.name ?? "",
-                      style: TextStyle(color: Colors.black, fontSize: 20),
-                    ),
-                  ),
-                )
-                .toList()),
+            items: locale == "ar"
+                ? cityList!
+                    .map(
+                      (city) => DropdownMenuItem(
+                        value: city.nameAr,
+                        child: Text(
+                          city.nameAr ?? "",
+                          style: TextStyle(color: Colors.black, fontSize: 20),
+                        ),
+                      ),
+                    )
+                    .toList()
+                : cityList!
+                    .map(
+                      (city) => DropdownMenuItem(
+                        value: city.nameEn,
+                        child: Text(
+                          city.nameEn ?? "",
+                          style: TextStyle(color: Colors.black, fontSize: 20),
+                        ),
+                      ),
+                    )
+                    .toList()),
       ),
     );
   }

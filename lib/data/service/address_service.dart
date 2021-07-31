@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 Future<List<Governate>?> getAllGovernate(int offset, int limit) async {
   final response = await http.get(
-      Uri.parse(Constants.apiPath + "Counteries?Offset=$offset&Limit=$limit"));
+      Uri.parse(Constants.apiPath + "/Counteries?Offset=$offset&Limit=$limit"));
   try {
     if (response.statusCode == 200) {
       print(response.body);
@@ -22,7 +22,7 @@ Future<List<Governate>?> getAllGovernate(int offset, int limit) async {
 Future<List<City>?> getCityByGovernateId(
     int offset, int limit, String governateId) async {
   final response = await http.get(Uri.parse(Constants.apiPath +
-      "City/GetCityByCountery?Offset=$offset&Limit=$limit&Counteryid=$governateId"));
+      "/City/GetCityByCountery?Offset=$offset&Limit=$limit&Counteryid=$governateId"));
   try {
     if (response.statusCode == 200) {
       print(response.body);

@@ -19,8 +19,9 @@ import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/provider/service_provider.dart';
 import 'package:eshop/provider/supplier_provider.dart';
 import 'package:eshop/screen/address/governorate_screen.dart';
-import 'package:eshop/screen/home/doctor_section.dart';
-import 'package:eshop/screen/home/service_section.dart';
+import 'package:eshop/screen/home/sections/doctor_section.dart';
+import 'package:eshop/screen/home/sections/main_category.dart';
+import 'package:eshop/screen/home/sections/service_section.dart';
 import 'package:eshop/screen/login/login.dart';
 import 'package:eshop/screen/product_screen.dart';
 import 'package:eshop/screen/search/search_screen.dart';
@@ -43,42 +44,8 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
-  List<Map<String, dynamic>> categoryList = [
-    {"id": 1, "name": "الماركت"},
-    {"id": 2, "name": "ملابس رجالي"},
-    {"id": 3, "name": "ملابس حريمي"},
-    {"id": 4, "name": "ملابس أطفال"},
-    {"id": 5, "name": "أحذيه رجالي"},
-    {"id": 6, "name": "أحذيه حريمي"},
-    {"id": 7, "name": "أحذيه أطفال"},
-    {"id": 16, "name": "بصريات"},
-    {"id": 8, "name": "الموبايلات"},
-    {"id": 9, "name": "الأجهزة ومستلزمات المطبخ "},
-    {"id": 10, "name": "العقارات"},
-    {"id": 11, "name": " الاثاث المنزلي والمكتبى"},
-    {"id": 12, "name": "المطاعم و الحلويات"},
-    {"id": 14, "name": " فلاتر المياة والتبريد و التكييف"},
-    {"id": 15, "name": "هدايا وأكسسوارات"},
-    {"id": 13, "name": "الصيدلية"},
-  ];
-  List<Map<String, dynamic>> categoryIcon = [
-    {"icons": Icons.store, "id": 1},
-    {"icons": FontAwesomeIcons.tshirt, "id": 1},
-    {"icons": "assets/images/jacket.png", "id": 2},
-    {"icons": "assets/images/baby-clothes.png", "id": 2},
-    {"icons": "assets/images/shoes.png", "id": 2},
-    {"icons": "assets/images/high-heels.png", "id": 2},
-    {"icons": "assets/images/baby-shoe.png", "id": 2},
-    {"icons": FontAwesomeIcons.glasses, "id": 1},
-    {"icons": FontAwesomeIcons.mobile, "id": 1},
-    {"icons": Icons.electrical_services, "id": 1},
-    {"icons": FontAwesomeIcons.building, "id": 1},
-    {"icons": FontAwesomeIcons.chair, "id": 1},
-    {"icons": FontAwesomeIcons.coffee, "id": 1},
-    {"icons": Icons.devices_other, "id": 1},
-    {"icons": FontAwesomeIcons.gifts, "id": 1},
-    {"icons": Icons.medical_services, "id": 1},
-  ];
+
+
   List<City> cityList = [];
   List<DoctorSpecialistt> doctorSpeciaList = [];
   List<AnnouncementData>? announcementList = [];
@@ -103,7 +70,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   late String cityName;
   late String governorateName;
   final _searchController = TextEditingController();
-  final GlobalKey<ScaffoldState> _scaffoldKey =  GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -114,8 +81,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
     super.initState();
 
     // Provider.of<ConnectivityProvider>(context, listen: false).startMonitoring();
-    // Provider.of<CategoryProvider>(context, listen: false)
-    //     .fetchCategoryList(1, limit);
+    Provider.of<CategoryProvider>(context, listen: false)
+        .fetchMainCategoryList(1, 100);
 
     /**
      * first load all service list from api
@@ -156,7 +123,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
           _categoryScrollController.position.maxScrollExtent) {
         limit += 5;
         Provider.of<CategoryProvider>(context, listen: false)
-            .fetchCategoryList(1, limit);
+            .fetchMainCategoryList(1, limit);
       } else {}
     });
   }
@@ -196,9 +163,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
         ),
         leading: IconButton(
           onPressed: () => _scaffoldKey.currentState!.openDrawer(),
-          icon: Icon(
-            FontAwesomeIcons.th
-          ),
+          icon: Icon(FontAwesomeIcons.th),
         ),
         actions: [
           // Row(
@@ -705,77 +670,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
           );
   }
 
-  Widget buildMainCategoryListView() {
-    return Container(
-      height: 120,
-      width: 120,
-      child: ListView.builder(
-        controller: _categoryScrollController,
-        itemCount: categoryList.length,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              Provider.of<SupplierProvider>(context, listen: false)
-                  .fetchSupplierList(
-                      categoryList[index]["id"].toString(), 1, limit)
-                  .then((value) {
-                setState(() {
-                  isLoaded = false;
-                });
-              });
-
-              setState(() {
-                isService = false;
-                isDoctor = false;
-                isHome = false;
-                isLoaded = true;
-              });
-            },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                  height: 80,
-                  width: 80,
-                  child: CircleAvatar(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    child: Center(
-                      child: categoryIcon[index]["id"] == 1
-                          ? Icon(
-                              categoryIcon[index]["icons"],
-                              color: Colors.white,
-                              size: 30,
-                            )
-                          : Image.asset(
-                              categoryIcon[index]["icons"],
-                              width: 30,
-                              height: 30,
-                              fit: BoxFit.fill,
-                            ),
-                    ),
-                  ),
-                ),
-                Text(
-                  categoryList[index]["name"],
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Color(0XFFE5A352),
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-    );
-  }
-
   scafoldBody() {
     if (isDoctor == false && isService == false) {
       return Container(
@@ -929,10 +823,16 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   )
                 : Container(),
             isHome ? buildAnnouncementSlider() : Container(),
-            buildMainCategoryListView(),
-            isHome ? buildImagesSlider() : Container(),
-            isHome ? buildProductHotList() : Container(),
-            isHome ? buildNotificationsSlider() : Container(),
+            MainCategorySection(),
+            // isHome ?
+            buildImagesSlider(),
+            // : Container(),
+            // isHome ?
+            buildProductHotList(),
+            // : Container(),
+            // isHome ?
+            buildNotificationsSlider(),
+            // : Container(),
             !isHome && !isLoaded
                 ? supplierList == null || supplierList!.isEmpty
                     ? Text("")
@@ -957,27 +857,27 @@ class _CategoryScreenState extends State<CategoryScreen> {
                             return GestureDetector(
                               onTap: () {
                                 // print("object");
-                                Provider.of<ProductProvider>(context,
-                                        listen: false)
-                                    .clearProductList();
-                                Provider.of<ProductProvider>(context,
-                                        listen: false)
-                                    .fetchProductList(
-                                        supplierList![index].id.toString(),
-                                        categoryId,
-                                        "",
-                                        1,
-                                        limit);
+                                // Provider.of<ProductProvider>(context,
+                                //         listen: false)
+                                //     .clearProductList();
+                                // Provider.of<ProductProvider>(context,
+                                //         listen: false)
+                                //     .fetchProductList(
+                                //         supplierList![index].id.toString(),
+                                //         categoryId,
+                                //         "",
+                                //         1,
+                                //         limit);
                                 print(limit);
-                                Navigator.pushNamed(
-                                    context, ProductScreen.route,
-                                    arguments: {
-                                      "supplierId":
-                                          supplierList![index].id.toString(),
-                                      "categoryId": categoryId,
-                                      "supplierName":
-                                          supplierList![index].name.toString(),
-                                    });
+                                // Navigator.pushNamed(
+                                //     context, ProductScreen.route,
+                                //     arguments: {
+                                //       "supplierId":
+                                //           supplierList![index].id.toString(),
+                                //       "categoryId": categoryId,
+                                //       "supplierName":
+                                //           supplierList![index].name.toString(),
+                                //     });
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -998,7 +898,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                       height: 70.0,
                                       width: 65.0,
                                       child: CachedNetworkImage(
-                                        imageUrl: imagePath +
+                                        imageUrl: Constants.imagePath +
                                             supplierList![index].imagePath!,
                                         fit: BoxFit.fill,
                                         placeholder: (context, url) => Center(
@@ -1009,7 +909,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                     ),
                                     SizedBox(height: 5.0),
                                     Text(
-                                      supplierList![index].name!,
+                                      supplierList![index].nameAr!,
                                       textAlign: TextAlign.center,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(

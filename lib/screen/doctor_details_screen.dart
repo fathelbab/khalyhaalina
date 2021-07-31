@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eshop/constant/constant.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/provider/doctor_provider.dart';
+import 'package:eshop/utils/contants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -51,7 +52,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                             child: CachedNetworkImage(
                               width: 100,
                               height: 120,
-                              imageUrl: imagePath + doctorDetails.imagePath!,
+                              imageUrl: Constants.imagePath + doctorDetails.imagePath!,
                               fit: BoxFit.fill,
                               placeholder: (context, url) =>
                                   Center(child: CircularProgressIndicator()),

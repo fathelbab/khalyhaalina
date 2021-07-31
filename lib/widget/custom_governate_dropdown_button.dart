@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:eshop/model/governate_data.dart';
 import 'package:eshop/provider/city_provider.dart';
+import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/components.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,11 +16,12 @@ class GovernateDropDownButton extends StatefulWidget {
 class _GovernateDropDownButtonState extends State<GovernateDropDownButton> {
   String governateId = "0";
   List<Governate>? governateList = [];
-
+  late String locale;
   String? _selectedGovernate;
   @override
   void initState() {
     super.initState();
+    locale = CacheHelper.getPrefs(key: "locale") ?? "ar";
   }
 
   @override
@@ -66,23 +68,38 @@ class _GovernateDropDownButtonState extends State<GovernateDropDownButton> {
             onChanged: (dynamic newValue) {
               setState(() {
                 _selectedGovernate = newValue;
-                governateId = governateList!
-                    .firstWhereOrNull(
-                        (governate) => (governate.name == _selectedGovernate))!
-                    .id
-                    .toString();
+                locale == "ar"
+                    ? governateId = governateList!
+                        .firstWhereOrNull((governate) =>
+                            (governate.nameAr == _selectedGovernate))!
+                        .id
+                        .toString()
+                    : governateId = governateList!
+                        .firstWhereOrNull((governate) =>
+                            (governate.nameEn == _selectedGovernate))!
+                        .id
+                        .toString();
+                ;
               });
               saveNewValue(context, governateId, _selectedGovernate.toString());
             },
             items: governateList!
                 .map(
-                  (governate) => DropdownMenuItem(
-                    value: governate.name,
-                    child: Text(
-                      governate.name ?? "",
-                      style: TextStyle(color: Colors.black, fontSize: 20),
-                    ),
-                  ),
+                  (governate) => locale == "ar"
+                      ? DropdownMenuItem(
+                          value: governate.nameAr,
+                          child: Text(
+                            governate.nameAr ?? "",
+                            style: TextStyle(color: Colors.black, fontSize: 20),
+                          ),
+                        )
+                      : DropdownMenuItem(
+                          value: governate.nameEn,
+                          child: Text(
+                            governate.nameEn ?? "",
+                            style: TextStyle(color: Colors.black, fontSize: 20),
+                          ),
+                        ),
                 )
                 .toList()),
       ),

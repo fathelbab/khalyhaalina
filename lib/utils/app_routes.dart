@@ -15,6 +15,7 @@ import 'package:eshop/screen/services/services_screen.dart';
 import 'package:eshop/screen/settings/settings.dart';
 import 'package:eshop/screen/signup/signup.dart';
 import 'package:eshop/screen/splash/splash_app_screen.dart';
+import 'package:eshop/screen/supplier/supplier_screen.dart';
 import 'package:flutter/material.dart';
 
 Map<String, Widget Function(BuildContext)> appRoutes(context) {
@@ -37,5 +38,6 @@ Map<String, Widget Function(BuildContext)> appRoutes(context) {
     SettingsScreen.route: (context) => SettingsScreen(),
     GovernorateScreen.route: (context) => GovernorateScreen(),
     IntroScreen.route: (context) => IntroScreen(),
+    SupplierScreen.route: (context) => SupplierScreen(),
   };
 }

@@ -34,7 +34,7 @@ class Badge extends StatelessWidget {
               textAlign: TextAlign.center,
               locale: Locale("en", ""),
               style: TextStyle(
-                fontSize: 10,
+                fontSize: 12,
               ),
             ),
           ),

@@ -4,9 +4,9 @@
 
 import 'dart:convert';
 
-CityData  cityDataFromJson(String  str) => CityData.fromJson(json.decode(str));
+CityData cityDataFromJson(String str) => CityData.fromJson(json.decode(str));
 
-String  cityDataToJson(CityData  data) => json.encode(data.toJson());
+String cityDataToJson(CityData data) => json.encode(data.toJson());
 
 class CityData {
   CityData({
@@ -17,19 +17,18 @@ class CityData {
   });
 
   int? offset;
-  List<City >? city;
+  List<City>? city;
   int? limit;
   int? length;
 
-  factory CityData.fromJson(Map<String , dynamic>  json) => CityData(
+  factory CityData.fromJson(Map<String, dynamic> json) => CityData(
         offset: json["offset"],
-        city:
-            List<City >.from(json["result"].map((x) => City.fromJson(x))),
+        city: List<City>.from(json["result"].map((x) => City.fromJson(x))),
         limit: json["limit"],
         length: json["length"],
       );
 
-  Map<String , dynamic>  toJson() => {
+  Map<String, dynamic> toJson() => {
         "offset": offset,
         "result": List<dynamic>.from(city!.map((x) => x.toJson())),
         "limit": limit,
@@ -47,7 +46,8 @@ class City {
     this.isDeleted,
     this.createdBy,
     this.updatedBy,
-    this.name,
+    this.nameAr,
+    this.nameEn,
     this.counteryid,
     this.countery,
     this.suppliers,
@@ -63,14 +63,15 @@ class City {
   bool? isDeleted;
   dynamic createdBy;
   dynamic updatedBy;
-  String? name;
+  String? nameAr;
+  String? nameEn;
   int? counteryid;
   Countery? countery;
   List<dynamic>? suppliers;
   dynamic doctors;
   dynamic services;
 
-  factory City.fromJson(Map<String , dynamic>  json) => City(
+  factory City.fromJson(Map<String, dynamic> json) => City(
         id: json["id"],
         order: json["order"],
         createdDate: DateTime.parse(json["createdDate"]),
@@ -79,7 +80,8 @@ class City {
         isDeleted: json["isDeleted"],
         createdBy: json["createdBy"],
         updatedBy: json["updatedBy"],
-        name: json["name"],
+        nameAr: json["nameAr"],
+        nameEn: json["nameEn"],
         counteryid: json["counteryid"],
         countery: Countery.fromJson(json["countery"]),
         suppliers: List<dynamic>.from(json["suppliers"].map((x) => x)),
@@ -87,7 +89,7 @@ class City {
         services: json["services"],
       );
 
-  Map<String , dynamic>  toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "order": order,
         "createdDate": createdDate!.toIso8601String(),
@@ -96,7 +98,8 @@ class City {
         "isDeleted": isDeleted,
         "createdBy": createdBy,
         "updatedBy": updatedBy,
-        "name": name,
+        "nameAr": nameAr,
+        "nameEn": nameEn,
         "counteryid": counteryid,
         "countery": countery!.toJson(),
         "suppliers": List<dynamic>.from(suppliers!.map((x) => x)),
@@ -116,18 +119,15 @@ class Countery {
   String? nameAr;
   String? nameEn;
 
-  factory Countery.fromJson(Map<String , dynamic>  json) => Countery(
+  factory Countery.fromJson(Map<String, dynamic> json) => Countery(
         id: json["id"],
         nameAr: json["nameAr"],
         nameEn: json["nameEn"],
       );
 
-  Map<String , dynamic>  toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "nameAr": nameAr,
         "nameEn": nameEn,
       };
 }
-
-
-        

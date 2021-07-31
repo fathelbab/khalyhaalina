@@ -41,19 +41,23 @@ class GovernateData {
 class Governate {
   Governate({
     this.id,
-    this.name,
+    this.nameAr,
+    this.nameEn,
   });
 
   int? id;
-  String? name;
+  String? nameAr;
+  String? nameEn;
 
   factory Governate.fromJson(Map<String, dynamic> json) => Governate(
         id: json["id"],
-        name: json["name"],
+        nameAr: json["nameAr"],
+        nameEn: json["nameEn"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "name": name,
+        "nameAr": nameAr,
+        "nameEn": nameEn,
       };
 }

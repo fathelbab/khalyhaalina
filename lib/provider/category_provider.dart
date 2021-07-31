@@ -1,13 +1,13 @@
-import 'package:eshop/data/service/services.dart';
-import 'package:eshop/model/category_data.dart';
+import 'package:eshop/data/service/category_service.dart';
+import 'package:eshop/model/main_category.dart';
 import 'package:flutter/widgets.dart';
 
 class CategoryProvider extends ChangeNotifier {
-  List<Category>? _categoryList = [];
-  fetchCategoryList(int offset, int limit) async {
-    _categoryList = await fetchCategory(offset, limit);
+  List<MainCategory>? _mainCategoryList = [];
+  fetchMainCategoryList(int offset, int limit) async {
+    _mainCategoryList = await fetchMainCategory(offset, limit);
     notifyListeners();
   }
 
-  List<Category>? get categoryList => _categoryList;
+  List<MainCategory>? get mainCategory => _mainCategoryList;
 }

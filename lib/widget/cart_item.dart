@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:eshop/constant/constant.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/provider/cart.dart';
+import 'package:eshop/utils/contants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
@@ -76,7 +76,7 @@ class CartItem extends StatelessWidget {
             leading: ClipRRect(
               child: FittedBox(
                 child: CachedNetworkImage(
-                  imageUrl: imagePath + image!,
+                  imageUrl: Constants.imagePath + image!,
                   fit: BoxFit.fill,
                   placeholder: (context, url) =>
                       Center(child:  const SpinKitChasingDots(

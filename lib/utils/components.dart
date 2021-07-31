@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 // const String apiPath = "http://eshop5827-001-site3.etempurl.com/api";
-const String apiPath = "https://api.khlihaalina.com/api";
+// const String apiPath = "https://api.khlihaalina.com/api";
 // const String imagePath = "http://eshop5827-001-site3.etempurl.com";
-const String imagePath = "https://api.khlihaalina.com/";
+// const String imagePath = "https://api.khlihaalina.com/";
 const Color primaryColor = Color(0xFF5c8bb0);
 const Color secondaryColor = Color(0XFFE5A352);
 Future<bool> checkContection() async {
