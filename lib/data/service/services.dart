@@ -14,33 +14,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 // headers: {HttpHeaders.contentTypeHeader: "application/json",
 // HttpHeaders.authorizationHeader: "Bearer $token"}
 
-Future<List<Product>?> fetchProduct(String? supplierId, String? categoryId,
-    String searchTerm, int offset, int limit) async {
-  final response = await http.get(Uri.parse(Constants.apiPath +
-      "/Product/GetAll?CategoryId=$categoryId&SupplierId=$supplierId&SearchTerm=$searchTerm&Offset=1&Limit=$limit"));
-  // print(apiPath
-  //     "/Product/GetAll?CategoryId=$categoryId&SupplierId=$supplierId&Offset=1&Limit=100");
-  if (response.statusCode == 200) {
-    // print(response.body);
-    return productDataFromJson(response.body).product;
-  } else {
-    // print(response.statusCode);
-    return null;
-  }
-}
 
-Future<List<Product>?> fetchProductHot(
-    String supplierId, String categoryId, int offset, int limit) async {
-  final response = await http.get(Uri.parse(Constants.apiPath +
-      "/Product/GetAllHot?Offset=1&Limit=200&SupplierId=0&CategoryId=0"));
-  // print("abdo ${response.body}");
-  if (response.statusCode == 200) {
-    return productDataFromJson(response.body).product;
-  } else {
-    // print(response.statusCode);
-    return null;
-  }
-}
+
+
 
 Future<List<Product>?> searchWithTerm(
     String? searchTerm, int offset, int limit) async {
@@ -259,23 +235,6 @@ Future<String> sendCompliatOrSuggestion(String firstName, String lastName,
     // print("abdo" + response.body.toString());
   } catch (e) {
     throw e;
-  }
-}
-
-Future<List<Supplier>?> fetchSupplier(
-    String categoryId, String cityId, int offset, int limit) async {
-  final response = await http.get(Uri.parse(Constants.apiPath +
-      "/Supplier/GetAll?CityId=$cityId&CategoryId=$categoryId&Offset=1&Limit=$limit"));
-
-  if (response.statusCode == 200) {
-    SupplierData supplierDataFromJson(String str) =>
-        SupplierData.fromJson(json.decode(str));
-
-    // print(response.body);
-    return supplierDataFromJson(response.body).supplier;
-  } else {
-    // print(response.statusCode);
-    return null;
   }
 }
 

@@ -80,5 +80,6 @@
     "cityError": "Please select your city!",
     "search": "Search",
     "deliveryText": "Delivery",
-    "category": "Category"
+    "category": "Category",
+    "noProductAvailable": "No Products Available"
 }

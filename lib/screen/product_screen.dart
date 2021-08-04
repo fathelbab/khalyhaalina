@@ -1,8 +1,9 @@
-import 'package:eshop/constant/constant.dart';
-import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/model/product_data.dart';
+import 'package:eshop/model/supplier_category.dart';
 import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/product_provider.dart';
+import 'package:eshop/provider/supplier_provider.dart';
+import 'package:eshop/utils/components.dart';
 import 'package:eshop/widget/badge.dart';
 import 'package:eshop/widget/product_item.dart';
 import 'package:flutter/material.dart';
@@ -18,13 +19,20 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-  List<Product>? productList = [];
+  List<Product>? _productList = [];
   String? supplierId = "0";
   String? categoryId = "0";
   String? supplierName = "";
   int limit = 20;
   final _searchController = TextEditingController();
   ScrollController _productScrollController = new ScrollController();
+  bool isLoading = false;
+  int mainCategorySelectedIndex = 0;
+  int subCategorySelectedIndex = 0;
+  late String locale;
+  List<Category>? _supplierMainCategory;
+  List<Category>? _supplierSubCategory;
+  ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
@@ -38,8 +46,8 @@ class _ProductScreenState extends State<ProductScreen> {
         limit += 20;
         Provider.of<ProductProvider>(context, listen: false)
             .fetchProductList(supplierId, categoryId, "", 1, limit);
-        print(limit);
-      } else {}
+        // print(limit);
+      }
     });
   }
 
@@ -47,14 +55,21 @@ class _ProductScreenState extends State<ProductScreen> {
   Widget build(BuildContext context) {
     Map args = ModalRoute.of(context)!.settings.arguments as Map;
     supplierId = args["supplierId"];
-    categoryId = args["categoryId"];
+    // categoryId = args["categoryId"];
     supplierName = args["supplierName"];
-    productList = Provider.of<ProductProvider>(context).productList;
+    var productProvider = Provider.of<ProductProvider>(context);
+    var supplierProvider = Provider.of<SupplierProvider>(context);
+    _supplierMainCategory = supplierProvider.supplierMainCategory;
+    _supplierSubCategory = supplierProvider.supplierSubCategory;
+    _productList = productProvider.productList;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(supplierName != null
-            ? supplierName.toString()
-            : AppLocale.of(context)!.getString('product')!),
+        elevation: 0,
+        title: Text(
+          supplierName.toString(),
+          style: TextStyle(fontSize: 20),
+        ),
         actions: [
           Consumer<Cart>(
             builder: (_, cart, child) => Badge(
@@ -74,83 +89,163 @@ class _ProductScreenState extends State<ProductScreen> {
       ),
       body: Column(
         children: [
-          Container(
-            margin: const EdgeInsets.only(right: 15, left: 15, top: 5),
-            padding: const EdgeInsets.only(right: 10, left: 5),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(30),
-                boxShadow: kElevationToShadow[6]),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                      child: TextField(
-                    controller: _searchController,
-                    onSubmitted: (value) {
-                      print(value);
+          if (_supplierMainCategory != null &&
+              _supplierMainCategory!.isNotEmpty)
+            Container(
+              width: double.infinity,
+              height: 50,
+              color: primaryColor,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemCount: _supplierMainCategory!.length,
+                itemBuilder: (context, index) => GestureDetector(
+                  onTap: () {
+                    if (_supplierMainCategory![index].childs != null &&
+                        _supplierMainCategory![index].childs!.isNotEmpty) {
                       Provider.of<ProductProvider>(context, listen: false)
                           .fetchProductList(
-                              supplierId, categoryId, value, 1, limit);
-                    },
-                    decoration: InputDecoration(
-                        hintText: 'البحث',
-                        hintStyle: TextStyle(
-                            color: primaryColor, fontWeight: FontWeight.bold),
-                        border: InputBorder.none),
-                  )),
-                ),
-                Container(
-                  margin: const EdgeInsets.all(5),
-                  child: Material(
-                    type: MaterialType.transparency,
-                    child: InkWell(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(32),
-                        topRight: Radius.circular(32),
-                        bottomLeft: Radius.circular(32),
-                        bottomRight: Radius.circular(32),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Icon(
-                          Icons.close,
-                          // isSearch ? Icons.close : Icons.search,
-                          color: primaryColor,
+                              supplierId,
+                              _supplierMainCategory![index]
+                                  .childs![0]
+                                  .id
+                                  .toString(),
+                              "",
+                              1,
+                              limit)
+                          .then((value) {
+                        setState(() {
+                          isLoading = false;
+                        });
+                      });
+                      setState(() {
+                        isLoading = true;
+                        mainCategorySelectedIndex = index;
+                        categoryId = _supplierMainCategory![index]
+                            .childs![0]
+                            .id
+                            .toString();
+                      });
+                    } else {
+                      Provider.of<ProductProvider>(context, listen: false)
+                          .fetchProductList(
+                              supplierId,
+                              _supplierMainCategory![index].id.toString(),
+                              "",
+                              1,
+                              limit)
+                          .then((value) {
+                        setState(() {
+                          isLoading = false;
+                        });
+                      });
+                      setState(() {
+                        isLoading = true;
+                        mainCategorySelectedIndex = index;
+                        categoryId = _supplierSubCategory![index].id.toString();
+                      });
+                    }
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: mainCategorySelectedIndex == index
+                                ? secondaryColor
+                                : Colors.grey,
+                            width: 2),
+                        borderRadius: BorderRadius.circular(10)),
+                    margin: const EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
+                    child: Center(
+                      child: Text(
+                        _supplierMainCategory![index].name.toString(),
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
                       ),
-                      onTap: () {
-                        print(_searchController.text);
-                        if (_searchController.text.isNotEmpty) {
-                          _searchController.clear();
-                          Provider.of<ProductProvider>(context, listen: false)
-                              .fetchProductList(
-                                  supplierId, categoryId, "", 1, limit);
-                        }
-                      },
                     ),
                   ),
-                )
-              ],
+                ),
+              ),
             ),
-          ),
+          if (_supplierSubCategory != null && _supplierSubCategory!.isNotEmpty)
+            Container(
+              width: double.infinity,
+              height: 50,
+              color: primaryColor,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemCount: _supplierSubCategory!.length,
+                itemBuilder: (context, index) => GestureDetector(
+                  onTap: () {
+                    Provider.of<ProductProvider>(context, listen: false)
+                        .fetchProductList(
+                            supplierId,
+                            _supplierSubCategory![index].id.toString(),
+                            "",
+                            1,
+                            limit)
+                        .then((value) {
+                      setState(() {
+                        isLoading = false;
+                      });
+                    });
+
+                    setState(() {
+                      subCategorySelectedIndex = index;
+                      isLoading = true;
+                      categoryId = _supplierMainCategory![index].id.toString();
+                    });
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: subCategorySelectedIndex == index
+                                ? secondaryColor
+                                : Colors.grey,
+                            width: 2),
+                        borderRadius: BorderRadius.circular(10)),
+                    margin: const EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
+                    child: Center(
+                      child: Text(
+                        _supplierSubCategory![index].name.toString(),
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           Expanded(
             child: Container(
               padding: EdgeInsets.all(10),
-              child: productList == null
+              child: isLoading
                   ? Center(
                       child: CircularProgressIndicator(),
                     )
-                  : productList!.length == 0
-                      // ? Center(child: Text('لايوجد منتجات متاحة'))
+                  : _productList == null || _productList!.length == 0
                       ? Center(
-                          child: CircularProgressIndicator(),
+                          child: Text(
+                            getString(context, "noProductAvailable"),
+                            style: TextStyle(fontSize: 20),
+                          ),
                         )
+                      // ? Center(
+                      //     child: CircularProgressIndicator(),
+                      //   )
                       : LayoutBuilder(
                           builder: (context, constraints) {
                             return GridView.builder(
                                 controller: _productScrollController,
-                                itemCount: productList!.length,
+                                itemCount: _productList!.length,
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisSpacing: 4,
@@ -161,7 +256,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                 ),
                                 itemBuilder: (context, index) {
                                   return ProductItems(
-                                      product: productList![index],
+                                      product: _productList![index],
                                       index: index);
                                 });
                           },

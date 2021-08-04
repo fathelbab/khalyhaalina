@@ -64,7 +64,8 @@ class _ProductItemsState extends State<ProductItems> {
                       tag: widget.product.id!,
                       child: Container(
                         child: CachedNetworkImage(
-                          imageUrl: Constants.imagePath + widget.product.imagePath!,
+                          imageUrl:
+                              Constants.imagePath + widget.product.imagePath!,
                           fit: BoxFit.contain,
                           placeholder: (context, url) => Center(
                             child: const SpinKitChasingDots(
@@ -106,9 +107,9 @@ class _ProductItemsState extends State<ProductItems> {
                       right: 1,
                       child: productDiscount != 0
                           ? Container(
-                              padding:const EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                   right: 10, left: 10, top: 5, bottom: 5),
-                                  margin:const EdgeInsets.all(5) ,
+                              margin: const EdgeInsets.all(5),
                               decoration: BoxDecoration(
                                 color: Color(0xFFF8973D),
                                 shape: BoxShape.rectangle,
@@ -126,7 +127,7 @@ class _ProductItemsState extends State<ProductItems> {
                 ),
               ),
               Text(
-                widget.product.name!,
+                widget.product.nameAr!,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
                 style: TextStyle(

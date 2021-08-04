@@ -13,35 +13,35 @@ String supplierCategoryToJson(SupplierCategory data) =>
 class SupplierCategory {
   SupplierCategory({
     this.offset,
-    this.result,
+    this.category,
     this.limit,
     this.length,
   });
 
   int? offset;
-  List<Result>? result;
+  List<Category>? category;
   int? limit;
   int? length;
 
   factory SupplierCategory.fromJson(Map<String, dynamic> json) =>
       SupplierCategory(
         offset: json["offset"],
-        result:
-            List<Result>.from(json["result"].map((x) => Result.fromJson(x))),
+        category: List<Category>.from(
+            json["result"].map((x) => Category.fromJson(x))),
         limit: json["limit"],
         length: json["length"],
       );
 
   Map<String, dynamic> toJson() => {
         "offset": offset,
-        "result": List<dynamic>.from(result!.map((x) => x.toJson())),
+        "result": List<dynamic>.from(category!.map((x) => x.toJson())),
         "limit": limit,
         "length": length,
       };
 }
 
-class Result {
-  Result({
+class Category {
+  Category({
     this.id,
     this.name,
     this.order,
@@ -53,16 +53,17 @@ class Result {
   String? name;
   dynamic order;
   DateTime? createdDate;
-  List<Result>? childs;
+  List<Category>? childs;
 
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
+  factory Category.fromJson(Map<String, dynamic> json) => Category(
         id: json["id"],
         name: json["name"],
         order: json["order"],
         createdDate: DateTime.parse(json["createdDate"]),
         childs: json["childs"] == null
             ? null
-            : List<Result>.from(json["childs"].map((x) => Result.fromJson(x))),
+            : List<Category>.from(
+                json["childs"].map((x) => Category.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {

@@ -1,53 +1,57 @@
 // To parse this JSON data, do
 //
-//     final productData = productDataFromJson(jsonString);
+//     final product = productFromJson(jsonString);
 
 import 'dart:convert';
 
 ProductData productDataFromJson(String str) =>
     ProductData.fromJson(json.decode(str));
 
-String productDataToJson(ProductData data) => json.encode(data.toJson());
+String productToJson(ProductData data) => json.encode(data.toJson());
 
 class ProductData {
-  int? offset;
-  int? limit;
-  int? length;
-  List<Product>? product;
-
   ProductData({
     this.offset,
+    this.product,
     this.limit,
     this.length,
-    this.product,
   });
+
+  int? offset;
+  List<Product>? product;
+  int? limit;
+  int? length;
 
   factory ProductData.fromJson(Map<String, dynamic> json) => ProductData(
         offset: json["offset"],
-        limit: json["limit"],
-        length: json["length"],
         product:
             List<Product>.from(json["result"].map((x) => Product.fromJson(x))),
+        limit: json["limit"],
+        length: json["length"],
       );
 
   Map<String, dynamic> toJson() => {
         "offset": offset,
+        "result": List<dynamic>.from(product!.map((x) => x.toJson())),
         "limit": limit,
         "length": length,
-        "result": List<dynamic>.from(product!.map((x) => x.toJson())),
       };
 }
 
 class Product {
   Product({
     this.id,
-    this.name,
+    this.nameAr,
+    this.nameEn,
+    this.descriptionAr,
+    this.descriptionEn,
+    this.newProduct,
+    this.discountProduct,
+    this.stutesProduct,
     this.order,
     this.imagePath,
     this.price,
     this.oldPrice,
-    this.categoryName,
-    this.supplierName,
     this.quantity,
     this.categoryId,
     this.supplierId,
@@ -55,13 +59,17 @@ class Product {
   });
 
   int? id;
-  String? name;
+  String? nameAr;
+  String? nameEn;
+  String? descriptionAr;
+  String? descriptionEn;
+  dynamic newProduct;
+  dynamic discountProduct;
+  dynamic stutesProduct;
   dynamic order;
   String? imagePath;
   double? price;
   double? oldPrice;
-  String? categoryName;
-  String? supplierName;
   int? quantity;
   int? categoryId;
   int? supplierId;
@@ -69,30 +77,38 @@ class Product {
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
         id: json["id"],
-        name: json["name"],
+        nameAr: json["nameAr"],
+        nameEn: json["nameEn"] == null ? null : json["nameEn"],
+        descriptionAr: json["descriptionAr"],
+        descriptionEn: json["descriptionEn"],
+        newProduct: json["newProduct"],
+        discountProduct: json["discountProduct"],
+        stutesProduct: json["stutesProduct"],
         order: json["order"],
         imagePath: json["imagePath"],
-        price: json["price"],
+        price: json["price"].toDouble(),
         oldPrice: json["oldPrice"],
-        categoryName: json["categoryName"],
-        supplierName: json["supplierName"],
         quantity: json["quantity"],
-        categoryId: json["categoryId"],
+        categoryId: json["categoryId"] == null ? null : json["categoryId"],
         supplierId: json["supplierId"],
         isHot: json["isHot"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "name": name,
+        "nameAr": nameAr,
+        "nameEn": nameEn == null ? null : nameEn,
+        "descriptionAr": descriptionAr,
+        "descriptionEn": descriptionEn,
+        "newProduct": newProduct,
+        "discountProduct": discountProduct,
+        "stutesProduct": stutesProduct,
         "order": order,
         "imagePath": imagePath,
         "price": price,
         "oldPrice": oldPrice,
-        "categoryName": categoryName,
-        "supplierName": supplierName,
         "quantity": quantity,
-        "categoryId": categoryId,
+        "categoryId": categoryId == null ? null : categoryId,
         "supplierId": supplierId,
         "isHot": isHot,
       };

@@ -13,6 +13,8 @@ import 'package:eshop/widget/badge.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../product_screen.dart';
+
 class SupplierScreen extends StatefulWidget {
   static const String route = "/supplier";
 
@@ -27,7 +29,7 @@ class _SupplierScreenState extends State<SupplierScreen> {
   int selecteIndex = 0;
   late String locale;
   List<Supplier>? supplierList = [];
-  ScrollController scrollController =  ScrollController();
+  ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
@@ -37,9 +39,11 @@ class _SupplierScreenState extends State<SupplierScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var productProvider = Provider.of<ProductProvider>(context);
+    var supplierProvider = Provider.of<SupplierProvider>(context);
     final MainCategory mainCategory =
         ModalRoute.of(context)!.settings.arguments as MainCategory;
-    supplierList = Provider.of<SupplierProvider>(context).supplierList;
+    supplierList = supplierProvider.supplierList;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -83,7 +87,7 @@ class _SupplierScreenState extends State<SupplierScreen> {
               itemCount: mainCategory.subCategory!.length,
               itemBuilder: (context, index) => GestureDetector(
                 onTap: () {
-                  Provider.of<SupplierProvider>(context, listen: false)
+                  supplierProvider
                       .fetchSupplierList(
                           mainCategory.subCategory![index].id.toString(), 1, 20)
                       .then((value) {
@@ -146,27 +150,69 @@ class _SupplierScreenState extends State<SupplierScreen> {
                                 return GestureDetector(
                                   onTap: () {
                                     // print("object");
-                                    // Provider.of<ProductProvider>(context,
-                                    //         listen: false)
-                                    //     .clearProductList();
-                                    // Provider.of<ProductProvider>(context,
-                                    //         listen: false)
-                                    //     .fetchProductList(
-                                    //         supplierList![index].id.toString(),
-                                    //         categoryId,
-                                    //         "",
-                                    //         1,
-                                    //         20);
+                                    productProvider.clearProductList();
+                                    supplierProvider.clearSuppliertList();
+
+                                    supplierProvider
+                                        .getSupplierCategory(
+                                            supplierList![index].id.toString(),
+                                            200)
+                                        .then((supplierCategory) {
+                                      productProvider.clearProductList();
+                                      if (supplierCategory!.category != null &&
+                                          supplierCategory
+                                              .category!.isNotEmpty) {
+                                        if (supplierCategory
+                                            .category![0].childs!.isNotEmpty) {
+                                          productProvider.fetchProductList(
+                                              supplierList![index]
+                                                  .id
+                                                  .toString(),
+                                              supplierCategory
+                                                  .category![0].childs![0].id
+                                                  .toString(),
+                                              "",
+                                              1,
+                                              20);
+                                        } else {
+                                          productProvider.fetchProductList(
+                                              supplierList![index]
+                                                  .id
+                                                  .toString(),
+                                              supplierCategory.category![0].id
+                                                  .toString(),
+                                              "",
+                                              1,
+                                              20);
+                                        }
+                                      } else {
+                                        Provider.of<ProductProvider>(context,
+                                                listen: false)
+                                            .fetchProductList(
+                                                supplierList![index]
+                                                    .id
+                                                    .toString(),
+                                                "0",
+                                                "",
+                                                1,
+                                                20);
+                                      }
+                                    });
                                     // print(limit);
-                                    // Navigator.pushNamed(
-                                    //     context, ProductScreen.route,
-                                    //     arguments: {
-                                    //       "supplierId":
-                                    //           supplierList![index].id.toString(),
-                                    //       "categoryId": categoryId,
-                                    //       "supplierName":
-                                    //           supplierList![index].name.toString(),
-                                    //     });
+                                    Navigator.pushNamed(
+                                        context, ProductScreen.route,
+                                        arguments: {
+                                          "supplierId": supplierList![index]
+                                              .id
+                                              .toString(),
+                                          "supplierName": locale == "ar"
+                                              ? supplierList![index]
+                                                  .nameAr
+                                                  .toString()
+                                              : supplierList![index]
+                                                  .nameEn
+                                                  .toString(),
+                                        });
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(

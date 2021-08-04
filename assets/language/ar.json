@@ -79,6 +79,7 @@
     "logout": "تسجيل الخروج",
     "cityError": "يرجى اختيار المدينة",
     "search": "البحث",
-    "deliveryText":"توصيل",
-    "category":"الاقسام"
+    "deliveryText": "توصيل",
+    "category": "الاقسام",
+    "noProductAvailable": "لايوجد منتجات متاحة"
 }

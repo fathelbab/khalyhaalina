@@ -44,8 +44,6 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
-
-
   List<City> cityList = [];
   List<DoctorSpecialistt> doctorSpeciaList = [];
   List<AnnouncementData>? announcementList = [];
@@ -113,8 +111,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
     Provider.of<AnnouncementProvider>(context, listen: false)
         .fetchAnnouncementList();
-    Provider.of<SupplierProvider>(context, listen: false)
-        .fetchSupplierList(categoryId, 1, limit);
+    // Provider.of<SupplierProvider>(context, listen: false)
+    //     .fetchSupplierList(categoryId, 1, limit);
     Provider.of<NotificationProvider>(context, listen: false)
         .fetchNotificationList();
     Provider.of<ImagesProvider>(context, listen: false).fetchImageList();
@@ -758,77 +756,77 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 ],
               ),
             ),
-            !isHome
-                ? Container(
-                    margin: const EdgeInsets.only(right: 15, left: 15, top: 5),
-                    padding: const EdgeInsets.only(right: 10, left: 5),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(30),
-                        boxShadow: kElevationToShadow[6]),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            child: TextField(
-                              controller: _searchController,
-                              onSubmitted: (value) {
-                                // print(value);
-                                Provider.of<SupplierProvider>(context,
-                                        listen: false)
-                                    .searchSupplierByCity(value, 1, limit);
-                              },
-                              decoration: InputDecoration(
-                                  hintText: 'البحث',
-                                  hintStyle: TextStyle(
-                                      color: primaryColor,
-                                      fontWeight: FontWeight.bold),
-                                  border: InputBorder.none),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.all(5),
-                          child: Material(
-                            type: MaterialType.transparency,
-                            child: InkWell(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(32),
-                                topRight: Radius.circular(32),
-                                bottomLeft: Radius.circular(32),
-                                bottomRight: Radius.circular(32),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Icon(
-                                  Icons.close,
-                                  // isSearch ? Icons.close : Icons.search,
-                                  color: primaryColor,
-                                ),
-                              ),
-                              onTap: () {
-                                // print(_searchController.text);
-                                if (_searchController.text.isNotEmpty) {
-                                  _searchController.clear();
-                                  Provider.of<SupplierProvider>(context,
-                                          listen: false)
-                                      .fetchCurrentSupplierList(1, limit);
-                                }
-                              },
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                : Container(),
+            // !isHome
+            //     ? Container(
+            //         margin: const EdgeInsets.only(right: 15, left: 15, top: 5),
+            //         padding: const EdgeInsets.only(right: 10, left: 5),
+            //         decoration: BoxDecoration(
+            //             color: Colors.white,
+            //             borderRadius: BorderRadius.circular(30),
+            //             boxShadow: kElevationToShadow[6]),
+            //         child: Row(
+            //           children: [
+            //             Expanded(
+            //               child: Container(
+            //                 child: TextField(
+            //                   controller: _searchController,
+            //                   onSubmitted: (value) {
+            //                     // print(value);
+            //                     Provider.of<SupplierProvider>(context,
+            //                             listen: false)
+            //                         .searchSupplierByCity(value, 1, limit);
+            //                   },
+            //                   decoration: InputDecoration(
+            //                       hintText: 'البحث',
+            //                       hintStyle: TextStyle(
+            //                           color: primaryColor,
+            //                           fontWeight: FontWeight.bold),
+            //                       border: InputBorder.none),
+            //                 ),
+            //               ),
+            //             ),
+            //             Container(
+            //               margin: const EdgeInsets.all(5),
+            //               child: Material(
+            //                 type: MaterialType.transparency,
+            //                 child: InkWell(
+            //                   borderRadius: BorderRadius.only(
+            //                     topLeft: Radius.circular(32),
+            //                     topRight: Radius.circular(32),
+            //                     bottomLeft: Radius.circular(32),
+            //                     bottomRight: Radius.circular(32),
+            //                   ),
+            //                   child: Padding(
+            //                     padding: const EdgeInsets.all(5.0),
+            //                     child: Icon(
+            //                       Icons.close,
+            //                       // isSearch ? Icons.close : Icons.search,
+            //                       color: primaryColor,
+            //                     ),
+            //                   ),
+            //                   onTap: () {
+            //                     // print(_searchController.text);
+            //                     if (_searchController.text.isNotEmpty) {
+            //                       _searchController.clear();
+            //                       Provider.of<SupplierProvider>(context,
+            //                               listen: false)
+            //                           .fetchCurrentSupplierList(1, limit);
+            //                     }
+            //                   },
+            //                 ),
+            //               ),
+            //             )
+            //           ],
+            //         ),
+            //       )
+            //     : Container(),
             isHome ? buildAnnouncementSlider() : Container(),
             MainCategorySection(),
             // isHome ?
             buildImagesSlider(),
             // : Container(),
             // isHome ?
-            buildProductHotList(),
+            // buildProductHotList(),
             // : Container(),
             // isHome ?
             buildNotificationsSlider(),

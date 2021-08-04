@@ -1,5 +1,6 @@
 import 'dart:core';
 
+import 'package:eshop/data/service/product_service.dart';
 import 'package:eshop/data/service/services.dart';
 import 'package:eshop/model/product_data.dart';
 import 'package:eshop/model/product_details_data.dart';
@@ -19,7 +20,7 @@ class ProductProvider extends ChangeNotifier {
       searchTerm,
       offset,
       limit,
-    ) );
+    ));
     notifyListeners();
   }
 
@@ -30,7 +31,7 @@ class ProductProvider extends ChangeNotifier {
       categoryId,
       offset,
       limit,
-    ) );
+    ));
     notifyListeners();
   }
 
@@ -39,7 +40,7 @@ class ProductProvider extends ChangeNotifier {
       searchTerm,
       offset,
       limit,
-    ) );
+    ));
     print(_searchProductList!.length);
     notifyListeners();
   }
@@ -54,8 +55,9 @@ class ProductProvider extends ChangeNotifier {
     _productList!.clear();
     notifyListeners();
   }
-clearProductData() {
-    _productData=null;
+
+  clearProductData() {
+    _productData = null;
     notifyListeners();
   }
 
