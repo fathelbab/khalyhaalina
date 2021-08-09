@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eshop/model/product_data.dart';
 import 'package:eshop/model/supplier_category.dart';
 import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/provider/supplier_provider.dart';
 import 'package:eshop/utils/components.dart';
+import 'package:eshop/utils/constants.dart';
 import 'package:eshop/widget/badge.dart';
 import 'package:eshop/widget/product_item.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +23,9 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   List<Product>? _productList = [];
   String? supplierId = "0";
-  String? categoryId = "0";
+
   String? supplierName = "";
+  String? supplierImage = "";
   int limit = 20;
   final _searchController = TextEditingController();
   ScrollController _productScrollController = new ScrollController();
@@ -44,8 +47,9 @@ class _ProductScreenState extends State<ProductScreen> {
         print(limit);
 
         limit += 20;
+        // print("kira =============== $categoryId");
         Provider.of<ProductProvider>(context, listen: false)
-            .fetchProductList(supplierId, categoryId, "", 1, limit);
+            .fetchProductList(supplierId, "", "", 1, limit);
         // print(limit);
       }
     });
@@ -55,14 +59,14 @@ class _ProductScreenState extends State<ProductScreen> {
   Widget build(BuildContext context) {
     Map args = ModalRoute.of(context)!.settings.arguments as Map;
     supplierId = args["supplierId"];
-    // categoryId = args["categoryId"];
     supplierName = args["supplierName"];
+    supplierImage = args["supplierImage"];
     var productProvider = Provider.of<ProductProvider>(context);
     var supplierProvider = Provider.of<SupplierProvider>(context);
     _supplierMainCategory = supplierProvider.supplierMainCategory;
     _supplierSubCategory = supplierProvider.supplierSubCategory;
     _productList = productProvider.productList;
-
+    print("kira$supplierImage");
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -89,6 +93,17 @@ class _ProductScreenState extends State<ProductScreen> {
       ),
       body: Column(
         children: [
+          Container(
+            height: MediaQuery.of(context).size.height / 4,
+            width: double.infinity,
+            child: CachedNetworkImage(
+              imageUrl: Constants.imagePath + supplierImage!,
+              fit: BoxFit.fill,
+              placeholder: (context, url) =>
+                  Center(child: CircularProgressIndicator()),
+              errorWidget: (context, url, error) => Icon(Icons.error),
+            ),
+          ),
           if (_supplierMainCategory != null &&
               _supplierMainCategory!.isNotEmpty)
             Container(
@@ -121,10 +136,6 @@ class _ProductScreenState extends State<ProductScreen> {
                       setState(() {
                         isLoading = true;
                         mainCategorySelectedIndex = index;
-                        categoryId = _supplierMainCategory![index]
-                            .childs![0]
-                            .id
-                            .toString();
                       });
                     } else {
                       Provider.of<ProductProvider>(context, listen: false)
@@ -142,7 +153,6 @@ class _ProductScreenState extends State<ProductScreen> {
                       setState(() {
                         isLoading = true;
                         mainCategorySelectedIndex = index;
-                        categoryId = _supplierSubCategory![index].id.toString();
                       });
                     }
                   },
@@ -197,7 +207,6 @@ class _ProductScreenState extends State<ProductScreen> {
                     setState(() {
                       subCategorySelectedIndex = index;
                       isLoading = true;
-                      categoryId = _supplierMainCategory![index].id.toString();
                     });
                   },
                   child: Container(

@@ -5,7 +5,7 @@ import 'package:eshop/model/product_data.dart';
 import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/screen/product_details/product_details_screen.dart';
-import 'package:eshop/utils/contants.dart';
+import 'package:eshop/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -84,6 +84,9 @@ class _ProductItemsState extends State<ProductItems> {
                           IconButton(
                             onPressed: () {
                               // _displayTextInputDialog(context);
+                              Provider.of<ProductProvider>(context,listen: false)
+                                  .addProductToFavourite(
+                                      widget.product.id.toString());
                             },
                             icon: Icon(
                               Icons.favorite_outline,
@@ -118,6 +121,8 @@ class _ProductItemsState extends State<ProductItems> {
                                 "${productDiscount.toString()} %",
                                 style: TextStyle(
                                   color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             )
@@ -131,9 +136,10 @@ class _ProductItemsState extends State<ProductItems> {
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Color(0xFF575E67),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0),
+                  color: Color(0xFF575E67),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16.0,
+                ),
               ),
               // SizedBox(height: 3.0),
               Row(
@@ -159,6 +165,9 @@ class _ProductItemsState extends State<ProductItems> {
                   ),
                 ],
               ),
+              SizedBox(
+                height: 5,
+              )
             ],
           ),
         ),

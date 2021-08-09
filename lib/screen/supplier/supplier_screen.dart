@@ -8,7 +8,7 @@ import 'package:eshop/screen/cart/cart_screen.dart';
 import 'package:eshop/screen/search/search_screen.dart';
 import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/components.dart';
-import 'package:eshop/utils/contants.dart';
+import 'package:eshop/utils/constants.dart';
 import 'package:eshop/widget/badge.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -77,6 +77,17 @@ class _SupplierScreenState extends State<SupplierScreen> {
       ),
       body: Column(
         children: [
+          Container(
+            height: MediaQuery.of(context).size.height / 4,
+            width: double.infinity,
+            child: CachedNetworkImage(
+              imageUrl: Constants.imagePath + mainCategory.image2.toString(),
+              fit: BoxFit.fill,
+              placeholder: (context, url) =>
+                  Center(child: CircularProgressIndicator()),
+              errorWidget: (context, url, error) => Icon(Icons.error),
+            ),
+          ),
           Container(
             width: double.infinity,
             height: 50,
@@ -204,6 +215,9 @@ class _SupplierScreenState extends State<SupplierScreen> {
                                         arguments: {
                                           "supplierId": supplierList![index]
                                               .id
+                                              .toString(),
+                                          "supplierImage": supplierList![index]
+                                              .imagePath
                                               .toString(),
                                           "supplierName": locale == "ar"
                                               ? supplierList![index]

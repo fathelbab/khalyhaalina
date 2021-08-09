@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Widget> _screens = [
     CategoryScreen(),
     InfoScreen(),
-    CallUsScreen(),
+    // CallUsScreen(),
     PharmacyScreen()
   ];
   @override

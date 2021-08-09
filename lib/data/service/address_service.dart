@@ -1,6 +1,6 @@
 import 'package:eshop/model/city_data.dart';
 import 'package:eshop/model/governate_data.dart';
-import 'package:eshop/utils/contants.dart';
+import 'package:eshop/utils/constants.dart';
 import 'package:http/http.dart' as http;
 
 Future<List<Governate>?> getAllGovernate(int offset, int limit) async {

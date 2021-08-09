@@ -1,3 +1,4 @@
+import 'package:eshop/data/service/profile_service.dart';
 import 'package:flutter/material.dart';
 import 'package:eshop/data/service/services.dart';
 

@@ -19,16 +19,15 @@ import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/provider/service_provider.dart';
 import 'package:eshop/provider/supplier_provider.dart';
 import 'package:eshop/screen/address/governorate_screen.dart';
+import 'package:eshop/screen/favourite/favourite_screen.dart';
 import 'package:eshop/screen/home/sections/doctor_section.dart';
 import 'package:eshop/screen/home/sections/main_category.dart';
 import 'package:eshop/screen/home/sections/service_section.dart';
 import 'package:eshop/screen/login/login.dart';
-import 'package:eshop/screen/product_screen.dart';
 import 'package:eshop/screen/search/search_screen.dart';
 import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/components.dart';
-import 'package:eshop/utils/contants.dart';
-
+import 'package:eshop/utils/constants.dart';
 import 'package:eshop/widget/product_item.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -56,6 +55,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   int intialId = 0;
   ScrollController _categoryScrollController = new ScrollController();
+  ScrollController _hotProductScrollController = new ScrollController();
 
   int limit = 20;
   bool isLoaded = false;
@@ -69,6 +69,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   late String governorateName;
   final _searchController = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -84,7 +85,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
     /**
      * first load all service list from api
-     * second load first service provider or service shop 
+     * second load first service provider or service shop
      */
     // Provider.of<ServiceProvider>(context, listen: false)
     //     .fetchServiceInfoList("0");
@@ -122,6 +123,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
         limit += 5;
         Provider.of<CategoryProvider>(context, listen: false)
             .fetchMainCategoryList(1, limit);
+      } else {}
+    });
+    _hotProductScrollController.addListener(() {
+      if (_hotProductScrollController.position.pixels ==
+          _hotProductScrollController.position.maxScrollExtent) {
+        limit += 5;
+        Provider.of<ProductProvider>(context, listen: false)
+            .fetchProductHotList("0", categoryId, 1, limit);
       } else {}
     });
   }
@@ -405,12 +414,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   ),
                   onTap: () {
                     setState(() {
-                      Navigator.pop(context);
                       isHome = true;
                       isLoaded = false;
                       isDoctor = false;
                       isService = false;
                     });
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, FavouriteScreen.route);
                   },
                 ),
                 // ListTile(
@@ -645,19 +655,23 @@ class _CategoryScreenState extends State<CategoryScreen> {
         ? Text("")
         : LayoutBuilder(
             builder: (context, constraints) {
+
               return Container(
                 color: Colors.grey[300],
+                height: MediaQuery.of(context).size.height / 1.8,
                 padding: const EdgeInsets.all(5),
-                margin: const EdgeInsets.only(top: 5, bottom: 5),
+
                 child: GridView.builder(
                     itemCount: productHotList!.length,
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    controller: _hotProductScrollController,
+                    // physics: NeverScrollableScrollPhysics(),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisSpacing: 5,
-                      mainAxisSpacing: 5,
-                      crossAxisCount: constraints.maxWidth > 480 ? 4 : 2,
-                      childAspectRatio: 0.8,
+                      crossAxisSpacing: 4,
+                      mainAxisSpacing: 4,
+                      crossAxisCount: 2,
+                      childAspectRatio: 1.2,
                     ),
                     itemBuilder: (context, index) {
                       return ProductItems(
@@ -756,188 +770,69 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 ],
               ),
             ),
-            // !isHome
-            //     ? Container(
-            //         margin: const EdgeInsets.only(right: 15, left: 15, top: 5),
-            //         padding: const EdgeInsets.only(right: 10, left: 5),
-            //         decoration: BoxDecoration(
-            //             color: Colors.white,
-            //             borderRadius: BorderRadius.circular(30),
-            //             boxShadow: kElevationToShadow[6]),
-            //         child: Row(
-            //           children: [
-            //             Expanded(
-            //               child: Container(
-            //                 child: TextField(
-            //                   controller: _searchController,
-            //                   onSubmitted: (value) {
-            //                     // print(value);
-            //                     Provider.of<SupplierProvider>(context,
-            //                             listen: false)
-            //                         .searchSupplierByCity(value, 1, limit);
-            //                   },
-            //                   decoration: InputDecoration(
-            //                       hintText: 'البحث',
-            //                       hintStyle: TextStyle(
-            //                           color: primaryColor,
-            //                           fontWeight: FontWeight.bold),
-            //                       border: InputBorder.none),
-            //                 ),
-            //               ),
-            //             ),
-            //             Container(
-            //               margin: const EdgeInsets.all(5),
-            //               child: Material(
-            //                 type: MaterialType.transparency,
-            //                 child: InkWell(
-            //                   borderRadius: BorderRadius.only(
-            //                     topLeft: Radius.circular(32),
-            //                     topRight: Radius.circular(32),
-            //                     bottomLeft: Radius.circular(32),
-            //                     bottomRight: Radius.circular(32),
-            //                   ),
-            //                   child: Padding(
-            //                     padding: const EdgeInsets.all(5.0),
-            //                     child: Icon(
-            //                       Icons.close,
-            //                       // isSearch ? Icons.close : Icons.search,
-            //                       color: primaryColor,
-            //                     ),
-            //                   ),
-            //                   onTap: () {
-            //                     // print(_searchController.text);
-            //                     if (_searchController.text.isNotEmpty) {
-            //                       _searchController.clear();
-            //                       Provider.of<SupplierProvider>(context,
-            //                               listen: false)
-            //                           .fetchCurrentSupplierList(1, limit);
-            //                     }
-            //                   },
-            //                 ),
-            //               ),
-            //             )
-            //           ],
-            //         ),
-            //       )
-            //     : Container(),
-            isHome ? buildAnnouncementSlider() : Container(),
+            buildAnnouncementSlider(),
             MainCategorySection(),
-            // isHome ?
             buildImagesSlider(),
-            // : Container(),
-            // isHome ?
-            // buildProductHotList(),
-            // : Container(),
-            // isHome ?
-            buildNotificationsSlider(),
-            // : Container(),
-            !isHome && !isLoaded
-                ? supplierList == null || supplierList!.isEmpty
-                    ? Text("")
-                    : LayoutBuilder(builder: (context, constraints) {
-                        return GridView.builder(
-                          padding: const EdgeInsets.all(5),
-                          itemCount: supplierList!.length,
-
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-
-                          ///
-                          scrollDirection: Axis.vertical,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisSpacing: 4,
-                            mainAxisSpacing: 4,
-                            crossAxisCount: constraints.maxWidth > 480 ? 4 : 2,
-                            childAspectRatio: 0.8,
-                          ),
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                // print("object");
-                                // Provider.of<ProductProvider>(context,
-                                //         listen: false)
-                                //     .clearProductList();
-                                // Provider.of<ProductProvider>(context,
-                                //         listen: false)
-                                //     .fetchProductList(
-                                //         supplierList![index].id.toString(),
-                                //         categoryId,
-                                //         "",
-                                //         1,
-                                //         limit);
-                                print(limit);
-                                // Navigator.pushNamed(
-                                //     context, ProductScreen.route,
-                                //     arguments: {
-                                //       "supplierId":
-                                //           supplierList![index].id.toString(),
-                                //       "categoryId": categoryId,
-                                //       "supplierName":
-                                //           supplierList![index].name.toString(),
-                                //     });
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(15.0),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.2),
-                                      spreadRadius: 3.0,
-                                      blurRadius: 5.0,
-                                    ),
-                                  ],
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height: 70.0,
-                                      width: 65.0,
-                                      child: CachedNetworkImage(
-                                        imageUrl: Constants.imagePath +
-                                            supplierList![index].imagePath!,
-                                        fit: BoxFit.fill,
-                                        placeholder: (context, url) => Center(
-                                            child: CircularProgressIndicator()),
-                                        errorWidget: (context, url, error) =>
-                                            Icon(Icons.error),
-                                      ),
-                                    ),
-                                    SizedBox(height: 5.0),
-                                    Text(
-                                      supplierList![index].nameAr!,
-                                      textAlign: TextAlign.center,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Theme.of(context).primaryColor,
-                                          fontSize: 14.0),
-                                    ),
-                                    // Text(
-                                    //   supplierList[index].categoryName ?? "",
-                                    //   style: TextStyle(
-                                    //       color: Color(0xFF575E67),
-                                    //       fontWeight: FontWeight.bold,
-                                    //       fontSize: 14.0),
-                                    // ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      })
-                : Container(),
-            !isHome && isLoaded
-                ? Container(
-                    margin: const EdgeInsets.only(top: 30),
-                    child: Center(
-                      child: CircularProgressIndicator(),
+            notificationsList != null && notificationsList!.isEmpty
+                ? Text("")
+                : Container(
+                    height: MediaQuery.of(context).size.height / 4,
+                    width: double.infinity,
+                    child: CachedNetworkImage(
+                      imageUrl: Constants.imagePath +
+                          notificationsList![0].imagePath!,
+                      fit: BoxFit.fill,
+                      placeholder: (context, url) =>
+                          Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
-                  )
-                : Container(),
+                  ),
+            buildProductHotList(),
+            notificationsList != null && notificationsList!.isEmpty
+                ? Text("")
+                : Container(
+                    height: MediaQuery.of(context).size.height / 4,
+                    width: double.infinity,
+                    child: CachedNetworkImage(
+                      imageUrl: Constants.imagePath +
+                          notificationsList![1].imagePath!,
+                      fit: BoxFit.fill,
+                      placeholder: (context, url) =>
+                          Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                    ),
+                  ),
+            buildProductHotList(),
+            notificationsList != null && notificationsList!.isEmpty
+                ? Text("")
+                : Container(
+                    height: MediaQuery.of(context).size.height / 4,
+                    width: double.infinity,
+                    child: CachedNetworkImage(
+                      imageUrl: Constants.imagePath +
+                          notificationsList![2].imagePath!,
+                      fit: BoxFit.fill,
+                      placeholder: (context, url) =>
+                          Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                    ),
+                  ),
+            buildProductHotList(),
+            notificationsList != null && notificationsList!.isEmpty
+                ? Text("")
+                : Container(
+                    height: MediaQuery.of(context).size.height / 4,
+                    width: double.infinity,
+                    child: CachedNetworkImage(
+                      imageUrl: Constants.imagePath +
+                          notificationsList![3].imagePath!,
+                      fit: BoxFit.fill,
+                      placeholder: (context, url) =>
+                          Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                    ),
+                  ),
+            // buildNotificationsSlider(),
           ],
         ),
       );

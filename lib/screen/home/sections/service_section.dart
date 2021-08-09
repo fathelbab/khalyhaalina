@@ -5,7 +5,7 @@ import 'package:eshop/model/service_details_data.dart';
 import 'package:eshop/model/service_specialist_data.dart';
 import 'package:eshop/provider/service_provider.dart';
 import 'package:eshop/screen/services/services_screen.dart';
-import 'package:eshop/utils/contants.dart';
+import 'package:eshop/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

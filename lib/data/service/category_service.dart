@@ -1,5 +1,5 @@
 import 'package:eshop/model/main_category.dart';
-import 'package:eshop/utils/contants.dart';
+import 'package:eshop/utils/constants.dart';
 import 'package:http/http.dart' as http;
 
 Future<List<MainCategory>?> fetchMainCategory(int offset, int limit) async {

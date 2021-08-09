@@ -1,7 +1,7 @@
 import 'package:eshop/model/doctor_data.dart' hide City;
 import 'package:eshop/model/doctor_details_data.dart';
 import 'package:eshop/model/doctor_specialist_data.dart';
-import 'package:eshop/utils/contants.dart';
+import 'package:eshop/utils/constants.dart';
 import 'package:http/http.dart' as http;
 
 Future<List<DoctorSpecialistt>?> getAllDoctorSpecialist() async {

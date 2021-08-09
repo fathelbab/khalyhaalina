@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eshop/constant/constant.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/provider/doctor_provider.dart';
-import 'package:eshop/utils/contants.dart';
+import 'package:eshop/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -7,7 +7,7 @@ import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/screen/cart/cart_screen.dart';
 import 'package:eshop/screen/login/login.dart';
 import 'package:eshop/screen/search/search_screen.dart';
-import 'package:eshop/utils/contants.dart';
+import 'package:eshop/utils/constants.dart';
 import 'package:eshop/widget/badge.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

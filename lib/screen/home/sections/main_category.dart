@@ -1,9 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eshop/model/main_category.dart';
 import 'package:eshop/provider/category_provider.dart';
 import 'package:eshop/provider/supplier_provider.dart';
 import 'package:eshop/screen/supplier/supplier_screen.dart';
 import 'package:eshop/utils/cache_helper.dart';
-import 'package:eshop/utils/contants.dart';
+import 'package:eshop/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +17,7 @@ class MainCategorySection extends StatefulWidget {
 
 class _MainCategorySectionState extends State<MainCategorySection> {
   late String locale;
+
   @override
   void initState() {
     super.initState();
@@ -38,7 +40,9 @@ class _MainCategorySectionState extends State<MainCategorySection> {
             onTap: () {
               Provider.of<SupplierProvider>(context, listen: false)
                   .fetchSupplierList(
-                      mainCategoryList![index].subCategory![0].id.toString(), 1, 20);
+                      mainCategoryList![index].subCategory![0].id.toString(),
+                      1,
+                      20);
               Navigator.pushNamed(
                 context,
                 SupplierScreen.route,
@@ -46,22 +50,21 @@ class _MainCategorySectionState extends State<MainCategorySection> {
               );
             },
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
                   margin:
                       const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                  height: 80,
-                  width: 80,
+                  height: 90,
+                  width: 90,
                   child: Center(
-                    child: Image.asset(
-                      Constants.imagePath +
+                    child: CachedNetworkImage(
+                      imageUrl: Constants.imagePath +
                           mainCategoryList![index].image1.toString(),
-                      width: 30,
-                      height: 30,
                       fit: BoxFit.fill,
+                      placeholder: (context, url) =>
+                          Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
                   ),
                 ),
