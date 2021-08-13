@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:eshop/constant/constant.dart';
+import 'package:eshop/utils/style.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/model/service_details_data.dart';
 import 'package:eshop/model/service_specialist_data.dart';

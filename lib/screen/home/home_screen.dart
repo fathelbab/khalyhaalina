@@ -1,8 +1,7 @@
-import 'package:eshop/constant/constant.dart';
+import 'package:eshop/utils/style.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/model/bar_item.dart';
 import 'package:eshop/provider/cart.dart';
-import 'package:eshop/screen/call_us/call_us.dart';
 import 'package:eshop/screen/cart/cart_screen.dart';
 import 'package:eshop/screen/home/category_screen.dart';
 import 'package:eshop/screen/info/info_screen.dart';

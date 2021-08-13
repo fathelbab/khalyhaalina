@@ -6,6 +6,7 @@ import 'package:eshop/utils/components.dart';
 import 'package:eshop/widget/custom_governate_dropdown_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:eshop/utils/style.dart';
 
 class GovernorateScreen extends StatefulWidget {
   static const String route = "/governorate";

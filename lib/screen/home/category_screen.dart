@@ -3,7 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:eshop/model/CityData.dart';
 import 'package:eshop/model/announcement_data.dart';
 import 'package:eshop/model/doctor_data.dart' hide City;
-import 'package:eshop/model/doctor_specialist_data.dart';
+import 'package:eshop/model/gif_models_data.dart';
 import 'package:eshop/model/image_data.dart';
 import 'package:eshop/model/product_data.dart';
 import 'package:eshop/model/service_details_data.dart' hide City;
@@ -13,6 +13,7 @@ import 'package:eshop/provider/auth_provider.dart';
 import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/category_provider.dart';
 import 'package:eshop/provider/doctor_provider.dart';
+import 'package:eshop/provider/gifmodels_provider.dart';
 import 'package:eshop/provider/images_provider.dart';
 import 'package:eshop/provider/notification_provider.dart';
 import 'package:eshop/provider/product_provider.dart';
@@ -34,6 +35,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eshop/model/notification_data.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:eshop/utils/style.dart';
 
 class CategoryScreen extends StatefulWidget {
   static const String route = "/category_screen";
@@ -44,16 +47,17 @@ class CategoryScreen extends StatefulWidget {
 
 class _CategoryScreenState extends State<CategoryScreen> {
   List<City> cityList = [];
-  List<DoctorSpecialistt> doctorSpeciaList = [];
+  int _gifModelsActiveIndex = 0;
   List<AnnouncementData>? announcementList = [];
+  List<GifModels>? _gifModelsList = [];
   List<Notifications>? notificationsList = [];
   List<ImageData>? imageList = [];
   List<Supplier>? supplierList = [];
   List<DoctorInfo>? doctorList = [];
   List<ServiceInfo>? serviceList = [];
-  List<Product>? productHotList = [];
-
-  int intialId = 0;
+  List<Product>? discountHotProduct = [];
+  List<Product>? statusHotProduct = [];
+  List<Product>? newHotProduct = [];
   ScrollController _categoryScrollController = new ScrollController();
   ScrollController _hotProductScrollController = new ScrollController();
 
@@ -63,7 +67,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
   bool isDoctor = false;
   bool isService = false;
   bool isHome = true;
-  String? cityId = "0";
   String categoryId = "0";
   late String cityName;
   late String governorateName;
@@ -82,7 +85,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     // Provider.of<ConnectivityProvider>(context, listen: false).startMonitoring();
     Provider.of<CategoryProvider>(context, listen: false)
         .fetchMainCategoryList(1, 100);
-
+    Provider.of<GifModelsProvider>(context, listen: false).getGifModelsList();
     /**
      * first load all service list from api
      * second load first service provider or service shop
@@ -139,7 +142,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Widget build(BuildContext context) {
     // categoryList = Provider.of<CategoryProvider>(context).categoryList;
     // cityList = Provider.of<CityProvider>(context, listen: false).cityList;
-
+    _gifModelsList = Provider.of<GifModelsProvider>(context).gifModelsList;
     announcementList =
         Provider.of<AnnouncementProvider>(context).announcementList;
     notificationsList =
@@ -148,7 +151,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
     supplierList = Provider.of<SupplierProvider>(context).supplierList;
     doctorList = Provider.of<DoctorProvider>(context).doctorList;
 
-    productHotList = Provider.of<ProductProvider>(context).productHotList;
+    discountHotProduct =
+        Provider.of<ProductProvider>(context).discountHotProduct;
+    statusHotProduct =
+        Provider.of<ProductProvider>(context).statusHotProductList;
+    newHotProduct = Provider.of<ProductProvider>(context).newHotProduct;
 
     return buildScaffold(supplierList);
 
@@ -210,7 +217,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
         ],
       ),
       drawer: mainDrawer(),
-      body: scafoldBody(),
+      body: scaffoldBody(),
     );
   }
 
@@ -229,8 +236,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             0.5), //or any other color you want. e.g Colors.blue.withOpacity(0.5)
       ),
       child: Drawer(
-        child: Container(
-          margin: const EdgeInsets.only(top: 5),
+        child: SafeArea(
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -263,7 +269,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 ),
                 ListTile(
                   title: Text(
-                    getString(context, "startShoping"),
+                    getString(context, "startShopping"),
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -446,29 +452,29 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 //     });
                 //   },
                 // ),
-                ListTile(
-                  title: Text(
-                    getString(context, "rateUs"),
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  leading: Icon(
-                    Icons.rate_review,
-                    color: Colors.white,
-                  ),
-                  onTap: () {
-                    setState(() {
-                      Navigator.pop(context);
-                      isHome = true;
-                      isLoaded = false;
-                      isDoctor = false;
-                      isService = false;
-                    });
-                  },
-                ),
+                // ListTile(
+                //   title: Text(
+                //     getString(context, "rateUs"),
+                //     style: TextStyle(
+                //       color: Colors.white,
+                //       fontSize: 16,
+                //       fontWeight: FontWeight.bold,
+                //     ),
+                //   ),
+                //   leading: Icon(
+                //     Icons.rate_review,
+                //     color: Colors.white,
+                //   ),
+                //   onTap: () {
+                //     setState(() {
+                //       Navigator.pop(context);
+                //       isHome = true;
+                //       isLoaded = false;
+                //       isDoctor = false;
+                //       isService = false;
+                //     });
+                //   },
+                // ),
                 ListTile(
                   title: Text(
                     getString(context, "share"),
@@ -550,7 +556,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         fontWeight: FontWeight.bold),
                   ),
                 ),
-                SizedBox(height: kBottomNavigationBarHeight),
+                // SizedBox(height: kBottomNavigationBarHeight),
               ],
             ),
           ),
@@ -587,6 +593,61 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 enlargeCenterPage: true,
                 viewportFraction: 1,
               ),
+            ),
+          );
+  }
+
+  Widget buildGifModelsSlider() {
+    return _gifModelsList != null && _gifModelsList!.isEmpty
+        ? Text("")
+        : Container(
+            height: MediaQuery.of(context).size.height / 4,
+            width: double.infinity,
+            child: Column(
+              children: [
+                Expanded(
+                  child: CarouselSlider.builder(
+                    itemCount: _gifModelsList!.length,
+                    itemBuilder:
+                        (BuildContext context, int index, int realIndex) {
+                      return Container(
+                        width: double.infinity,
+                        child: Image.network(
+                          Constants.imagePath +
+                              _gifModelsList![index].gifUrl.toString(),
+                          fit: BoxFit.fill,
+                        ),
+                      );
+                    },
+                    // items: imageSliders,
+                    options: CarouselOptions(
+                      autoPlay: true,
+                      enableInfiniteScroll: true,
+                      enlargeCenterPage: true,
+                      viewportFraction: 1,
+                      autoPlayInterval: const Duration(seconds: 3),
+                      onPageChanged: (index, reason) {
+                        setState(() {
+                          _gifModelsActiveIndex = index;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                AnimatedSmoothIndicator(
+                  effect: ExpandingDotsEffect(
+                    dotWidth: 8.0,
+                    dotHeight: 8.0,
+                    dotColor: secondaryColor,
+                    activeDotColor: primaryColor,
+                  ),
+                  activeIndex: _gifModelsActiveIndex,
+                  count: _gifModelsList!.length,
+                ),
+              ],
             ),
           );
   }
@@ -650,19 +711,17 @@ class _CategoryScreenState extends State<CategoryScreen> {
             ));
   }
 
-  Widget buildProductHotList() {
-    return productHotList == null || productHotList!.isEmpty
+  Widget buildProductHotList(List<Product> hotProduct) {
+    return hotProduct == null || hotProduct.isEmpty
         ? Text("")
         : LayoutBuilder(
             builder: (context, constraints) {
-
               return Container(
                 color: Colors.grey[300],
                 height: MediaQuery.of(context).size.height / 1.8,
                 padding: const EdgeInsets.all(5),
-
                 child: GridView.builder(
-                    itemCount: productHotList!.length,
+                    itemCount: hotProduct.length,
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     controller: _hotProductScrollController,
@@ -675,14 +734,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     ),
                     itemBuilder: (context, index) {
                       return ProductItems(
-                          product: productHotList![index], index: index);
+                          product: hotProduct[index], index: index);
                     }),
               );
             },
           );
   }
 
-  scafoldBody() {
+  scaffoldBody() {
     if (isDoctor == false && isService == false) {
       return Container(
         child: ListView(
@@ -770,9 +829,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 ],
               ),
             ),
-            buildAnnouncementSlider(),
+            // buildAnnouncementSlider(),
+            if (_gifModelsList != null) buildGifModelsSlider(),
             MainCategorySection(),
-            buildImagesSlider(),
+            // buildImagesSlider(),
             notificationsList != null && notificationsList!.isEmpty
                 ? Text("")
                 : Container(
@@ -787,7 +847,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
                   ),
-            buildProductHotList(),
+            if (newHotProduct != null) buildProductHotList(newHotProduct!),
             notificationsList != null && notificationsList!.isEmpty
                 ? Text("")
                 : Container(
@@ -802,7 +862,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
                   ),
-            buildProductHotList(),
+            if (discountHotProduct != null)
+              buildProductHotList(discountHotProduct!),
             notificationsList != null && notificationsList!.isEmpty
                 ? Text("")
                 : Container(
@@ -817,7 +878,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
                   ),
-            buildProductHotList(),
+            if (statusHotProduct != null)
+              buildProductHotList(statusHotProduct!),
             notificationsList != null && notificationsList!.isEmpty
                 ? Text("")
                 : Container(

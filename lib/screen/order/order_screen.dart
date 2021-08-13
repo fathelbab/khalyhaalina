@@ -1,16 +1,18 @@
-import 'package:eshop/constant/constant.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/model/order_data.dart';
 import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/order_provider.dart';
 import 'package:eshop/screen/home/category_screen.dart';
+import 'package:eshop/utils/components.dart';
 import 'package:eshop/widget/progress_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:eshop/utils/style.dart';
 
 class OrderScreen extends StatefulWidget {
   static const route = "/order";
+
   OrderScreen({Key? key}) : super(key: key);
 
   @override
@@ -225,7 +227,7 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 
   void confirmUserOrder(BuildContext context, Cart cart) async {
-    if (!await checkContection()) {
+    if (!await checkConnection()) {
       Fluttertoast.showToast(
           msg: AppLocale.of(context)!.getString("checkInternetConnection")!,
           toastLength: Toast.LENGTH_SHORT,

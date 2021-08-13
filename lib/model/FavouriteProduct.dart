@@ -1,51 +1,18 @@
 // To parse this JSON data, do
 //
-//     final favouriteFavouriteProductData = favouriteFavouriteProductDataFromJson(jsonString);
+//     final favouriteProduct = favouriteProductFromJson(jsonString);
 
 import 'dart:convert';
 
-List<FavouriteProduct> favouriteFavouriteProductDataFromJson(String str) =>
+List<FavouriteProduct> favouriteProductFromJson(String str) =>
     List<FavouriteProduct>.from(
         json.decode(str).map((x) => FavouriteProduct.fromJson(x)));
 
-String favouriteFavouriteProductDataToJson(List<FavouriteProduct> data) =>
+String favouriteProductToJson(List<FavouriteProduct> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class FavouriteProduct {
   FavouriteProduct({
-    this.id,
-    this.productId,
-    this.product,
-    this.userId,
-    this.user,
-  });
-
-  int? id;
-  int? productId;
-  FavouriteProductData? product;
-  String? userId;
-  dynamic user;
-
-  factory FavouriteProduct.fromJson(Map<String, dynamic> json) =>
-      FavouriteProduct(
-        id: json["id"],
-        productId: json["productId"],
-        product: FavouriteProductData.fromJson(json["product"]),
-        userId: json["userId"],
-        user: json["user"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "productId": productId,
-        "product": product!.toJson(),
-        "userId": userId,
-        "user": user,
-      };
-}
-
-class FavouriteProductData {
-  FavouriteProductData({
     this.id,
     this.order,
     this.createdDate,
@@ -65,15 +32,15 @@ class FavouriteProductData {
     this.descriptionAr,
     this.descriptionEn,
     this.isHot,
-    this.newFavouriteProductData,
-    this.discountFavouriteProductData,
-    this.stutesFavouriteProductData,
+    this.newProduct,
+    this.discountProduct,
+    this.stutesProduct,
     this.category,
     this.supplier,
     this.carts,
     this.orderdeitals,
     this.productGalleries,
-    this.avilabeFavouriteProductDataGalleries,
+    this.avilabeProductGalleries,
   });
 
   int? id;
@@ -85,7 +52,7 @@ class FavouriteProductData {
   dynamic? createdBy;
   dynamic? updatedBy;
   String? nameAr;
-  dynamic? nameEn;
+  String? nameEn;
   String? imagePath;
   double? price;
   int? categoryId;
@@ -95,17 +62,18 @@ class FavouriteProductData {
   String? descriptionAr;
   String? descriptionEn;
   bool? isHot;
-  dynamic? newFavouriteProductData;
-  dynamic? discountFavouriteProductData;
-  dynamic? stutesFavouriteProductData;
+  String? newProduct;
+  String? discountProduct;
+  String? stutesProduct;
   dynamic? category;
   dynamic? supplier;
   List<dynamic>? carts;
   List<dynamic>? orderdeitals;
   List<dynamic>? productGalleries;
-  dynamic? avilabeFavouriteProductDataGalleries;
+  dynamic? avilabeProductGalleries;
 
-  factory FavouriteProductData.fromJson(Map<String, dynamic> json) => FavouriteProductData(
+  factory FavouriteProduct.fromJson(Map<String, dynamic> json) =>
+      FavouriteProduct(
         id: json["id"],
         order: json["order"],
         createdDate: json["createdDate"],
@@ -115,7 +83,7 @@ class FavouriteProductData {
         createdBy: json["createdBy"],
         updatedBy: json["updatedBy"],
         nameAr: json["nameAr"],
-        nameEn: json["nameEn"],
+        nameEn: json["nameEn"] == null ? null : json["nameEn"],
         imagePath: json["imagePath"],
         price: json["price"],
         categoryId: json["categoryId"] == null ? null : json["categoryId"],
@@ -125,16 +93,18 @@ class FavouriteProductData {
         descriptionAr: json["descriptionAr"],
         descriptionEn: json["descriptionEn"],
         isHot: json["isHot"],
-        newFavouriteProductData: json["newFavouriteProductData"],
-        discountFavouriteProductData: json["discountFavouriteProductData"],
-        stutesFavouriteProductData: json["stutesFavouriteProductData"],
+        newProduct: json["newProduct"] == null ? null : json["newProduct"],
+        discountProduct:
+            json["discountProduct"] == null ? null : json["discountProduct"],
+        stutesProduct:
+            json["stutesProduct"] == null ? null : json["stutesProduct"],
         category: json["category"],
         supplier: json["supplier"],
         carts: List<dynamic>.from(json["carts"].map((x) => x)),
         orderdeitals: List<dynamic>.from(json["orderdeitals"].map((x) => x)),
         productGalleries:
             List<dynamic>.from(json["productGalleries"].map((x) => x)),
-        avilabeFavouriteProductDataGalleries: json["avilabeFavouriteProductDataGalleries"],
+        avilabeProductGalleries: json["avilabeProductGalleries"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -147,7 +117,7 @@ class FavouriteProductData {
         "createdBy": createdBy,
         "updatedBy": updatedBy,
         "nameAr": nameAr,
-        "nameEn": nameEn,
+        "nameEn": nameEn == null ? null : nameEn,
         "imagePath": imagePath,
         "price": price,
         "categoryId": categoryId == null ? null : categoryId,
@@ -157,14 +127,14 @@ class FavouriteProductData {
         "descriptionAr": descriptionAr,
         "descriptionEn": descriptionEn,
         "isHot": isHot,
-        "newFavouriteProductData": newFavouriteProductData,
-        "discountFavouriteProductData": discountFavouriteProductData,
-        "stutesFavouriteProductData": stutesFavouriteProductData,
+        "newProduct": newProduct == null ? null : newProduct,
+        "discountProduct": discountProduct == null ? null : discountProduct,
+        "stutesProduct": stutesProduct == null ? null : stutesProduct,
         "category": category,
         "supplier": supplier,
         "carts": List<dynamic>.from(carts!.map((x) => x)),
         "orderdeitals": List<dynamic>.from(orderdeitals!.map((x) => x)),
         "productGalleries": List<dynamic>.from(productGalleries!.map((x) => x)),
-        "avilabeFavouriteProductDataGalleries": avilabeFavouriteProductDataGalleries,
+        "avilabeProductGalleries": avilabeProductGalleries,
       };
 }

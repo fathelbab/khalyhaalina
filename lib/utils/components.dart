@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:eshop/language/app_locale.dart';
+import 'package:eshop/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -9,9 +10,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 // const String apiPath = "https://api.khlihaalina.com/api";
 // const String imagePath = "http://eshop5827-001-site3.etempurl.com";
 // const String imagePath = "https://api.khlihaalina.com/";
-const Color primaryColor = Color(0xFF5c8bb0);
-const Color secondaryColor = Color(0XFFE5A352);
-Future<bool> checkContection() async {
+
+Future<bool> checkConnection() async {
   try {
     final result = await InternetAddress.lookup("google.com");
     if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
@@ -50,6 +50,7 @@ Widget generateBluredImage() {
 String getString(BuildContext context, String key) {
   return AppLocale.of(context)!.getString(key).toString();
 }
+
 showToast({
   required String text,
   Toast length = Toast.LENGTH_LONG,

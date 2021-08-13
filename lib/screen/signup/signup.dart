@@ -1,6 +1,7 @@
-import 'package:eshop/constant/constant.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/provider/auth_provider.dart';
+import 'package:eshop/utils/components.dart';
+import 'package:eshop/utils/style.dart';
 import 'package:eshop/screen/login/login.dart';
 import 'package:eshop/widget/default_button.dart';
 import 'package:eshop/widget/default_form_field.dart';
@@ -26,6 +27,7 @@ class _SignUpState extends State<SignUp> {
   final _lastNameController = TextEditingController();
   final _passwordConfirmController = TextEditingController();
   bool isPassword = true;
+
   @override
   Widget build(BuildContext context) {
     return Stack(

@@ -2,6 +2,7 @@ import 'package:eshop/provider/auth_provider.dart';
 import 'package:eshop/provider/category_provider.dart';
 import 'package:eshop/provider/city_provider.dart';
 import 'package:eshop/provider/doctor_provider.dart';
+import 'package:eshop/provider/gifmodels_provider.dart';
 import 'package:eshop/provider/images_provider.dart';
 import 'package:eshop/provider/notification_provider.dart';
 import 'package:eshop/provider/order_provider.dart';
@@ -29,7 +30,6 @@ import 'provider/pharmacy_provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
- 
 
   FirebaseMessaging.onBackgroundMessage(fcmBackgroundMessage);
   await CacheHelper.init();
@@ -39,7 +39,6 @@ void main() async {
   runApp(MyApp(token));
 }
 
-
 // this function working when app in background and when terminated
 // to display firebase cloud message
 Future fcmBackgroundMessage(RemoteMessage message) async {
@@ -48,6 +47,7 @@ Future fcmBackgroundMessage(RemoteMessage message) async {
 
 class MyApp extends StatelessWidget {
   final token;
+
   MyApp(this.token);
 
   @override
@@ -68,6 +68,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => PharmacyProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => GifModelsProvider(),
         ),
         ChangeNotifierProvider(
           create: (context) => Auth(),

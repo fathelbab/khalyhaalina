@@ -11,6 +11,9 @@ import 'package:flutter/widgets.dart';
 class ProductProvider extends ChangeNotifier {
   List<Product>? _productList = [];
   List<Product>? _productHotList = [];
+  List<Product>? _discountHotProductList = [];
+  List<Product>? _newHotProductList = [];
+  List<Product>? _statusHotProductList = [];
   List<Product>? _searchProductList = [];
   List<FavouriteProduct>? _favouriteProducts = [];
   ProductDetailsData? _productData;
@@ -45,6 +48,15 @@ class ProductProvider extends ChangeNotifier {
       offset,
       limit,
     ));
+    _discountHotProductList = _productHotList!
+        .where((product) => product.discountProduct != null)
+        .toList();
+    _statusHotProductList = _productHotList!
+        .where((product) => product.stutesProduct != null)
+        .toList();
+    _newHotProductList = _productHotList!
+        .where((product) => product.discountProduct != null)
+        .toList();
     notifyListeners();
   }
 
@@ -84,6 +96,7 @@ class ProductProvider extends ChangeNotifier {
     String accessToken = CacheHelper.getPrefs(key: 'token');
     print(accessToken);
     _favouriteProducts = await getAllFavouriteProducts(accessToken);
+
     notifyListeners();
   }
 
@@ -94,6 +107,12 @@ class ProductProvider extends ChangeNotifier {
   List<FavouriteProduct>? get favouriteProducts => _favouriteProducts;
 
   List<Product>? get productHotList => _productHotList;
+
+  List<Product>? get discountHotProduct => _discountHotProductList;
+
+  List<Product>? get newHotProduct => _newHotProductList;
+
+  List<Product>? get statusHotProductList => _statusHotProductList;
 
   List<Product>? get searchProductList => _searchProductList;
 }

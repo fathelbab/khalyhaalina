@@ -6,6 +6,7 @@ import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/provider/supplier_provider.dart';
 import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/constants.dart';
+import 'package:eshop/utils/style.dart';
 import 'package:eshop/widget/badge.dart';
 import 'package:eshop/widget/product_item.dart';
 import 'package:flutter/material.dart';

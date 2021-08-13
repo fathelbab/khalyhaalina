@@ -1,6 +1,6 @@
 import 'dart:ui';
-
-import 'package:eshop/constant/constant.dart';
+import 'package:eshop/utils/components.dart';
+import 'package:eshop/utils/style.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/provider/auth_provider.dart';
 import 'package:eshop/screen/address/city_screen.dart';

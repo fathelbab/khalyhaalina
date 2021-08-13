@@ -1,6 +1,6 @@
 import 'package:eshop/model/FavouriteProduct.dart';
 import 'package:eshop/provider/product_provider.dart';
-import 'package:eshop/widget/product_item.dart';
+import 'package:eshop/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +30,51 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
       body: LayoutBuilder(
         builder: (context, constraints) {
           return _favouriteProductList == null
-              ? Text("")
+              ? Container(
+                  width: double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.shopping_bag_rounded,
+                        size: 150,
+                        color: Colors.grey,
+                      ),
+                      Text(
+                        'السلة فارغة',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: primaryColor,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      OutlinedButton(
+                        onPressed: () {},
+                        style: OutlinedButton.styleFrom(
+                          side: BorderSide(
+                            color: primaryColor,
+                            width: 2,
+                          ),
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                        ),
+                        child: Text(
+                          'مواصلة التسوق',
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            color: primaryColor,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                )
               : GridView.builder(
                   // controller: _productScrollController,
                   itemCount: _favouriteProductList!.length,
@@ -41,10 +85,12 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                     childAspectRatio: 0.8,
                   ),
                   itemBuilder: (context, index) {
-                    return Text(_favouriteProductList![index]
-                        .product!
-                        .nameAr
-                        .toString());
+                    return Column(
+                      children: [
+                        Text(_favouriteProductList![index].nameAr.toString()),
+                        Text(_favouriteProductList![index].price.toString()),
+                      ],
+                    );
                   });
         },
       ),

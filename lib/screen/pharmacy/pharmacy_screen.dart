@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:eshop/constant/constant.dart';
+import 'package:eshop/utils/components.dart';
+import 'package:eshop/utils/style.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/provider/pharmacy_provider.dart';
 import 'package:eshop/widget/progress_dialog.dart';
@@ -226,7 +227,7 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
   }
 
   void savePharmacyData(BuildContext context) async {
-    if (!await checkContection()) {
+    if (!await checkConnection()) {
     
       Fluttertoast.showToast(
           msg: AppLocale.of(context)!.getString("checkInternetConnection")!,

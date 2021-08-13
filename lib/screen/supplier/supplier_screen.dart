@@ -7,7 +7,7 @@ import 'package:eshop/provider/supplier_provider.dart';
 import 'package:eshop/screen/cart/cart_screen.dart';
 import 'package:eshop/screen/search/search_screen.dart';
 import 'package:eshop/utils/cache_helper.dart';
-import 'package:eshop/utils/components.dart';
+import 'package:eshop/utils/style.dart';
 import 'package:eshop/utils/constants.dart';
 import 'package:eshop/widget/badge.dart';
 import 'package:flutter/material.dart';

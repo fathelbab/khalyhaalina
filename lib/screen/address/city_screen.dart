@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'package:eshop/utils/style.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/provider/city_provider.dart';
 import 'package:eshop/screen/home/category_screen.dart';

@@ -1,7 +1,7 @@
-import 'package:eshop/constant/constant.dart';
 import 'package:eshop/provider/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:eshop/utils/style.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
