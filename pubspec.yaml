@@ -51,6 +51,7 @@ dependencies:
   flutter_local_notifications: ^6.0.0
   # connectivity: ^3.0.3
   logger: ^1.0.0
+  flutter_html: ^2.1.1
   collection: ^1.15.0-nullsafety.4
 
 dev_dependencies:

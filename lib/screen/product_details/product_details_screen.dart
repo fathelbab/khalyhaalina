@@ -1,3 +1,4 @@
+import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/model/product_details_data.dart';
@@ -10,6 +11,7 @@ import 'package:eshop/screen/search/search_screen.dart';
 import 'package:eshop/utils/constants.dart';
 import 'package:eshop/widget/badge.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -32,6 +34,13 @@ class ProductDetailsScreen extends StatefulWidget {
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   int quantity = 1;
+  late String locale;
+
+  @override
+  void initState() {
+    super.initState();
+    locale = CacheHelper.getPrefs(key: "locale") ?? "ar";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +52,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          productDetails?.name != null ? productDetails!.name.toString() : "",
+          locale == 'ar'
+              ? productDetails != null
+                  ? productDetails.nameAr.toString()
+                  : ""
+              : productDetails!.nameEn != null
+                  ? productDetails.nameEn.toString()
+                  : "",
           overflow: TextOverflow.ellipsis,
         ),
         actions: [
@@ -73,106 +88,184 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               child: CircularProgressIndicator(),
             )
           : Container(
-              margin: const EdgeInsets.all(8),
+              margin: const EdgeInsets.all(10),
               child: Column(
                 children: [
                   Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          productDetails.productGalleries != null &&
-                                  productDetails.productGalleries!.isEmpty
-                              ? Hero(
-                                  tag: productDetails.id!,
-                                  child: Image.network(
-                                   Constants. imagePath + productDetails.imagePath!,
-                                    fit: BoxFit.contain,
-                                    width: double.infinity,
-                                    height: size.height / 3 + 50,
-                                  ),
-                                )
-                              : Hero(
-                                  tag: productDetails.id!,
-                                  child: Container(
-                                    height:
-                                        MediaQuery.of(context).size.height / 3 +
-                                            50,
-                                    width: MediaQuery.of(context).size.width,
-                                    child: CarouselSlider.builder(
-                                      itemCount: productDetails
-                                          .productGalleries!.length,
-                                      itemBuilder: (BuildContext context,
-                                          int index, int realIndex) {
-                                        return sliderBuilder(index,
-                                            productDetails.productGalleries!);
-                                      },
-                                      // items: imageSliders,
-                                      options: CarouselOptions(
-                                        autoPlay: true,
-                                        enableInfiniteScroll: true,
-                                        aspectRatio: 1.0,
-                                        disableCenter: false,
-                                        enlargeCenterPage: true,
-                                        // enlargeStrategy: CenterPageEnlargeStrategy.height,
+                    child: CustomScrollView(
+                      slivers: [
+                        SliverAppBar(
+                          backgroundColor: Colors.transparent,
+                          expandedHeight: size.height / 3 + 50,
+                          flexibleSpace: FlexibleSpaceBar(
+                            background: Stack(
+                              children: [
+                                productDetails.productGalleries != null &&
+                                        productDetails.productGalleries!.isEmpty
+                                    ? InteractiveViewer(
+                                        child: Hero(
+                                        tag: productDetails.id!,
+                                        child: Image.network(
+                                          Constants.imagePath +
+                                              productDetails.imagePath!,
+                                          fit: BoxFit.contain,
+                                          width: double.infinity,
+                                          height: size.height / 3 + 50,
+                                        ),
+                                      ))
+                                    : Hero(
+                                        tag: productDetails.id!,
+                                        child: Container(
+                                          height: MediaQuery.of(context)
+                                                      .size
+                                                      .height /
+                                                  3 +
+                                              50,
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          child: CarouselSlider.builder(
+                                            itemCount: productDetails
+                                                .productGalleries?.length,
+                                            itemBuilder: (BuildContext context,
+                                                itemIndex, int pageViewIndex) {
+                                              print(itemIndex);
+                                              return sliderBuilder(
+                                                  itemIndex,
+                                                  productDetails
+                                                      .productGalleries!);
+                                            },
+                                            // items: imageSliders,
+                                            options: CarouselOptions(
+                                              autoPlay: true,
+                                              enableInfiniteScroll: true,
+                                              aspectRatio: 1.0,
+                                              disableCenter: false,
+                                              enlargeCenterPage: true,
+                                              // enlargeStrategy: CenterPageEnlargeStrategy.height,
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                Positioned(
+                                  top: 1,
+                                  left: 1,
+                                  child: Column(
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          // _displayTextInputDialog(context);
+                                          Provider.of<ProductProvider>(context,
+                                                  listen: false)
+                                              .addProductToFavourite(
+                                                  productDetails.id.toString());
+                                        },
+                                        icon: Icon(
+                                          Icons.favorite_outline,
+                                          size: 30,
+                                        ),
+                                        color: secondaryColor,
+                                      ),
+                                      IconButton(
+                                        onPressed: () {},
+                                        icon: Icon(
+                                          Icons.share,
+                                          size: 30,
+                                        ),
+                                        color: secondaryColor,
+                                      ),
+                                    ],
                                   ),
                                 ),
-                          Text(
-                            productDetails.name ?? '',
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 18,
-                              // fontFamily: 'Anton',
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                                Positioned(
+                                  top: 1,
+                                  right: 1,
+                                  child: productDetails.discountProduct != null
+                                      ? Container(
+                                          padding: const EdgeInsets.only(
+                                              right: 10,
+                                              left: 10,
+                                              top: 5,
+                                              bottom: 5),
+                                          margin: const EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                            color: Color(0xFFF8973D),
+                                            shape: BoxShape.rectangle,
+                                          ),
+                                          child: Text(
+                                            "${productDetails.discountProduct} ",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        )
+                                      : Container(),
+                                ),
+                              ],
                             ),
                           ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Text(
-                                "${productDetails.price ?? 0.0} ج.م",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                    color: Theme.of(context).errorColor),
+                        ),
+                        SliverList(
+                          delegate: SliverChildListDelegate([
+                            Text(
+                              locale == 'ar'
+                                  ? productDetails.nameAr != null
+                                      ? productDetails.nameAr.toString()
+                                      : ""
+                                  : productDetails.nameEn != null
+                                      ? productDetails.nameEn.toString()
+                                      : "",
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 20,
+                                // fontFamily: 'Anton',
+                                fontWeight: FontWeight.bold,
+                                color: primaryColor,
                               ),
-                              productDetails.price == productDetails.oldPrice
-                                  ? Text('')
-                                  : Text(
-                                      "${productDetails.oldPrice ?? 0.0} ج.م",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                          decoration:
-                                              TextDecoration.lineThrough,
-                                          color: Theme.of(context).errorColor),
-                                    ),
-                            ],
-                          ),
-                          Text(
-                            productDetails.description ?? "",
-                            maxLines: 6,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 14,
                             ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          buildQuantityIncrementer(),
-                        ],
-                      ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text(
+                                  "${productDetails.price ?? 0.0} ج.م",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      color: Theme.of(context).errorColor),
+                                ),
+                                productDetails.price == productDetails.oldPrice
+                                    ? Text('')
+                                    : Text(
+                                        "${productDetails.oldPrice ?? 0.0} ج.م",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                            decoration:
+                                                TextDecoration.lineThrough,
+                                            color:
+                                                Theme.of(context).errorColor),
+                                      ),
+                              ],
+                            ),
+                            Html(
+                                data: locale == "ar"
+                                    ? productDetails.descriptionAr ?? ""
+                                    : productDetails.nameEn ?? ""),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            buildQuantityIncrementer(),
+                          ]),
+                        ),
+                      ],
                     ),
                   ),
                   GestureDetector(
@@ -307,42 +400,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   Container sliderBuilder(int index, List<ProductGallery> productGalleries) {
     return Container(
       margin: EdgeInsets.only(left: 5.0, right: 5),
-      child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-          child: Stack(
-            children: <Widget>[
-              Image.network(Constants.imagePath + productGalleries[index].imagePath!,
-                  fit: BoxFit.contain, width: double.infinity),
-              // Positioned(
-              //   bottom: 0.0,
-              //   left: 0.0,
-              //   right: 0.0,
-              //   child: Container(
-              //     decoration: BoxDecoration(
-              //       gradient: LinearGradient(
-              //         colors: [
-              //           Color.fromARGB(200, 0, 0, 0),
-              //           Color.fromARGB(0, 0, 0, 0)
-              //  ,       ],
-              //         begin: Alignment.bottomCenter,
-              //         end: Alignment.topCenter,
-              //       )
-              //     ),
-              //     padding:
-              //         EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-              //     child: Text(
-              //       'No. $index image',
-              //       textAlign: TextAlign.center,
-              //       style: TextStyle(
-              //         color: Colors.white,
-              //         fontSize: 20.0,
-              //         fontWeight: FontWeight.bold,
-              //       ),
-              //     ),
-              //   ),
-              // ),
-            ],
-          )),
+      child: InteractiveViewer(
+        child: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            child: Image.network(
+                Constants.imagePath + productGalleries[index].imagePath!,
+                fit: BoxFit.contain,
+                width: double.infinity)),
+      ),
     );
   }
 

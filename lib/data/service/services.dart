@@ -11,12 +11,9 @@ import 'package:eshop/model/supplier_data.dart';
 import 'package:eshop/utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+
 // headers: {HttpHeaders.contentTypeHeader: "application/json",
 // HttpHeaders.authorizationHeader: "Bearer $token"}
-
-
-
-
 
 Future<List<Product>?> searchWithTerm(
     String? searchTerm, int offset, int limit) async {
@@ -45,12 +42,11 @@ Future<List<Product>?> searchWithTerm(
 
 Future<ProductDetailsData> fetchProductById(int? productId) async {
   try {
+
     final response = await http
         .get(Uri.parse(Constants.apiPath + "/Product/getById/$productId"));
-    // print(response.body.toString());
+    print(productId);
     if (response.statusCode == 200) {
-      print(productDetailsDataFromJson(response.body).name);
-
       return productDetailsDataFromJson(response.body);
     } else
       throw response.body;
@@ -211,7 +207,6 @@ Future<String> addPharmacy(String name, String address, String phoneNumber,
     throw e;
   }
 }
-
 
 Future<List<Supplier>?> searchSupplier(
     String searchTerm, String? cityId, int offset, int limit) async {

@@ -1,5 +1,6 @@
 import 'package:eshop/model/FavouriteProduct.dart';
 import 'package:eshop/provider/product_provider.dart';
+import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,10 +16,12 @@ class FavouriteScreen extends StatefulWidget {
 
 class _FavouriteScreenState extends State<FavouriteScreen> {
   List<FavouriteProduct>? _favouriteProductList = [];
+  late String locale;
 
   @override
   void initState() {
     super.initState();
+    locale = CacheHelper.getPrefs(key: "locale") ?? "ar";
     Provider.of<ProductProvider>(context, listen: false).getFavouriteProducts();
   }
 

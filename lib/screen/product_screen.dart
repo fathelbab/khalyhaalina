@@ -4,6 +4,7 @@ import 'package:eshop/model/supplier_category.dart';
 import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/provider/supplier_provider.dart';
+import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/constants.dart';
 import 'package:eshop/utils/style.dart';
@@ -41,7 +42,7 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   void initState() {
     super.initState();
-
+    locale = CacheHelper.getPrefs(key: "locale") ?? "ar";
     _productScrollController.addListener(() {
       if (_productScrollController.position.pixels ==
           _productScrollController.position.maxScrollExtent) {
