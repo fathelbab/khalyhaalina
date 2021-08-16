@@ -137,9 +137,7 @@ class MyApp extends StatelessWidget {
               }
               return supportedLocales.first;
             },
-            initialRoute: token == "" || token == null
-                ? IntroScreen.route
-                : SplashAppScreen.route,
+            initialRoute: SplashAppScreen.route,
             routes: appRoutes(context),
           );
         },

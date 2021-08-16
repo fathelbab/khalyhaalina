@@ -1,7 +1,12 @@
 import 'package:eshop/model/FavouriteProduct.dart';
+import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/product_provider.dart';
+import 'package:eshop/screen/cart/cart_screen.dart';
 import 'package:eshop/utils/cache_helper.dart';
+import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/style.dart';
+import 'package:eshop/widget/badge.dart';
+import 'package:eshop/widget/favourite_product_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,6 +35,33 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
     _favouriteProductList =
         Provider.of<ProductProvider>(context).favouriteProducts;
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        title: Text(
+          getString(context, "favourite"),
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.white,
+          ),
+        ),
+        actions: [
+          Consumer<Cart>(
+            builder: (_, cart, child) => Badge(
+              value: cart.cartItems != null && cart.cartItems!.length > 0
+                  ? cart.cartItems!.length.toString()
+                  : "0",
+              child: child,
+              color: Colors.red,
+            ),
+            child: IconButton(
+                icon: Icon(Icons.shopping_cart),
+                onPressed: () {
+                  Navigator.of(context).pushNamed(CartScreen.route);
+                }),
+          ),
+        ],
+      ),
       body: LayoutBuilder(
         builder: (context, constraints) {
           return _favouriteProductList == null
@@ -78,23 +110,23 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                     ],
                   ),
                 )
-              : GridView.builder(
-                  // controller: _productScrollController,
-                  itemCount: _favouriteProductList!.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisSpacing: 4,
-                    mainAxisSpacing: 4,
-                    crossAxisCount: constraints.maxWidth > 480 ? 4 : 2,
-                    childAspectRatio: 0.8,
-                  ),
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        Text(_favouriteProductList![index].nameAr.toString()),
-                        Text(_favouriteProductList![index].price.toString()),
-                      ],
-                    );
-                  });
+              : Container(
+                  margin: const EdgeInsets.all(5),
+                  child: GridView.builder(
+                      // controller: _productScrollController,
+                      itemCount: _favouriteProductList!.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisSpacing: 4,
+                        mainAxisSpacing: 4,
+                        crossAxisCount: constraints.maxWidth > 480 ? 4 : 2,
+                        childAspectRatio: 0.8,
+                      ),
+                      itemBuilder: (context, index) {
+                        return FavouriteProductItem(
+                            product: _favouriteProductList![index],
+                            index: index);
+                      }),
+                );
         },
       ),
     );

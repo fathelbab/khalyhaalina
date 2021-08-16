@@ -614,7 +614,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         width: double.infinity,
                         child: Image.network(
                           Constants.imagePath +
-                              _gifModelsList![index].gifUrl.toString(),
+                              _gifModelsList![index].imagePath.toString(),
                           fit: BoxFit.fill,
                         ),
                       );

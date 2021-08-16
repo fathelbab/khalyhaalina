@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:eshop/model/product_data.dart';
 import 'package:eshop/utils/constants.dart';
 import 'package:http/http.dart' as http;
 
@@ -29,5 +27,3 @@ Future<String> sendCompliatOrSuggestion(String firstName, String lastName,
     throw e;
   }
 }
-
-

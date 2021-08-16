@@ -17,13 +17,6 @@ class GovernorateScreen extends StatefulWidget {
 
 class _GovernorateScreenState extends State<GovernorateScreen> {
   @override
-  void initState() {
-    super.initState();
-    Provider.of<CityProvider>(context, listen: false)
-        .fetchGovernateList(1, 200);
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Stack(
       children: [

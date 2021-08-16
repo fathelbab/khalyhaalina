@@ -8,7 +8,9 @@ import 'package:eshop/model/product_details_data.dart' hide Category, Supplier;
 import 'package:eshop/model/service_details_data.dart' hide City;
 import 'package:eshop/model/service_specialist_data.dart';
 import 'package:eshop/model/supplier_data.dart';
+import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/constants.dart';
+import 'package:eshop/utils/log.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -42,7 +44,6 @@ Future<List<Product>?> searchWithTerm(
 
 Future<ProductDetailsData> fetchProductById(int? productId) async {
   try {
-
     final response = await http
         .get(Uri.parse(Constants.apiPath + "/Product/getById/$productId"));
     print(productId);
@@ -337,29 +338,29 @@ Future<List<ServiceSpecialist>?> getAllServiceSpecialist() async {
 }
 
 Future<void> signIn(String email, String password) async {
-  // print(email + " " + password);
+  // Log.d(Constants.apiPath + "/MyLogin/Login");
   try {
     final http.Response response = await http.post(
-        Uri.parse(Constants.apiPath + "/User/OnPost/authenticate"),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: json.encode(
-            {"email": email, "password": password, "rememberMe": true}));
+      Uri.parse(Constants.apiPath + "/MyLogin/Login"),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({"email": email, "password": password}),
+    );
     final resultData = json.decode(response.body);
-    // print(resultData['token'].toString());
-    // print(resultData.toString());
+    // Log.d(resultData['token']);
+    // Log.d(response.body.toString());
+    // Log.d(response.statusCode.toString());
     if (response.statusCode == 200) {
-      // print(resultData['token']);
-      final prefs = await SharedPreferences.getInstance();
       String token = resultData['token'] ?? "";
-      prefs.setString('token', token);
+      CacheHelper.savePrefs(key: 'token', value: token);
     } else {
       // print(resultData['message']);
-      throw "${resultData['message']}";
+      throw "${resultData['title']}";
     }
   } catch (e) {
     // print(e);
+    // Log.e(e.toString());
     throw e;
   }
 }

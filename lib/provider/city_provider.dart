@@ -13,7 +13,7 @@ class CityProvider extends ChangeNotifier {
   String userCity = "";
   fetchGovernateList(int offset, int limit) async {
     _governateList = await getAllGovernate(offset, limit);
-
+    print(_governateList);
     notifyListeners();
   }
 

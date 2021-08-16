@@ -12,24 +12,28 @@ String gifModelsToJson(List<GifModels> data) =>
 
 class GifModels {
   GifModels({
-    this.id,
-    this.gifUrl,
+    this.imagePath,
     this.cityId,
+    this.hasSupplier,
+    this.supplierId,
   });
 
-  int? id;
-  String? gifUrl;
+  String? imagePath;
   int? cityId;
+  bool? hasSupplier;
+  int? supplierId;
 
   factory GifModels.fromJson(Map<String, dynamic> json) => GifModels(
-        id: json["id"],
-        gifUrl: json["gifUrl"],
+        imagePath: json["imagePath"],
         cityId: json["cityId"],
+        hasSupplier: json["hasSupplier"],
+        supplierId: json["supplierId"] == null ? null : json["supplierId"],
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "gifUrl": gifUrl,
+        "imagePath": imagePath,
         "cityId": cityId,
+        "hasSupplier": hasSupplier,
+        "supplierId": supplierId == null ? null : supplierId,
       };
 }

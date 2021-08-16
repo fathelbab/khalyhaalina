@@ -1,30 +1,30 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eshop/language/app_locale.dart';
+import 'package:eshop/model/FavouriteProduct.dart';
 import 'package:eshop/model/product_data.dart';
 import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/screen/product_details/product_details_screen.dart';
 import 'package:eshop/utils/constants.dart';
-import 'package:eshop/utils/log.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-class ProductItems extends StatefulWidget {
-  final Product product;
+class FavouriteProductItem extends StatefulWidget {
+  final FavouriteProduct product;
   final int index;
 
-  ProductItems({
+  FavouriteProductItem({
     required this.product,
     required this.index,
   });
 
   @override
-  _ProductItemsState createState() => _ProductItemsState();
+  _FavouriteProductItemState createState() => _FavouriteProductItemState();
 }
 
-class _ProductItemsState extends State<ProductItems> {
+class _FavouriteProductItemState extends State<FavouriteProductItem> {
   TextEditingController _textFieldController = TextEditingController();
 
   @override
@@ -78,35 +78,31 @@ class _ProductItemsState extends State<ProductItems> {
                       ),
                     ),
                     Positioned(
-                      top: 1,
-                      left: 1,
+                      top: 0,
+                      left: 0,
                       child: Column(
                         children: [
-                          IconButton(
-                            onPressed: () {
-                              // _displayTextInputDialog(context);
-
-                              if (widget.product.isFavority == true) {
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.red.withOpacity(0.2),
+                              borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(15),
+                              ),
+                            ),
+                            child: IconButton(
+                              onPressed: () {
+                                // _displayTextInputDialog(context);
                                 Provider.of<ProductProvider>(context,
                                         listen: false)
                                     .removeProductFromFavourite(
                                         widget.product.id.toString());
-                                print("remove");
-                              } else {
-                                Provider.of<ProductProvider>(context,
-                                        listen: false)
-                                    .addProductToFavourite(
-                                        widget.product.id.toString());
-                                print("add");
-                              }
-                            },
-                            icon: Icon(
-                              widget.product.isFavority == true
-                                  ? Icons.favorite
-                                  : Icons.favorite_outline,
-                              size: 30,
+                              },
+                              icon: Icon(
+                                Icons.delete,
+                                size: 30,
+                              ),
+                              color: Theme.of(context).errorColor,
                             ),
-                            color: secondaryColor,
                           ),
                           IconButton(
                             onPressed: () {},
@@ -128,7 +124,7 @@ class _ProductItemsState extends State<ProductItems> {
                                   right: 10, left: 10, top: 5, bottom: 5),
                               margin: const EdgeInsets.all(5),
                               decoration: BoxDecoration(
-                                color: Color(0xFFF8973D),
+                                color: Colors.red,
                                 shape: BoxShape.rectangle,
                               ),
                               child: Text(

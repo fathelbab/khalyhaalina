@@ -2,7 +2,6 @@ import 'package:eshop/data/service/gif_models_service.dart';
 import 'package:eshop/model/gif_models_data.dart';
 import 'package:eshop/utils/cache_helper.dart';
 import 'package:flutter/foundation.dart';
-import 'package:eshop/data/service/services.dart';
 
 class GifModelsProvider extends ChangeNotifier {
   List<GifModels>? _gifModelsList = [];

@@ -1,4 +1,6 @@
 import 'dart:ui';
+import 'package:eshop/provider/city_provider.dart';
+import 'package:eshop/screen/address/governorate_screen.dart';
 import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:eshop/language/app_locale.dart';
@@ -26,6 +28,7 @@ class _LoginState extends State<Login> {
   final _passwordController = TextEditingController();
   final _emailController = TextEditingController();
   bool isPassword = true;
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -42,9 +45,8 @@ class _LoginState extends State<Login> {
                     width: 200,
                     height: 150,
                     decoration: BoxDecoration(
-                      
                       boxShadow: [
-                      BoxShadow(
+                        BoxShadow(
                           color: Colors.black.withOpacity(0.2),
                           spreadRadius: 1,
                           blurRadius: 10,
@@ -56,7 +58,6 @@ class _LoginState extends State<Login> {
                           fit: BoxFit.fill),
                     ),
                   ),
-           
                   Form(
                     key: _formKey,
                     child: Column(
@@ -206,7 +207,8 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
                     alignment: Alignment.topRight,
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -224,9 +226,7 @@ class _LoginState extends State<Login> {
                           width: 5.0,
                         ),
                         GestureDetector(
-                          onTap: () {
-                       
-                          },
+                          onTap: () {},
                           child: Text(
                             AppLocale.of(context)!
                                 .getString("termsAndConditions")
@@ -261,7 +261,7 @@ class _LoginState extends State<Login> {
           _passwordController.text.toString(),
         );
 
-        Navigator.pushReplacementNamed(context, CityScreen.route);
+        Navigator.pushReplacementNamed(context, GovernorateScreen.route);
       } catch (e) {
         _showErrorDialog();
       }
@@ -290,5 +290,3 @@ class _LoginState extends State<Login> {
     _passwordController.dispose();
   }
 }
-
-

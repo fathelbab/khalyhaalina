@@ -56,6 +56,7 @@ class Product {
     this.categoryId,
     this.supplierId,
     this.isHot,
+    this.isFavority,
   });
 
   int? id;
@@ -74,6 +75,7 @@ class Product {
   int? categoryId;
   int? supplierId;
   bool? isHot;
+  bool? isFavority;
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
         id: json["id"],
@@ -92,6 +94,7 @@ class Product {
         categoryId: json["categoryId"] == null ? null : json["categoryId"],
         supplierId: json["supplierId"],
         isHot: json["isHot"],
+        isFavority: json["isFavority"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -111,5 +114,6 @@ class Product {
         "categoryId": categoryId == null ? null : categoryId,
         "supplierId": supplierId,
         "isHot": isHot,
+        "isFavority": isFavority,
       };
 }

@@ -113,6 +113,7 @@ class Auth with ChangeNotifier {
   }
 
   void logout() async {
+    CacheHelper.clearPrefs(key: 'token');
     CacheHelper.clearAll();
   }
 }

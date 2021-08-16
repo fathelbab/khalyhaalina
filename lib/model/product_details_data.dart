@@ -313,29 +313,29 @@ class Supplier {
   });
 
   int? id;
-  dynamic? order;
+  dynamic order;
   String? createdDate;
   String? updatedDate;
   bool? isActive;
   bool? isDeleted;
-  dynamic? createdBy;
-  dynamic? updatedBy;
+  dynamic createdBy;
+  dynamic updatedBy;
   String? nameAr;
-  dynamic? nameEn;
-  dynamic? phoneNumber;
-  dynamic? cityId;
-  dynamic? imagePath;
-  dynamic? imagePath1;
-  dynamic? rate;
+  dynamic nameEn;
+  dynamic phoneNumber;
+  dynamic cityId;
+  dynamic imagePath;
+  dynamic imagePath1;
+  dynamic rate;
   int? govid;
   int? mainCategoryid;
-  dynamic? categoryId;
-  dynamic? openTime;
-  dynamic? closeTime;
-  dynamic? category;
-  dynamic? city;
-  dynamic? gov;
-  dynamic? mainCategory;
+  dynamic categoryId;
+  dynamic openTime;
+  dynamic closeTime;
+  dynamic category;
+  dynamic city;
+  dynamic gov;
+  dynamic mainCategory;
   List<dynamic>? products;
 
   factory Supplier.fromJson(Map<String?, dynamic> json) => Supplier(

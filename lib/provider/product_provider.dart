@@ -21,14 +21,13 @@ class ProductProvider extends ChangeNotifier {
 
   fetchProductList(String? supplierId, String? categoryId, String searchTerm,
       int offset, int limit) async {
-    print(currentCategoryId);
-    // currentCategoryId = categoryId!;
-    print(currentCategoryId);
+    String accessToken = CacheHelper.getPrefs(key: 'token');
     if (categoryId!.isEmpty)
       categoryId = currentCategoryId;
     else
       currentCategoryId = categoryId;
     _productList = await (fetchProduct(
+      accessToken,
       supplierId,
       categoryId,
       searchTerm,
@@ -41,7 +40,9 @@ class ProductProvider extends ChangeNotifier {
   fetchProductHotList(
       String supplierId, String categoryId, int offset, int limit) async {
     String cityId = CacheHelper.getPrefs(key: 'cityId');
+    String accessToken = CacheHelper.getPrefs(key: 'token');
     _productHotList = await (fetchProductHot(
+      accessToken,
       supplierId,
       cityId,
       categoryId,
@@ -88,13 +89,59 @@ class ProductProvider extends ChangeNotifier {
 
   addProductToFavourite(String? productId) async {
     String accessToken = CacheHelper.getPrefs(key: 'token');
-    print(accessToken);
     await addFavouriteProduct(accessToken, productId!);
+    _productHotList?.map((product) {
+      if (product.id.toString() == productId) {
+        product.isFavority = true;
+      }
+    }).toList();
+    _discountHotProductList = _productHotList!
+        .where((product) => product.discountProduct != null)
+        .toList();
+    _statusHotProductList = _productHotList!
+        .where((product) => product.stutesProduct != null)
+        .toList();
+    _newHotProductList = _productHotList!
+        .where((product) => product.discountProduct != null)
+        .toList();
+    _productList?.map((product) {
+      if (product.id.toString() == productId) {
+        product.isFavority = true;
+      }
+    }).toList();
+    notifyListeners();
+  }
+
+  removeProductFromFavourite(String? productId) async {
+    String accessToken = CacheHelper.getPrefs(key: 'token');
+    await removeFavouriteProduct(accessToken, productId!);
+    _productHotList?.map((product) {
+      if (product.id.toString() == productId) {
+        product.isFavority = false;
+        // addProductToFavourite(productId);
+
+      }
+    }).toList();
+    _discountHotProductList = _productHotList!
+        .where((product) => product.discountProduct != null)
+        .toList();
+    _statusHotProductList = _productHotList!
+        .where((product) => product.stutesProduct != null)
+        .toList();
+    _newHotProductList = _productHotList!
+        .where((product) => product.discountProduct != null)
+        .toList();
+    _productList?.map((product) {
+      if (product.id.toString() == productId) {
+        product.isFavority = false;
+      }
+    }).toList();
+    notifyListeners();
   }
 
   getFavouriteProducts() async {
     String accessToken = CacheHelper.getPrefs(key: 'token');
-    print(accessToken);
+    print(accessToken + "dfsafa");
     _favouriteProducts = await getAllFavouriteProducts(accessToken);
 
     notifyListeners();

@@ -44,13 +44,13 @@ class FavouriteProduct {
   });
 
   int? id;
-  dynamic? order;
+  dynamic order;
   String? createdDate;
   String? updatedDate;
   bool? isActive;
   bool? isDeleted;
-  dynamic? createdBy;
-  dynamic? updatedBy;
+  dynamic createdBy;
+  dynamic updatedBy;
   String? nameAr;
   String? nameEn;
   String? imagePath;
@@ -65,12 +65,12 @@ class FavouriteProduct {
   String? newProduct;
   String? discountProduct;
   String? stutesProduct;
-  dynamic? category;
-  dynamic? supplier;
+  dynamic category;
+  dynamic supplier;
   List<dynamic>? carts;
   List<dynamic>? orderdeitals;
   List<dynamic>? productGalleries;
-  dynamic? avilabeProductGalleries;
+  dynamic avilabeProductGalleries;
 
   factory FavouriteProduct.fromJson(Map<String, dynamic> json) =>
       FavouriteProduct(

@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'package:eshop/provider/city_provider.dart';
+import 'package:eshop/screen/login/login.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:eshop/screen/address/governorate_screen.dart';
 import 'package:eshop/screen/home/home_screen.dart';
 import 'package:eshop/utils/cache_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SplashAppScreen extends StatefulWidget {
   static const String route = "/splash";
@@ -12,22 +15,24 @@ class SplashAppScreen extends StatefulWidget {
 }
 
 class _SplashAppScreenState extends State<SplashAppScreen> {
-  String? cityId = "0";
+  late String token = "";
   Timer? timer;
   getSharedPrefs() async {
     // SharedPreferences prefs = await SharedPreferences.getInstance();
-    cityId = CacheHelper.getPrefs(key: "cityId");
+    token = CacheHelper.getPrefs(key: "token");
     setState(() {});
   }
 
   @override
   void initState() {
     super.initState();
+    Provider.of<CityProvider>(context, listen: false)
+        .fetchGovernateList(1, 200);
     getSharedPrefs();
     timer = Timer(
       const Duration(seconds: 4),
       () => Navigator.of(context).pushReplacementNamed(
-        cityId == "0" ? GovernorateScreen.route : HomeScreen.route,
+        token == null || token == "" ? Login.route : HomeScreen.route,
       ),
     );
   }
