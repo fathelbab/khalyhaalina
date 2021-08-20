@@ -1,11 +1,9 @@
 import 'dart:ui';
-import 'package:eshop/provider/city_provider.dart';
 import 'package:eshop/screen/address/governorate_screen.dart';
 import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/provider/auth_provider.dart';
-import 'package:eshop/screen/address/city_screen.dart';
 import 'package:eshop/screen/signup/signup.dart';
 import 'package:eshop/widget/default_button.dart';
 import 'package:eshop/widget/default_form_field.dart';

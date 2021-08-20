@@ -5,12 +5,10 @@ import 'package:eshop/model/image_data.dart';
 import 'package:eshop/model/notification_data.dart';
 import 'package:eshop/model/product_data.dart';
 import 'package:eshop/model/product_details_data.dart' hide Category, Supplier;
-import 'package:eshop/model/service_details_data.dart' hide City;
-import 'package:eshop/model/service_specialist_data.dart';
+
 import 'package:eshop/model/supplier_data.dart';
 import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/constants.dart';
-import 'package:eshop/utils/log.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -300,42 +298,6 @@ Future<List<ImageData>?> fetchImages() async {
 //     throw e;
 //   }
 // }
-
-Future<List<ServiceInfo>?> getAllServiceInfoList(
-    String? cityId, String? specialistId) async {
-  try {
-    final response = await http.get(Uri.parse(Constants.apiPath +
-        "/Service/GetAll?Offset=1&Limit=100&CityId=$cityId&ServiceSpecialistId=$specialistId"));
-
-    // print("done${response.body}");
-
-    if (response.statusCode == 200) {
-      // print("done${response.body}");
-      return serviceDetailsDataFromJson(response.body).result;
-    } else {
-      // print(response.statusCode);
-      return null;
-    }
-  } catch (e) {
-    throw e;
-  }
-}
-
-Future<List<ServiceSpecialist>?> getAllServiceSpecialist() async {
-  final response = await http.get(Uri.parse(
-      Constants.apiPath + "/ServiceSpecialist/GetAll?Offset=1&Limit=100"));
-  try {
-    if (response.statusCode == 200) {
-      // print(response.body);
-      return serviceSpecialistDataFromJson(response.body).result;
-    } else {
-      // print(response.statusCode);
-      return null;
-    }
-  } catch (e) {
-    throw e;
-  }
-}
 
 Future<void> signIn(String email, String password) async {
   // Log.d(Constants.apiPath + "/MyLogin/Login");

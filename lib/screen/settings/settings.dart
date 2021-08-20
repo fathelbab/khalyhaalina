@@ -1,4 +1,4 @@
-import 'package:eshop/provider/theme_provider.dart';
+import 'package:eshop/provider/settings_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:eshop/utils/style.dart';
@@ -33,10 +33,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Switch(
                 value: isDark,
                 activeColor: primaryColor,
-                
                 onChanged: (value) {
                   isDark = !isDark;
-                  Provider.of<ThemeProvider>(context, listen: false)
+                  Provider.of<SettingsProvider>(context, listen: false)
                       .changeTheme(value);
                 }),
           ],

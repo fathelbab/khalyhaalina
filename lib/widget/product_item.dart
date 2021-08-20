@@ -5,7 +5,6 @@ import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/screen/product_details/product_details_screen.dart';
 import 'package:eshop/utils/constants.dart';
-import 'package:eshop/utils/log.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -128,7 +127,7 @@ class _ProductItemsState extends State<ProductItems> {
                                   right: 10, left: 10, top: 5, bottom: 5),
                               margin: const EdgeInsets.all(5),
                               decoration: BoxDecoration(
-                                color: Color(0xFFF8973D),
+                                color: Theme.of(context).errorColor,
                                 shape: BoxShape.rectangle,
                               ),
                               child: Text(

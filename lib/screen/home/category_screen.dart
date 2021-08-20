@@ -25,6 +25,7 @@ import 'package:eshop/screen/home/sections/doctor_section.dart';
 import 'package:eshop/screen/home/sections/main_category.dart';
 import 'package:eshop/screen/home/sections/service_section.dart';
 import 'package:eshop/screen/login/login.dart';
+import 'package:eshop/screen/online_support/online_support_screen.dart';
 import 'package:eshop/screen/search/search_screen.dart';
 import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/components.dart';
@@ -350,13 +351,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     color: Colors.white,
                   ),
                   onTap: () {
-                    setState(() {
-                      Navigator.pop(context);
-                      isHome = true;
-                      isLoaded = false;
-                      isDoctor = false;
-                      isService = false;
-                    });
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, OnlineSupportScreen.route);
+                    // setState(() {
+                    //   Navigator.pop(context);
+                    //   isHome = true;
+                    //   isLoaded = false;
+                    //   isDoctor = false;
+                    //   isService = false;
+                    // });
                   },
                 ),
                 ListTile(
@@ -880,20 +883,20 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   ),
             if (statusHotProduct != null)
               buildProductHotList(statusHotProduct!),
-            notificationsList != null && notificationsList!.isEmpty
-                ? Text("")
-                : Container(
-                    height: MediaQuery.of(context).size.height / 4,
-                    width: double.infinity,
-                    child: CachedNetworkImage(
-                      imageUrl: Constants.imagePath +
-                          notificationsList![3].imagePath!,
-                      fit: BoxFit.fill,
-                      placeholder: (context, url) =>
-                          Center(child: CircularProgressIndicator()),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
-                    ),
-                  ),
+            // notificationsList != null && notificationsList!.isEmpty
+            //     ? Text("")
+            //     : Container(
+            //         height: MediaQuery.of(context).size.height / 4,
+            //         width: double.infinity,
+            //         child: CachedNetworkImage(
+            //           imageUrl: Constants.imagePath +
+            //               notificationsList![3].imagePath!,
+            //           fit: BoxFit.fill,
+            //           placeholder: (context, url) =>
+            //               Center(child: CircularProgressIndicator()),
+            //           errorWidget: (context, url, error) => Icon(Icons.error),
+            //         ),
+            //       ),
             // buildNotificationsSlider(),
           ],
         ),

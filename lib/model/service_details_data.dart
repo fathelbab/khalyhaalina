@@ -26,8 +26,8 @@ class ServiceDetailsData {
   factory ServiceDetailsData.fromJson(Map<String, dynamic> json) =>
       ServiceDetailsData(
         offset: json["offset"],
-        result:
-            List<ServiceInfo>.from(json["result"].map((x) => ServiceInfo.fromJson(x))),
+        result: List<ServiceInfo>.from(
+            json["result"].map((x) => ServiceInfo.fromJson(x))),
         limit: json["limit"],
         length: json["length"],
       );
@@ -47,6 +47,8 @@ class ServiceInfo {
     this.phoneNumber,
     this.address,
     this.cityId,
+    this.descriptionAr,
+    this.descriptionEn,
     this.imagePath,
     this.serviceSpecialistId,
     this.city,
@@ -58,10 +60,12 @@ class ServiceInfo {
   String? phoneNumber;
   String? address;
   int? cityId;
+  String? descriptionAr;
+  String? descriptionEn;
   String? imagePath;
   int? serviceSpecialistId;
   City? city;
-  ServiceSpecialistt? serviceSpecialist;
+  ServiceSpecialist? serviceSpecialist;
 
   factory ServiceInfo.fromJson(Map<String, dynamic> json) => ServiceInfo(
         id: json["id"],
@@ -69,11 +73,13 @@ class ServiceInfo {
         phoneNumber: json["phoneNumber"],
         address: json["address"],
         cityId: json["cityId"],
+        descriptionAr: json["descriptionAr"],
+        descriptionEn: json["descriptionEn"],
         imagePath: json["imagePath"],
         serviceSpecialistId: json["serviceSpecialistId"],
         city: City.fromJson(json["city"]),
         serviceSpecialist:
-            ServiceSpecialistt.fromJson(json["serviceSpecialist"]),
+            ServiceSpecialist.fromJson(json["serviceSpecialist"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -82,6 +88,8 @@ class ServiceInfo {
         "phoneNumber": phoneNumber,
         "address": address,
         "cityId": cityId,
+        "descriptionAr": descriptionAr,
+        "descriptionEn": descriptionEn,
         "imagePath": imagePath,
         "serviceSpecialistId": serviceSpecialistId,
         "city": city!.toJson(),
@@ -99,77 +107,93 @@ class City {
     this.isDeleted,
     this.createdBy,
     this.updatedBy,
-    this.name,
-    this.suppliers,
+    this.nameAr,
+    this.nameEn,
+    this.counteryid,
+    this.countery,
     this.doctors,
     this.services,
+    this.suppliers,
   });
 
   int? id;
   dynamic order;
-  String? createdDate;
-  String? updatedDate;
+  DateTime? createdDate;
+  DateTime? updatedDate;
   bool? isActive;
   bool? isDeleted;
   dynamic createdBy;
   dynamic updatedBy;
-  String? name;
+  String? nameAr;
+  dynamic nameEn;
+  int? counteryid;
+  dynamic countery;
+  List<dynamic>? doctors;
+  List<dynamic>? services;
   List<dynamic>? suppliers;
-  dynamic doctors;
-  dynamic services;
 
   factory City.fromJson(Map<String, dynamic> json) => City(
         id: json["id"],
         order: json["order"],
-        createdDate: json["createdDate"],
-        updatedDate: json["updatedDate"],
+        createdDate: DateTime.parse(json["createdDate"]),
+        updatedDate: DateTime.parse(json["updatedDate"]),
         isActive: json["isActive"],
         isDeleted: json["isDeleted"],
         createdBy: json["createdBy"],
         updatedBy: json["updatedBy"],
-        name: json["name"],
+        nameAr: json["nameAr"],
+        nameEn: json["nameEn"],
+        counteryid: json["counteryid"],
+        countery: json["countery"],
+        doctors: List<dynamic>.from(json["doctors"].map((x) => x)),
+        services: List<dynamic>.from(json["services"].map((x) => x)),
         suppliers: List<dynamic>.from(json["suppliers"].map((x) => x)),
-        doctors: json["doctors"],
-        services: json["services"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "order": order,
-        "createdDate": createdDate,
-        "updatedDate": updatedDate,
+        "createdDate": createdDate!.toIso8601String(),
+        "updatedDate": updatedDate!.toIso8601String(),
         "isActive": isActive,
         "isDeleted": isDeleted,
         "createdBy": createdBy,
         "updatedBy": updatedBy,
-        "name": name,
+        "nameAr": nameAr,
+        "nameEn": nameEn,
+        "counteryid": counteryid,
+        "countery": countery,
+        "doctors": List<dynamic>.from(doctors!.map((x) => x)),
+        "services": List<dynamic>.from(services!.map((x) => x)),
         "suppliers": List<dynamic>.from(suppliers!.map((x) => x)),
-        "doctors": doctors,
-        "services": services,
       };
 }
 
-class ServiceSpecialistt {
-  ServiceSpecialistt({
+class ServiceSpecialist {
+  ServiceSpecialist({
     this.id,
-    this.name,
+    this.nameAr,
+    this.nameEn,
     this.services,
   });
 
   int? id;
-  String? name;
-  dynamic services;
+  String? nameAr;
+  dynamic nameEn;
+  List<dynamic>? services;
 
-  factory ServiceSpecialistt.fromJson(Map<String, dynamic> json) =>
-      ServiceSpecialistt(
+  factory ServiceSpecialist.fromJson(Map<String, dynamic> json) =>
+      ServiceSpecialist(
         id: json["id"],
-        name: json["name"],
-        services: json["services"],
+        nameAr: json["nameAr"],
+        nameEn: json["nameEn"],
+        services: List<dynamic>.from(json["services"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "name": name,
-        "services": services,
+        "nameAr": nameAr,
+        "nameEn": nameEn,
+        "services": List<dynamic>.from(services!.map((x) => x)),
       };
 }

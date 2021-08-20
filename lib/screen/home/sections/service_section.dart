@@ -1,7 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:eshop/language/app_locale.dart';
-import 'package:eshop/model/service_details_data.dart';
+import 'package:eshop/model/service_details_data.dart' hide ServiceSpecialist;
 import 'package:eshop/model/service_specialist_data.dart';
 import 'package:eshop/provider/service_provider.dart';
 import 'package:eshop/screen/services/services_screen.dart';
@@ -19,6 +20,13 @@ class _ServiceSectionState extends State<ServiceSection> {
   List<ServiceSpecialist>? serviceSpecialist = [];
   int selecteIndex = 0;
   bool isLoading = false;
+  late String locale;
+  @override
+  void initState() {
+    super.initState();
+    locale = CacheHelper.getPrefs(key: "locale") ?? "ar";
+  }
+
   @override
   Widget build(BuildContext context) {
     serviceSpecialist =
@@ -95,14 +103,12 @@ class _ServiceSectionState extends State<ServiceSection> {
               ),
             serviceList == null || serviceList!.isEmpty
                 ? Container(
-                  height: 200,
-                  child: Center(
-                      child:
-                           isLoading
-                              ? CircularProgressIndicator()
-                              :
-                          Text("لايوجد خدمات متاح فى هذه المنطقة")),
-                )
+                    height: 200,
+                    child: Center(
+                        child: isLoading
+                            ? CircularProgressIndicator()
+                            : Text("لايوجد خدمات متاح فى هذه المنطقة")),
+                  )
                 : LayoutBuilder(
                     builder: (context, constraints) {
                       return ListView.builder(
@@ -138,11 +144,11 @@ class _ServiceSectionState extends State<ServiceSection> {
 }
 
 class ServiceItem extends StatelessWidget {
-  const ServiceItem({
+  ServiceItem({
     Key? key,
     required this.service,
   }) : super(key: key);
-
+  String locale = CacheHelper.getPrefs(key: "locale") ?? "ar";
   final ServiceInfo service;
   @override
   Widget build(BuildContext context) {
@@ -161,7 +167,9 @@ class ServiceItem extends StatelessWidget {
           ],
           color: Colors.white),
       child: ListTile(
-        onTap: () {},
+        onTap: () {
+          _showDialog(context);
+        },
         title: Text(
           service.name.toString(),
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
@@ -170,7 +178,9 @@ class ServiceItem extends StatelessWidget {
           children: [
             Expanded(
                 child: Text(
-              service.serviceSpecialist!.name.toString(),
+              locale == "ar"
+                  ? service.serviceSpecialist!.nameAr.toString()
+                  : service.serviceSpecialist!.nameEn.toString(),
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
             )),
@@ -181,7 +191,9 @@ class ServiceItem extends StatelessWidget {
               onPressed: () {
                 Navigator.pushNamed(context, ServicesScreen.route, arguments: {
                   "name": service.name ?? "",
-                  "serviceName": service.serviceSpecialist!.name ?? "",
+                  "serviceName": locale == "ar"
+                      ? service.serviceSpecialist!.nameAr ?? ""
+                      : service.serviceSpecialist!.nameEn ?? "",
                   "serviceAddress": service.address ?? "",
                   "servicePhoneNumber": service.phoneNumber ?? "",
                 });
@@ -204,23 +216,54 @@ class ServiceItem extends StatelessWidget {
       ),
     );
   }
+
+  void _showDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Alert!!"),
+          content: Container(
+            height: 300,
+            child: SingleChildScrollView(
+              child: Text(
+                locale == "ar"
+                    ? service.descriptionAr ?? ""
+                    : service.descriptionAr ?? "",
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            new TextButton(
+              child: new Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
 
 class ServiceGridItem extends StatelessWidget {
-  const ServiceGridItem({
+  ServiceGridItem({
     Key? key,
     required this.service,
   }) : super(key: key);
 
   final ServiceInfo service;
-
+  String locale = CacheHelper.getPrefs(key: "locale") ?? "ar";
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, ServicesScreen.route, arguments: {
           "name": service.name ?? "",
-          "serviceName": service.serviceSpecialist!.name ?? "",
+          "serviceName": locale == "ar"
+              ? service.serviceSpecialist!.nameAr ?? ""
+              : service.serviceSpecialist!.nameEn ?? "",
           "serviceAddress": service.address ?? "",
           "servicePhoneNumber": service.phoneNumber ?? "",
         });
@@ -269,7 +312,9 @@ class ServiceGridItem extends StatelessWidget {
               onPressed: () {
                 Navigator.pushNamed(context, ServicesScreen.route, arguments: {
                   "name": service.name ?? "",
-                  "serviceName": service.serviceSpecialist!.name ?? "",
+                  "serviceName": locale == "ar"
+                      ? service.serviceSpecialist!.nameAr ?? ""
+                      : service.serviceSpecialist!.nameEn ?? "",
                   "serviceAddress": service.address ?? "",
                   "servicePhoneNumber": service.phoneNumber ?? "",
                 });

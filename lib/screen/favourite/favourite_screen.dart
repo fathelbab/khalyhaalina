@@ -2,6 +2,7 @@ import 'package:eshop/model/FavouriteProduct.dart';
 import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/screen/cart/cart_screen.dart';
+import 'package:eshop/screen/online_support/online_support_screen.dart';
 import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/style.dart';
@@ -64,7 +65,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          return _favouriteProductList == null
+          return _favouriteProductList == null || _favouriteProductList!.isEmpty
               ? Container(
                   width: double.infinity,
                   child: Column(
@@ -72,12 +73,12 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Icon(
-                        Icons.shopping_bag_rounded,
+                        Icons.favorite,
                         size: 150,
                         color: Colors.grey,
                       ),
                       Text(
-                        'السلة فارغة',
+                        getString(context, "emptyFavourite"),
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
@@ -88,7 +89,12 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                         height: 10,
                       ),
                       OutlinedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            OnlineSupportScreen.route,
+                          );
+                        },
                         style: OutlinedButton.styleFrom(
                           side: BorderSide(
                             color: primaryColor,
@@ -99,9 +105,9 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                   BorderRadius.all(Radius.circular(15))),
                         ),
                         child: Text(
-                          'مواصلة التسوق',
+                          getString(context, "onlineSupport"),
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: primaryColor,
                           ),

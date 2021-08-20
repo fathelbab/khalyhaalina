@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:eshop/model/doctor_data.dart';
 import 'package:eshop/model/doctor_specialist_data.dart';
@@ -7,7 +8,7 @@ import 'package:eshop/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../doctor_details_screen.dart';
+import '../../doctor/doctor_details_screen.dart';
 
 class DoctorSection extends StatefulWidget {
   @override
@@ -16,10 +17,15 @@ class DoctorSection extends StatefulWidget {
 
 class _DoctorSectionState extends State<DoctorSection> {
   List<DoctorInfo>? doctorList = [];
-
+  late String locale;
   List<DoctorSpecialistt>? doctorSpeciaList = [];
   bool isLoading = false;
   int selecteIndex = 0;
+  @override
+  void initState() {
+    super.initState();
+    locale = CacheHelper.getPrefs(key: "locale") ?? "ar";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +94,13 @@ class _DoctorSectionState extends State<DoctorSection> {
                                   height: 60,
                                 ),
                                 Text(
-                                  doctorSpeciaList![index].name.toString(),
+                                  locale == "ar"
+                                      ? doctorSpeciaList![index]
+                                          .nameAr
+                                          .toString()
+                                      : doctorSpeciaList![index]
+                                          .nameEn
+                                          .toString(),
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
                                   style: TextStyle(
@@ -149,11 +161,11 @@ class _DoctorSectionState extends State<DoctorSection> {
 }
 
 class DoctorItem extends StatelessWidget {
-  const DoctorItem({
+  DoctorItem({
     Key? key,
     required this.doctor,
   }) : super(key: key);
-
+  final String locale = CacheHelper.getPrefs(key: 'locale') ?? "ar";
   final DoctorInfo doctor;
   @override
   Widget build(BuildContext context) {
@@ -182,10 +194,12 @@ class DoctorItem extends StatelessWidget {
           );
         },
         title: Text(
-          doctor.name.toString(),
+          locale == "ar" ? doctor.nameAr.toString() : doctor.nameEn.toString(),
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
-        subtitle: Text(doctor.doctorSpecialist!.name.toString()),
+        subtitle: Text(locale == "ar"
+            ? doctor.doctorSpecialist!.nameAr.toString()
+            : doctor.doctorSpecialist!.nameEn.toString()),
         leading: CachedNetworkImage(
           height: 60.0,
           width: 60.0,
@@ -201,10 +215,11 @@ class DoctorItem extends StatelessWidget {
 }
 
 class DoctorGridItem extends StatelessWidget {
-  const DoctorGridItem({
+  DoctorGridItem({
     Key? key,
     required this.doctor,
   }) : super(key: key);
+  final String locale = CacheHelper.getPrefs(key: 'locale') ?? "ar";
 
   final DoctorInfo doctor;
 
@@ -249,7 +264,9 @@ class DoctorGridItem extends StatelessWidget {
             ),
             SizedBox(height: 5.0),
             Text(
-              doctor.name!,
+              locale == "ar"
+                  ? doctor.nameAr.toString()
+                  : doctor.nameEn.toString(),
               textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,

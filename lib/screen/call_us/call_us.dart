@@ -294,8 +294,8 @@ class _CallUsScreenState extends State<CallUsScreen> {
       // Invalid!
       return;
     } else {
-      Provider.of<CallUsProvider>(context, listen: false)
-          .sendUserCompliatOrSuggestion(
+      Provider.of<ContactUsProvider>(context, listen: false)
+          .sendUserComplainsOrSuggestion(
         _firstNameController.text.toString(),
         _lastNameController.text.toString(),
         _emailController.text.toString(),

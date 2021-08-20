@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/model/FavouriteProduct.dart';
-import 'package:eshop/model/product_data.dart';
 import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/screen/product_details/product_details_screen.dart';

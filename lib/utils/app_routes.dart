@@ -2,12 +2,14 @@ import 'package:eshop/screen/address/city_screen.dart';
 import 'package:eshop/screen/address/governorate_screen.dart';
 import 'package:eshop/screen/call_us/call_us.dart';
 import 'package:eshop/screen/cart/cart_screen.dart';
+import 'package:eshop/screen/doctor/booked_screen.dart';
 import 'package:eshop/screen/favourite/favourite_screen.dart';
 import 'package:eshop/screen/home/category_screen.dart';
-import 'package:eshop/screen/doctor_details_screen.dart';
+import 'package:eshop/screen/doctor/doctor_details_screen.dart';
 import 'package:eshop/screen/home/home_screen.dart';
 import 'package:eshop/screen/intro/intro_screen.dart';
 import 'package:eshop/screen/login/login.dart';
+import 'package:eshop/screen/online_support/online_support_screen.dart';
 import 'package:eshop/screen/order/order_screen.dart';
 import 'package:eshop/screen/product_details/product_details_screen.dart';
 import 'package:eshop/screen/product_screen.dart';
@@ -41,5 +43,7 @@ Map<String, Widget Function(BuildContext)> appRoutes(context) {
     IntroScreen.route: (context) => IntroScreen(),
     SupplierScreen.route: (context) => SupplierScreen(),
     FavouriteScreen.route: (context) => FavouriteScreen(),
+    DoctorBookedScreen.route: (context) => DoctorBookedScreen(),
+    OnlineSupportScreen.route: (context) => OnlineSupportScreen(),
   };
 }

@@ -65,7 +65,7 @@
     "serviceRequest": "Request",
     "from": "from",
     "to": "to",
-    "notes": "Notes",
+    "doctorBooked": "Booked",
     "myAccount": "Account",
     "changeLocation": "Change location",
     "startShopping": "Start shopping",
@@ -81,5 +81,17 @@
     "search": "Search",
     "deliveryText": "Delivery",
     "category": "Category",
-    "noProductAvailable": "No Products Available"
+    "noProductAvailable": "No Products Available",
+    "sendDoctorBooked": "Send Booked",
+    "services": "Services",
+    "bookedDate": "Booked Time",
+    "confirmDoctorBooked": "Confirm Doctor Booked",
+    "confirmedDoctorBookedMessage": "Doctor's reservation confirmed.",
+    "failedConnectToInternet": "Failed Connect To Internet",
+    "comment": "Comment",
+    "emptyComment": "Please write comment.",
+    "send": "Send",
+    "onlineSupport": "Contact with Khliha Alina"
+    ,"emptyCart":"Cart is empty"
+    ,"emptyFavourite":"No favourite products"
 }

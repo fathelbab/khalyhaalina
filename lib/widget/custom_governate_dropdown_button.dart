@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:collection/collection.dart' show IterableExtension;
-import 'package:eshop/model/governate_data.dart';
 import 'package:eshop/provider/city_provider.dart';
 import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/components.dart';

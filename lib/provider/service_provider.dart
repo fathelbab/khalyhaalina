@@ -1,7 +1,8 @@
-import 'package:eshop/model/service_details_data.dart';
+import 'package:eshop/data/service/services_service.dart';
+import 'package:eshop/model/service_details_data.dart' hide ServiceSpecialist;
 import 'package:eshop/model/service_specialist_data.dart';
+
 import 'package:flutter/foundation.dart';
-import 'package:eshop/data/service/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ServiceProvider extends ChangeNotifier {

@@ -43,20 +43,25 @@ class DoctorSpecialistData {
 class DoctorSpecialistt {
   DoctorSpecialistt({
     this.id,
-    this.name,
+    this.nameAr,
+    this.nameEn,
   });
 
   int? id;
-  String? name;
+
+  String? nameAr;
+  String? nameEn;
 
   factory DoctorSpecialistt.fromJson(Map<String, dynamic> json) =>
       DoctorSpecialistt(
         id: json["id"],
-        name: json["name"],
+        nameAr: json["nameAr"] == null ? null : json["nameAr"],
+        nameEn: json["nameEn"] == null ? null : json["nameEn"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "name": name,
+        "nameAr": nameAr == null ? null : nameAr,
+        "nameEn": nameEn == null ? null : nameEn,
       };
 }

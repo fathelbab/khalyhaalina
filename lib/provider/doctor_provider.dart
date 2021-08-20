@@ -1,6 +1,7 @@
 import 'package:eshop/model/doctor_data.dart';
 import 'package:eshop/model/doctor_details_data.dart';
 import 'package:eshop/model/doctor_specialist_data.dart';
+import 'package:eshop/utils/cache_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:eshop/data/service/doctor_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,5 +39,17 @@ class DoctorProvider extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     final cityId = prefs.getString('cityId');
     return cityId;
+  }
+
+  Future<String> sendDoctorBookedDate(
+    String name,
+    String phoneNumber,
+    String doctorId,
+    String bookedDate,
+  ) async {
+    String accessToken = CacheHelper.getPrefs(key: 'token');
+    String response = await sendDoctorBookedDateService(
+        accessToken, name, doctorId, phoneNumber, bookedDate);
+    return response;
   }
 }

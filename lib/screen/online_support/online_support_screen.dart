@@ -1,19 +1,19 @@
-import 'package:eshop/utils/style.dart';
-import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/provider/contact_us_provider.dart';
+import 'package:eshop/provider/doctor_provider.dart';
+import 'package:eshop/screen/home/home_screen.dart';
+import 'package:eshop/utils/components.dart';
+import 'package:eshop/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ServicesScreen extends StatefulWidget {
-  static const String route = "/services_screen";
-
-  ServicesScreen({Key? key}) : super(key: key);
+class OnlineSupportScreen extends StatefulWidget {
+  static const String route = "/online_support_screen";
 
   @override
-  _ServicesScreenState createState() => _ServicesScreenState();
+  _OnlineSupportScreenState createState() => _OnlineSupportScreenState();
 }
 
-class _ServicesScreenState extends State<ServicesScreen> {
+class _OnlineSupportScreenState extends State<OnlineSupportScreen> {
   RegExp regex = new RegExp(
       r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
   final GlobalKey<FormState> _formKey = GlobalKey();
@@ -22,24 +22,20 @@ class _ServicesScreenState extends State<ServicesScreen> {
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _userMessageController = TextEditingController();
-  String servicePhoneNumber = "";
-  String name = "";
-  String serviceAddress = "";
-  String serviceName = "";
+  final _commentController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final Map? service = ModalRoute.of(context)!.settings.arguments as Map?;
-    serviceName = service != null ? service["serviceName"] : "";
-    serviceAddress = service != null ? service["serviceAddress"] : "";
-    name = service != null ? service["name"] : "";
-    servicePhoneNumber = service != null ? service["servicePhoneNumber"] : "";
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
+        backgroundColor: primaryColor,
+        title: Text(
+          getString(context, "onlineSupport"),
+          style: TextStyle(fontSize: 20),
+        ),
+        centerTitle: true,
         leading: IconButton(
-          color: primaryColor,
+          color: Colors.white,
           icon: Icon(Icons.arrow_back_ios),
           onPressed: () {
             if (Navigator.canPop(context)) Navigator.pop(context);
@@ -58,18 +54,6 @@ class _ServicesScreenState extends State<ServicesScreen> {
                     shrinkWrap: true,
                     children: [
                       Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.all(10.0),
-                        child: Text(
-                          "الخدمات",
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                            color: primaryColor,
-                          ),
-                        ),
-                      ),
-                      Container(
                         margin: EdgeInsets.all(5.0),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -78,8 +62,12 @@ class _ServicesScreenState extends State<ServicesScreen> {
                         child: TextFormField(
                           controller: _firstNameController,
                           decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.person),
-                            hintStyle: TextStyle(fontSize: 13),
+                            prefixIcon: Icon(
+                              Icons.person,
+                              color: primaryColor,
+                            ),
+                            hintStyle: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: Theme.of(context).primaryColor),
@@ -94,17 +82,55 @@ class _ServicesScreenState extends State<ServicesScreen> {
                                 const Radius.circular(10.0),
                               ),
                             ),
-                            hintText: "الاسم ",
+                            hintText: getString(context, "firstName"),
                           ),
                           validator: (value) {
                             if (value!.isEmpty || value.length < 1) {
-                              return "يرجى ادخال الاسم ";
+                              return getString(context, "firstNameError");
                             }
                             return null;
                           },
                         ),
                       ),
-
+                      Container(
+                        margin: EdgeInsets.all(5.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                        ),
+                        child: TextFormField(
+                          controller: _lastNameController,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.person,
+                              color: primaryColor,
+                            ),
+                            hintStyle: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).primaryColor),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            border: new OutlineInputBorder(
+                              borderRadius: const BorderRadius.all(
+                                const Radius.circular(10.0),
+                              ),
+                            ),
+                            hintText: getString(context, "familyName"),
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty || value.length < 1) {
+                              return getString(context, "familyNameError");
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
                       Container(
                         margin: EdgeInsets.all(5.0),
                         decoration: BoxDecoration(
@@ -114,8 +140,12 @@ class _ServicesScreenState extends State<ServicesScreen> {
                         child: TextFormField(
                           controller: _userAddressController,
                           decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.add_location),
-                            hintStyle: TextStyle(fontSize: 13),
+                            prefixIcon: Icon(
+                              Icons.add_location,
+                              color: primaryColor,
+                            ),
+                            hintStyle: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   color: Theme.of(context).primaryColor),
@@ -130,11 +160,11 @@ class _ServicesScreenState extends State<ServicesScreen> {
                                 const Radius.circular(10.0),
                               ),
                             ),
-                            hintText: "العنوان",
+                            hintText: getString(context, "address"),
                           ),
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return "يرجى ادخال العنوان ";
+                              return getString(context, "emptyAddress");
                             }
                             return null;
                           },
@@ -150,8 +180,12 @@ class _ServicesScreenState extends State<ServicesScreen> {
                         child: TextFormField(
                             controller: _phoneNumberText,
                             decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.phone),
-                              hintStyle: TextStyle(fontSize: 13),
+                              prefixIcon: Icon(
+                                Icons.phone,
+                                color: primaryColor,
+                              ),
+                              hintStyle: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Theme.of(context).primaryColor),
@@ -166,11 +200,11 @@ class _ServicesScreenState extends State<ServicesScreen> {
                                   const Radius.circular(10.0),
                                 ),
                               ),
-                              hintText: "رقم التليفون",
+                              hintText: getString(context, "phoneNumber"),
                             ),
                             validator: (value) {
                               if (value!.isEmpty || value.length < 6) {
-                                return "يرجى ادخال رقم التليفون";
+                                return getString(context, "emptyPhoneNumber");
                               }
 
                               return null;
@@ -183,59 +217,43 @@ class _ServicesScreenState extends State<ServicesScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: TextFormField(
-                          readOnly: true,
-                          controller: _lastNameController,
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.person),
-                            hintStyle: TextStyle(fontSize: 13),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColor),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            border: new OutlineInputBorder(
-                              borderRadius: const BorderRadius.all(
-                                const Radius.circular(10.0),
+                            controller: _commentController,
+                            minLines: 3,
+                            maxLines: 6,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.comment,
+                                color: primaryColor,
                               ),
-                            ),
-                            hintText: name,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.all(5.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
-                        ),
-                        child: TextFormField(
-                          readOnly: serviceName.isNotEmpty ? true : false,
-                          controller: _userMessageController,
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.supervised_user_circle),
-                            hintStyle: TextStyle(fontSize: 13),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColor),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            border: new OutlineInputBorder(
-                              borderRadius: const BorderRadius.all(
-                                const Radius.circular(10.0),
+                              hintStyle: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                height: 2.1,
                               ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).primaryColor),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              border: new OutlineInputBorder(
+                                borderRadius: const BorderRadius.all(
+                                  const Radius.circular(10.0),
+                                ),
+                              ),
+                              hintText: getString(context, "comment"),
                             ),
-                            hintText: serviceName,
-                          ),
-                        ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return getString(context, "emptyComment");
+                              }
+                              return null;
+                            }),
                       ),
+
                       MaterialButton(
                         onPressed: () {
                           _submit();
@@ -249,11 +267,12 @@ class _ServicesScreenState extends State<ServicesScreen> {
                           child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                " ارسال طلب الخدمة",
+                                getString(context, "send"),
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15),
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
                               )),
                         ),
                       ),
@@ -287,29 +306,47 @@ class _ServicesScreenState extends State<ServicesScreen> {
       // Invalid!
       return;
     } else {
-      Provider.of<ContactUsProvider>(context, listen: false)
-          .sendUserComplainsOrSuggestion(
-        _firstNameController.text.toString(),
-        name,
-        _userAddressController.text.toString(),
-        _phoneNumberText.text.toString(),
-        "$servicePhoneNumber/$serviceName/$serviceAddress",
-      )
-          .then((value) {
-        print(value);
-        if (value == "done") {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(
-                  AppLocale.of(context)!.getString("orderSuccessMessage")!)));
-          Navigator.pop(context);
+      checkConnection().then((value) {
+        if (value) {
+          Provider.of<ContactUsProvider>(context, listen: false)
+              .sendOnlineSupport(
+            _firstNameController.text.toString(),
+            _lastNameController.text.toString(),
+            _userAddressController.text.toString(),
+            _phoneNumberText.text.toString(),
+            _commentController.text.toString(),
+          )
+              .then((value) {
+            if (value == "done") {
+              showToast(
+                text: getString(context, "confirmedDoctorBookedMessage"),
+                bgColor: Colors.green,
+              );
+              Navigator.pushNamedAndRemoveUntil(
+                  context, HomeScreen.route, (route) => false);
+            } else {
+              showToast(
+                text: getString(context, "orderErrorMessage"),
+                bgColor: Colors.red,
+              );
+            }
+          }).catchError((e) {
+            showToast(
+              text: getString(context, "orderErrorMessage"),
+              bgColor: Colors.red,
+            );
+          });
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(AppLocale.of(context)!.getString("addedError")!)));
+          showToast(
+            text: getString(context, "failedConnectToInternet"),
+            bgColor: Colors.red,
+          );
         }
       }).catchError((e) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content:
-                Text("${AppLocale.of(context)!.getString("addedError")}")));
+        showToast(
+          text: getString(context, "failedConnectToInternet"),
+          bgColor: Colors.red,
+        );
       });
     }
   }

@@ -122,6 +122,8 @@ class ProductProvider extends ChangeNotifier {
 
       }
     }).toList();
+    _favouriteProducts
+        ?.removeWhere((product) => product.id.toString() == productId);
     _discountHotProductList = _productHotList!
         .where((product) => product.discountProduct != null)
         .toList();

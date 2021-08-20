@@ -135,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: _screens[_selectedPageIndex],
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: primaryColor,
+        backgroundColor: Colors.white,
         onPressed: () {},
         child: Consumer<Cart>(
           builder: (_, cart, child) => Badge(
@@ -146,14 +146,17 @@ class _HomeScreenState extends State<HomeScreen> {
             color: Colors.red,
           ),
           child: IconButton(
-              icon: Icon(Icons.shopping_cart),
+              icon: Icon(
+                Icons.shopping_cart,
+                color: primaryColor,
+              ),
               onPressed: () {
                 Navigator.of(context).pushNamed(CartScreen.route);
               }),
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-          color: primaryColor,
+          color: Colors.white,
           shape: CircularNotchedRectangle(),
           notchMargin: 10,
           child: Container(
@@ -181,11 +184,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 children: [
                                   Icon(
                                     e.iconData,
-                                    color: Colors.white,
+                                    color: primaryColor,
                                   ),
                                   Text(
                                     e.text.toString(),
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(color: primaryColor),
                                   ),
                                 ],
                               ),

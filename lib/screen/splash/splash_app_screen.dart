@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:eshop/provider/city_provider.dart';
 import 'package:eshop/screen/login/login.dart';
 import 'package:eshop/utils/style.dart';
-import 'package:eshop/screen/address/governorate_screen.dart';
 import 'package:eshop/screen/home/home_screen.dart';
 import 'package:eshop/utils/cache_helper.dart';
 import 'package:flutter/material.dart';

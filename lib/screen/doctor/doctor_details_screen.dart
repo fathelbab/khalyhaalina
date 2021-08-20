@@ -1,9 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eshop/screen/doctor/booked_screen.dart';
+import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/provider/doctor_provider.dart';
 import 'package:eshop/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 
 class DoctorDetailsScreen extends StatefulWidget {
@@ -14,6 +17,14 @@ class DoctorDetailsScreen extends StatefulWidget {
 }
 
 class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
+  late String locale;
+
+  @override
+  void initState() {
+    super.initState();
+    locale = CacheHelper.getPrefs(key: "locale") ?? "ar";
+  }
+
   @override
   Widget build(BuildContext context) {
     final doctorDetails =
@@ -52,7 +63,8 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                             child: CachedNetworkImage(
                               width: 100,
                               height: 120,
-                              imageUrl: Constants.imagePath + doctorDetails.imagePath!,
+                              imageUrl: Constants.imagePath +
+                                  doctorDetails.imagePath!,
                               fit: BoxFit.fill,
                               placeholder: (context, url) =>
                                   Center(child: CircularProgressIndicator()),
@@ -67,14 +79,14 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  "${doctorDetails.name}",
+                                  "${locale == "ar" ? doctorDetails.nameAr.toString() : doctorDetails.nameEn.toString()}",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 22,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  " ${doctorDetails.doctorSpecialist?.name}",
+                                  " ${locale == "ar" ? doctorDetails.doctorSpecialist?.nameAr : doctorDetails.doctorSpecialist?.nameEn}",
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
@@ -108,9 +120,14 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                     //       horizontal: 15, vertical: 5),
                     //   child: Text("المدينة : ${doctorDetails.city!.name}"),
                     // ),
+                    Html(
+                        data: locale == "ar"
+                            ? doctorDetails.descriptionAr.toString()
+                            : doctorDetails.descriptionEn.toString()),
                     SizedBox(
-                      height: 15,
+                      height: 5,
                     ),
+
                     doctorDetails.doctorTimeTable!.isEmpty
                         ? Text("")
                         : ListView.builder(
@@ -200,23 +217,41 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                                             : Container()
                                       ],
                                     ),
-                                    Container(
-                                      margin: const EdgeInsets.all(5),
-                                      alignment: Alignment.topRight,
-                                      child: Text(
-                                        AppLocale.of(context)!
-                                            .getString("notes")
-                                            .toString(),
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: primaryColor,
-                                            fontWeight: FontWeight.bold),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  DoctorBookedScreen(
+                                                bookedDate:
+                                                    "${doctorDetails.doctorTimeTable![index].doctorDay}\\${doctorDetails.doctorTimeTable![index].doctorTime}",
+                                                doctorId:
+                                                    doctorDetails.id.toString(),
+                                              ),
+                                            ));
+                                      },
+                                      child: Container(
+                                        margin: const EdgeInsets.all(5),
+                                        alignment: Alignment.topRight,
+                                        child: Text(
+                                          AppLocale.of(context)!
+                                              .getString("doctorBooked")
+                                              .toString(),
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: primaryColor,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       ),
                                     )
                                   ],
                                 ),
                               );
-                            })
+                            }),
+                    SizedBox(
+                      height: 15,
+                    ),
                     // DataTable(
                     //     headingRowColor:
                     //         MaterialStateProperty.resolveWith<Color>(

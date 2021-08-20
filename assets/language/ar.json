@@ -65,7 +65,7 @@
     "serviceRequest": "اطلب خدمة",
     "from": "من",
     "to": "الى",
-    "notes": "ملاحظات",
+    "doctorBooked": "حجز",
     "myAccount": "حسابى",
     "startShopping": "تسوق الان",
     "profile": "الملف الشخصى",
@@ -81,5 +81,16 @@
     "search": "البحث",
     "deliveryText": "توصيل",
     "category": "الاقسام",
-    "noProductAvailable": "لايوجد منتجات متاحة"
+    "noProductAvailable": "لايوجد منتجات متاحة",
+    "sendDoctorBooked": "ارسال طلب الحجز",
+    "services": "الخدمات",
+    "bookedDate": "ميعاد الحجز",
+    "confirmDoctorBooked": "تأكيد حجز الطبيب",
+    "confirmedDoctorBookedMessage": "تم تأكيد حجز الطبيب",
+    "failedConnectToInternet": "فشل الاتصال بالإنترنت",
+    "comment": "الرسالة",
+    "emptyComment": "يرجى كتابة ملاحظانك اولا.",
+    "send": "إرسال",
+    "onlineSupport": "تواصل مع خليها علينا",
+    "emptyCart": "السلة فارغة" ,"emptyFavourite":"المفضلة فارغة"
 }

@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:eshop/model/doctor_data.dart' hide City;
 import 'package:eshop/model/doctor_details_data.dart';
 import 'package:eshop/model/doctor_specialist_data.dart';
 import 'package:eshop/utils/constants.dart';
+import 'package:eshop/utils/log.dart';
 import 'package:http/http.dart' as http;
 
 Future<List<DoctorSpecialistt>?> getAllDoctorSpecialist() async {
@@ -51,6 +54,46 @@ Future<DoctorDetailsData?> getDoctorByID(String doctorId) async {
       return null;
     }
   } catch (e) {
+    throw e;
+  }
+}
+
+Future<String> sendDoctorBookedDateService(String accessToken, String name,
+    String doctorId, String phoneNumber, String bookedDate) async {
+  try {
+    final response = await http.post(
+      Uri.parse(Constants.apiPath + "/BookedDoctors"),
+      headers: {
+        'Content-Type': 'application/json',
+        'access_token': accessToken,
+      },
+      body: jsonEncode(
+        {
+          "bookedDate": bookedDate,
+          "doctorId": doctorId,
+          "name": name,
+          "phone": phoneNumber
+        },
+      ),
+    );
+    Log.d(jsonEncode(
+      {
+        "bookedDate": bookedDate,
+        "doctorId": doctorId,
+        "name": name,
+        "phone": phoneNumber
+      },
+    ));
+    Log.d(response.statusCode.toString());
+    Log.d(accessToken);
+    Log.d(response.body.toString());
+    if (response.statusCode == 200) {
+      return "done";
+    } else {
+      return "failed";
+    }
+  } catch (e) {
+    Log.e(e.toString());
     throw e;
   }
 }
