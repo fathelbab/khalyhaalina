@@ -1,11 +1,15 @@
 import 'dart:convert';
 import 'package:eshop/model/FavouriteProduct.dart';
 import 'package:eshop/model/product_data.dart';
+import 'package:eshop/model/product_details_data.dart';
 import 'package:eshop/utils/constants.dart';
+import 'package:eshop/utils/log.dart';
 import 'package:http/http.dart' as http;
 
 Future<List<Product>?> fetchProduct(String accessToken, String? supplierId,
     String? categoryId, String searchTerm, int offset, int limit) async {
+  Log.e(Constants.apiPath +
+      "/Product/GetAll?CategoryId=$categoryId&SupplierId=$supplierId&SearchTerm=$searchTerm&Offset=1&Limit=$limit");
   final response = await http.get(
       Uri.parse(Constants.apiPath +
           "/Product/GetAll?CategoryId=$categoryId&SupplierId=$supplierId&SearchTerm=$searchTerm&Offset=1&Limit=$limit"),
@@ -13,7 +17,8 @@ Future<List<Product>?> fetchProduct(String accessToken, String? supplierId,
         'Content-Type': 'application/json',
         'access_token': accessToken,
       });
-
+  Log.d("${response.body}");
+  Log.d("${response.statusCode}");
   if (response.statusCode == 200) {
     return productDataFromJson(response.body).product;
   } else {
@@ -56,6 +61,25 @@ Future addFavouriteProduct(String accessToken, String productId) async {
   //   print(response.statusCode);
   //   return null;
   // }
+}
+
+Future<ProductDetailsData> fetchProductById(
+    int? productId, String accessToken) async {
+  try {
+    final response = await http.get(
+        Uri.parse(Constants.apiPath + "/Product/getById/$productId"),
+        headers: {
+          "access_token": accessToken,
+        });
+    print(productId);
+    if (response.statusCode == 200) {
+      return productDetailsDataFromJson(response.body);
+    } else
+      throw response.body;
+  } catch (e) {
+    // print(e.toString());
+    throw e;
+  }
 }
 
 Future removeFavouriteProduct(String accessToken, String productId) async {

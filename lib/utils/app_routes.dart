@@ -15,6 +15,7 @@ import 'package:eshop/screen/product_details/product_details_screen.dart';
 import 'package:eshop/screen/product_screen.dart';
 import 'package:eshop/screen/search/search_screen.dart';
 import 'package:eshop/screen/services/services_screen.dart';
+import 'package:eshop/screen/settings/language.dart';
 import 'package:eshop/screen/settings/settings.dart';
 import 'package:eshop/screen/signup/signup.dart';
 import 'package:eshop/screen/splash/splash_app_screen.dart';
@@ -45,5 +46,6 @@ Map<String, Widget Function(BuildContext)> appRoutes(context) {
     FavouriteScreen.route: (context) => FavouriteScreen(),
     DoctorBookedScreen.route: (context) => DoctorBookedScreen(),
     OnlineSupportScreen.route: (context) => OnlineSupportScreen(),
+    LanguageScreen.route: (context) => LanguageScreen(),
   };
 }

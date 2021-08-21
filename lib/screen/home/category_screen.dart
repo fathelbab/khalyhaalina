@@ -27,6 +27,7 @@ import 'package:eshop/screen/home/sections/service_section.dart';
 import 'package:eshop/screen/login/login.dart';
 import 'package:eshop/screen/online_support/online_support_screen.dart';
 import 'package:eshop/screen/search/search_screen.dart';
+import 'package:eshop/screen/settings/language.dart';
 import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/constants.dart';
@@ -70,6 +71,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   bool isHome = true;
   String categoryId = "0";
   late String cityName;
+  late String userName;
   late String governorateName;
   final _searchController = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -82,7 +84,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   @override
   void initState() {
     super.initState();
-
+    userName = CacheHelper.getPrefs(key: "userName");
     // Provider.of<ConnectivityProvider>(context, listen: false).startMonitoring();
     Provider.of<CategoryProvider>(context, listen: false)
         .fetchMainCategoryList(1, 100);
@@ -188,7 +190,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
           IconButton(
               icon: Icon(FontAwesomeIcons.language),
               onPressed: () {
-                Navigator.of(context).pushNamed(GovernorateScreen.route);
+                Navigator.of(context).pushNamed(LanguageScreen.route);
               }),
           IconButton(
               icon: Icon(Icons.location_on),
@@ -259,7 +261,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       height: 10,
                     ),
                     Text(
-                      getString(context, "myAccount"),
+                      // getString(context, "myAccount"),
+                      userName,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,

@@ -76,24 +76,24 @@ Future<String> sendDoctorBookedDateService(String accessToken, String name,
         },
       ),
     );
-    Log.d(jsonEncode(
-      {
-        "bookedDate": bookedDate,
-        "doctorId": doctorId,
-        "name": name,
-        "phone": phoneNumber
-      },
-    ));
-    Log.d(response.statusCode.toString());
-    Log.d(accessToken);
-    Log.d(response.body.toString());
+    // Log.d(jsonEncode(
+    //   {
+    //     "bookedDate": bookedDate,
+    //     "doctorId": doctorId,
+    //     "name": name,
+    //     "phone": phoneNumber
+    //   },
+    // ));
+    // Log.d(response.statusCode.toString());
+    // Log.d(accessToken);
+    // Log.d(response.body.toString());
     if (response.statusCode == 200) {
       return "done";
     } else {
       return "failed";
     }
   } catch (e) {
-    Log.e(e.toString());
+    // Log.e(e.toString());
     throw e;
   }
 }

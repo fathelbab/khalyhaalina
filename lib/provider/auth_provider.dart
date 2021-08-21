@@ -1,7 +1,7 @@
 import 'dart:convert';
+import 'package:eshop/data/service/profile_service.dart';
 import 'package:eshop/utils/cache_helper.dart';
 import 'package:http/http.dart' as http;
-import 'package:eshop/data/service/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';

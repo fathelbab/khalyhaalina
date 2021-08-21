@@ -92,5 +92,10 @@
     "emptyComment": "يرجى كتابة ملاحظانك اولا.",
     "send": "إرسال",
     "onlineSupport": "تواصل مع خليها علينا",
-    "emptyCart": "السلة فارغة" ,"emptyFavourite":"المفضلة فارغة"
+    "emptyCart": "السلة فارغة",
+    "emptyFavourite": "المفضلة فارغة",
+    "chooseLanguage": "اختيار اللغة",
+    "choosePharmacy": "اختر الصيدلية",
+    "pharmacyError": "يرجى اختيار الصيدلية",
+    "uploadPrescription": "اختر الروشتة"
 }

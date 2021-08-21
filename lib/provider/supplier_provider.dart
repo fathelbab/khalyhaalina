@@ -73,7 +73,7 @@ class SupplierProvider extends ChangeNotifier {
       String supplierId, int limit) async {
     _supplierCategory = await getSupplierCategoryList(supplierId, limit);
     _supplierMainCategory = _supplierCategory!.category;
-    if (_supplierMainCategory != null &&
+    if (_supplierCategory != null &&
         _supplierMainCategory![0].childs != null &&
         _supplierMainCategory![0].childs!.isNotEmpty) {
       _supplierSupCategory = _supplierMainCategory![0].childs;

@@ -4,6 +4,7 @@ import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/provider/pharmacy_provider.dart';
+import 'package:eshop/widget/custom_pharmacy_dropdown.dart';
 import 'package:eshop/widget/progress_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -40,6 +41,13 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
         print(AppLocale.of(context)!.getString('emptyImage'));
       }
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<PharmacyProvider>(context, listen: false)
+        .getPharmacyList(1, 100);
   }
 
   Future getImageCamera() async {
@@ -112,6 +120,7 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
                           },
                         ),
                       ),
+
                       Container(
                         margin: EdgeInsets.all(5.0),
                         padding: EdgeInsets.only(right: 10, left: 10),
@@ -164,18 +173,29 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
                           },
                         ),
                       ),
+                      PharmacyDropDownButton(),
+
                       Container(
                         margin: EdgeInsets.all(5.0),
                         alignment: Alignment.center,
-                        child: IconButton(
-                            icon: Icon(
-                              Icons.image,
-                              size: 60,
-                              color: primaryColor,
-                            ),
-                            onPressed: () {
-                              showSheetGallery(context);
-                            }),
+                        child: ListTile(
+                          onTap: () {
+                            showSheetGallery(context);
+                          },
+                          title: Text(
+                            getString(context, "uploadPrescription"),
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          trailing: Icon(
+                            Icons.image,
+                            size: 50,
+                          ),
+                          leading: Icon(
+                            Icons.upload,
+                            size: 30,
+                          ),
+                        ),
                       ),
                       Container(
                         margin: EdgeInsets.all(5.0),
@@ -192,27 +212,37 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
                       // isLoading
                       // ? Center(child: CircularProgressIndicator())
                       // :
-                      MaterialButton(
-                        onPressed: () {
-                          savePharmacyData(
-                            context,
-                          );
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: primaryColor,
-                            borderRadius: BorderRadius.circular(15),
+                      Consumer<PharmacyProvider>(
+                        builder: (context, pharmacy, child) => MaterialButton(
+                          onPressed: () {
+                            print(pharmacy.pharmacyName);
+                            if (pharmacy.pharmacyName.isNotEmpty) {
+                              savePharmacyData(
+                                context,
+                              );
+                            } else {
+                              showToast(
+                                text: getString(context, "governateError"),
+                                bgColor: Colors.red,
+                              );
+                            }
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: primaryColor,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  AppLocale.of(context)!.getString("save")!,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                )),
                           ),
-                          child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                AppLocale.of(context)!.getString("save")!,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15),
-                              )),
                         ),
                       )
                     ],
@@ -228,7 +258,6 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
 
   void savePharmacyData(BuildContext context) async {
     if (!await checkConnection()) {
-    
       Fluttertoast.showToast(
           msg: AppLocale.of(context)!.getString("checkInternetConnection")!,
           toastLength: Toast.LENGTH_SHORT,
@@ -266,7 +295,8 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
         if (value == "done") {
           Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(AppLocale.of(context)!.getString("addedSuccess")!)));
+              content:
+                  Text(AppLocale.of(context)!.getString("addedSuccess")!)));
           setState(() {
             isLoading = false;
             pharmacyNameText.text = "";
@@ -294,8 +324,7 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
       //     arr, "category/insert_category.php", context, () => Category());
 
     } else {
-    
-           Fluttertoast.showToast(
+      Fluttertoast.showToast(
           msg: AppLocale.of(context)!.getString("emptyData")!,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
@@ -315,7 +344,8 @@ class _PharmacyScreenState extends State<PharmacyScreen> {
               children: [
                 ListTile(
                   leading: Icon(Icons.image),
-                  title: Text(AppLocale.of(context)!.getString("imageGallery")!),
+                  title:
+                      Text(AppLocale.of(context)!.getString("imageGallery")!),
                   onTap: () {
                     getImageGallery();
                     Navigator.pop(context);

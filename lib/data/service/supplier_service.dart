@@ -1,6 +1,7 @@
 import 'package:eshop/model/supplier_category.dart';
 import 'package:eshop/model/supplier_data.dart';
 import 'package:eshop/utils/constants.dart';
+import 'package:eshop/utils/log.dart';
 import 'package:http/http.dart' as http;
 
 Future<List<Supplier>?> fetchSupplier(
@@ -22,7 +23,8 @@ Future<SupplierCategory?> getSupplierCategoryList(
   try {
     final response = await http.get(Uri.parse(Constants.apiPath +
         "/Category/GetAll?Offset=1&Limit=$limit&supplierid=$supplierid"));
-
+    // Log.d("category ${response.body}");
+    // Log.d("${response.statusCode}");
     if (response.statusCode == 200) {
       // print("${response.body}");
       return supplierCategoryFromJson(response.body);

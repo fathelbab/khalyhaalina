@@ -6,6 +6,7 @@ import 'package:eshop/model/FavouriteProduct.dart';
 import 'package:eshop/model/product_data.dart';
 import 'package:eshop/model/product_details_data.dart';
 import 'package:eshop/utils/cache_helper.dart';
+import 'package:eshop/utils/log.dart';
 import 'package:flutter/widgets.dart';
 
 class ProductProvider extends ChangeNotifier {
@@ -72,7 +73,9 @@ class ProductProvider extends ChangeNotifier {
   }
 
   getProductById(int? productId) async {
-    _productData = await fetchProductById(productId);
+    Log.d(productId.toString());
+    String accessToken = CacheHelper.getPrefs(key: 'token');
+    _productData = await fetchProductById(productId, accessToken);
 
     notifyListeners();
   }
@@ -109,6 +112,7 @@ class ProductProvider extends ChangeNotifier {
         product.isFavority = true;
       }
     }).toList();
+    _productData?.isFavority = !_productData!.isFavority!;
     notifyListeners();
   }
 
@@ -138,6 +142,7 @@ class ProductProvider extends ChangeNotifier {
         product.isFavority = false;
       }
     }).toList();
+    _productData?.isFavority = !_productData!.isFavority!;
     notifyListeners();
   }
 

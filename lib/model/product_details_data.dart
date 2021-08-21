@@ -13,158 +13,114 @@ String productDetailsDataToJson(ProductDetailsData data) =>
 class ProductDetailsData {
   ProductDetailsData({
     this.id,
-    this.order,
-    this.createdDate,
-    this.updatedDate,
-    this.isActive,
-    this.isDeleted,
-    this.createdBy,
-    this.updatedBy,
-    this.nameAr,
-    this.nameEn,
-    this.imagePath,
-    this.price,
     this.categoryId,
-    this.supplierId,
-    this.quantity,
-    this.oldPrice,
+    this.createdBy,
+    this.createdDate,
     this.descriptionAr,
     this.descriptionEn,
+    this.imagePath,
+    this.isActive,
+    this.isDeleted,
+    this.nameAr,
+    this.nameEn,
+    this.oldPrice,
+    this.order,
+    this.price,
+    this.quantity,
+    this.supplierId,
+    this.updatedBy,
+    this.updatedDate,
     this.isHot,
-    this.newProduct,
-    this.discountProduct,
-    this.stutesProduct,
     this.category,
     this.supplier,
-    this.carts,
-    this.orderdeitals,
     this.productGalleries,
     this.avilabeProductGalleries,
+    this.isFavority,
   });
 
   int? id;
-  dynamic order;
-  String? createdDate;
-  String? updatedDate;
+  dynamic categoryId;
+  dynamic createdBy;
+  DateTime? createdDate;
+  String? descriptionAr;
+  String? descriptionEn;
+  String? imagePath;
   bool? isActive;
   bool? isDeleted;
-  dynamic createdBy;
-  dynamic updatedBy;
   String? nameAr;
   dynamic nameEn;
-  String? imagePath;
-  double? price;
-  dynamic categoryId;
-  int? supplierId;
-  int? quantity;
   double? oldPrice;
-  String? descriptionAr;
-  dynamic descriptionEn;
+  dynamic order;
+  double? price;
+  int? quantity;
+  int? supplierId;
+  dynamic updatedBy;
+  DateTime? updatedDate;
   bool? isHot;
-  dynamic newProduct;
-  dynamic discountProduct;
-  dynamic stutesProduct;
   Category? category;
   Supplier? supplier;
-  List<dynamic>? carts;
-  List<dynamic>? orderdeitals;
   List<ProductGallery>? productGalleries;
   List<AvilabeProductGallery>? avilabeProductGalleries;
+  bool? isFavority;
 
   factory ProductDetailsData.fromJson(Map<String, dynamic> json) =>
       ProductDetailsData(
         id: json["id"],
-        order: json["order"],
-        createdDate: json["createdDate"],
-        updatedDate: json["updatedDate"],
-        isActive: json["isActive"],
-        isDeleted: json["isDeleted"],
-        createdBy: json["createdBy"],
-        updatedBy: json["updatedBy"],
-        nameAr: json["nameAr"],
-        nameEn: json["nameEn"],
-        imagePath: json["imagePath"],
-        price: json["price"],
         categoryId: json["categoryId"],
-        supplierId: json["supplierId"],
-        quantity: json["quantity"],
-        oldPrice: json["oldPrice"],
+        createdBy: json["createdBy"],
+        createdDate: DateTime.parse(json["createdDate"]),
         descriptionAr: json["descriptionAr"],
         descriptionEn: json["descriptionEn"],
+        imagePath: json["imagePath"],
+        isActive: json["isActive"],
+        isDeleted: json["isDeleted"],
+        nameAr: json["nameAr"],
+        nameEn: json["nameEn"],
+        oldPrice: json["oldPrice"],
+        order: json["order"],
+        price: json["price"],
+        quantity: json["quantity"],
+        supplierId: json["supplierId"],
+        updatedBy: json["updatedBy"],
+        updatedDate: DateTime.parse(json["updatedDate"]),
         isHot: json["isHot"],
-        newProduct: json["newProduct"],
-        discountProduct: json["discountProduct"],
-        stutesProduct: json["stutesProduct"],
         category: Category.fromJson(json["category"]),
         supplier: Supplier.fromJson(json["supplier"]),
-        carts: List<dynamic>.from(json["carts"].map((x) => x)),
-        orderdeitals: List<dynamic>.from(json["orderdeitals"].map((x) => x)),
         productGalleries: List<ProductGallery>.from(
             json["productGalleries"].map((x) => ProductGallery.fromJson(x))),
         avilabeProductGalleries: List<AvilabeProductGallery>.from(
             json["avilabeProductGalleries"]
                 .map((x) => AvilabeProductGallery.fromJson(x))),
+        isFavority: json["isFavority"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "order": order,
-        "createdDate": createdDate,
-        "updatedDate": updatedDate,
-        "isActive": isActive,
-        "isDeleted": isDeleted,
-        "createdBy": createdBy,
-        "updatedBy": updatedBy,
-        "nameAr": nameAr,
-        "nameEn": nameEn,
-        "imagePath": imagePath,
-        "price": price,
         "categoryId": categoryId,
-        "supplierId": supplierId,
-        "quantity": quantity,
-        "oldPrice": oldPrice,
+        "createdBy": createdBy,
+        "createdDate": createdDate!.toIso8601String(),
         "descriptionAr": descriptionAr,
         "descriptionEn": descriptionEn,
+        "imagePath": imagePath,
+        "isActive": isActive,
+        "isDeleted": isDeleted,
+        "nameAr": nameAr,
+        "nameEn": nameEn,
+        "oldPrice": oldPrice,
+        "order": order,
+        "price": price,
+        "quantity": quantity,
+        "supplierId": supplierId,
+        "updatedBy": updatedBy,
+        "updatedDate": updatedDate!.toIso8601String(),
         "isHot": isHot,
-        "newProduct": newProduct,
-        "discountProduct": discountProduct,
-        "stutesProduct": stutesProduct,
         "category": category!.toJson(),
         "supplier": supplier!.toJson(),
-        "carts": List<dynamic>.from(carts!.map((x) => x)),
-        "orderdeitals": List<dynamic>.from(orderdeitals!.map((x) => x)),
         "productGalleries":
             List<dynamic>.from(productGalleries!.map((x) => x.toJson())),
         "avilabeProductGalleries":
             List<dynamic>.from(avilabeProductGalleries!.map((x) => x.toJson())),
-      };
-}
-
-class ProductGallery {
-  ProductGallery({
-    this.id,
-    this.productId,
-    this.imagePath,
-    this.product,
-  });
-
-  int? id;
-  int? productId;
-  String? imagePath;
-  dynamic product;
-
-  factory ProductGallery.fromJson(Map<String, dynamic> json) => ProductGallery(
-        id: json["id"],
-        productId: json["productId"],
-        imagePath: json["imagePath"],
-        product: json["product"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "productId": productId,
-        "imagePath": imagePath,
-        "product": product,
+        "isFavority": isFavority,
       };
 }
 
@@ -188,7 +144,7 @@ class AvilabeProductGallery {
   factory AvilabeProductGallery.fromJson(Map<String, dynamic> json) =>
       AvilabeProductGallery(
         id: json["id"],
-        textAr: json["textAr"],
+        textAr: json["textAr"] == null ? null : json["textAr"],
         textEn: json["textEn"],
         productId: json["productId"],
         imagePath: json["imagePath"],
@@ -197,7 +153,7 @@ class AvilabeProductGallery {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "textAr": textAr,
+        "textAr": textAr == null ? null : textAr,
         "textEn": textEn,
         "productId": productId,
         "imagePath": imagePath,
@@ -227,8 +183,8 @@ class Category {
 
   int? id;
   dynamic order;
-  String? createdDate;
-  String? updatedDate;
+  DateTime? createdDate;
+  DateTime? updatedDate;
   bool? isActive;
   bool? isDeleted;
   dynamic createdBy;
@@ -245,8 +201,8 @@ class Category {
   factory Category.fromJson(Map<String, dynamic> json) => Category(
         id: json["id"],
         order: json["order"],
-        createdDate: json["createdDate"],
-        updatedDate: json["updatedDate"],
+        createdDate: DateTime.parse(json["createdDate"]),
+        updatedDate: DateTime.parse(json["updatedDate"]),
         isActive: json["isActive"],
         isDeleted: json["isDeleted"],
         createdBy: json["createdBy"],
@@ -265,8 +221,8 @@ class Category {
   Map<String, dynamic> toJson() => {
         "id": id,
         "order": order,
-        "createdDate": createdDate,
-        "updatedDate": updatedDate,
+        "createdDate": createdDate!.toIso8601String(),
+        "updatedDate": updatedDate!.toIso8601String(),
         "isActive": isActive,
         "isDeleted": isDeleted,
         "createdBy": createdBy,
@@ -280,6 +236,34 @@ class Category {
             List<dynamic>.from(inverseParentCategory!.map((x) => x)),
         "products": List<dynamic>.from(products!.map((x) => x)),
         "suppliers": List<dynamic>.from(suppliers!.map((x) => x)),
+      };
+}
+
+class ProductGallery {
+  ProductGallery({
+    this.id,
+    this.productId,
+    this.imagePath,
+    this.product,
+  });
+
+  int? id;
+  int? productId;
+  String? imagePath;
+  dynamic product;
+
+  factory ProductGallery.fromJson(Map<String, dynamic> json) => ProductGallery(
+        id: json["id"],
+        productId: json["productId"],
+        imagePath: json["imagePath"],
+        product: json["product"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "productId": productId,
+        "imagePath": imagePath,
+        "product": product,
       };
 }
 
@@ -314,8 +298,8 @@ class Supplier {
 
   int? id;
   dynamic order;
-  String? createdDate;
-  String? updatedDate;
+  DateTime? createdDate;
+  DateTime? updatedDate;
   bool? isActive;
   bool? isDeleted;
   dynamic createdBy;
@@ -338,11 +322,11 @@ class Supplier {
   dynamic mainCategory;
   List<dynamic>? products;
 
-  factory Supplier.fromJson(Map<String?, dynamic> json) => Supplier(
+  factory Supplier.fromJson(Map<String, dynamic> json) => Supplier(
         id: json["id"],
         order: json["order"],
-        createdDate: json["createdDate"],
-        updatedDate: json["updatedDate"],
+        createdDate: DateTime.parse(json["createdDate"]),
+        updatedDate: DateTime.parse(json["updatedDate"]),
         isActive: json["isActive"],
         isDeleted: json["isDeleted"],
         createdBy: json["createdBy"],
@@ -369,8 +353,8 @@ class Supplier {
   Map<String, dynamic> toJson() => {
         "id": id,
         "order": order,
-        "createdDate": createdDate,
-        "updatedDate": updatedDate,
+        "createdDate": createdDate!.toIso8601String(),
+        "updatedDate": updatedDate!.toIso8601String(),
         "isActive": isActive,
         "isDeleted": isDeleted,
         "createdBy": createdBy,

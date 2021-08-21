@@ -35,7 +35,7 @@ class ProductDetailsScreen extends StatefulWidget {
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   int quantity = 1;
   late String locale;
-
+  // late bool? isFavourite;
   @override
   void initState() {
     super.initState();
@@ -49,16 +49,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     ProductDetailsData? productDetails =
         Provider.of<ProductProvider>(context).productData;
     // print(productId);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
           locale == 'ar'
-              ? productDetails != null
-                  ? productDetails.nameAr.toString()
-                  : ""
-              : productDetails!.nameEn != null
-                  ? productDetails.nameEn.toString()
-                  : "",
+              ? productDetails?.nameAr ?? ""
+              : productDetails?.nameEn ?? productDetails?.nameAr,
           overflow: TextOverflow.ellipsis,
         ),
         actions: [
@@ -154,13 +151,30 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       IconButton(
                                         onPressed: () {
                                           // _displayTextInputDialog(context);
-                                          Provider.of<ProductProvider>(context,
-                                                  listen: false)
-                                              .addProductToFavourite(
-                                                  productDetails.id.toString());
+
+                                          if (productDetails.isFavority ==
+                                              true) {
+                                            Provider.of<ProductProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .removeProductFromFavourite(
+                                                    productDetails.id
+                                                        .toString());
+                                            print("remove");
+                                          } else {
+                                            Provider.of<ProductProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .addProductToFavourite(
+                                                    productDetails.id
+                                                        .toString());
+                                            print("add");
+                                          }
                                         },
                                         icon: Icon(
-                                          Icons.favorite_outline,
+                                          productDetails.isFavority == true
+                                              ? Icons.favorite
+                                              : Icons.favorite_outline,
                                           size: 30,
                                         ),
                                         color: secondaryColor,
@@ -176,32 +190,32 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     ],
                                   ),
                                 ),
-                                Positioned(
-                                  top: 1,
-                                  right: 1,
-                                  child: productDetails.discountProduct != null
-                                      ? Container(
-                                          padding: const EdgeInsets.only(
-                                              right: 10,
-                                              left: 10,
-                                              top: 5,
-                                              bottom: 5),
-                                          margin: const EdgeInsets.all(5),
-                                          decoration: BoxDecoration(
-                                            color: Color(0xFFF8973D),
-                                            shape: BoxShape.rectangle,
-                                          ),
-                                          child: Text(
-                                            "${productDetails.discountProduct} ",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        )
-                                      : Container(),
-                                ),
+                                // Positioned(
+                                //   top: 1,
+                                //   right: 1,
+                                //   child: productDetails.discountProduct != null
+                                //       ? Container(
+                                //           padding: const EdgeInsets.only(
+                                //               right: 10,
+                                //               left: 10,
+                                //               top: 5,
+                                //               bottom: 5),
+                                //           margin: const EdgeInsets.all(5),
+                                //           decoration: BoxDecoration(
+                                //             color: Color(0xFFF8973D),
+                                //             shape: BoxShape.rectangle,
+                                //           ),
+                                //           child: Text(
+                                //             "${productDetails.discountProduct} ",
+                                //             style: TextStyle(
+                                //               color: Colors.white,
+                                //               fontSize: 15,
+                                //               fontWeight: FontWeight.bold,
+                                //             ),
+                                //           ),
+                                //         )
+                                //       : Container(),
+                                // ),
                               ],
                             ),
                           ),

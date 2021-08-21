@@ -91,7 +91,11 @@
     "comment": "Comment",
     "emptyComment": "Please write comment.",
     "send": "Send",
-    "onlineSupport": "Contact with Khliha Alina"
-    ,"emptyCart":"Cart is empty"
-    ,"emptyFavourite":"No favourite products"
+    "onlineSupport": "Contact with Khliha Alina",
+    "emptyCart": "Cart is empty",
+    "emptyFavourite": "No favourite products",
+    "chooseLanguage": "Choose Language",
+    "choosePharmacy": "Choose pharmacy",
+    "pharmacyError": "Please selece pharmacy first!",
+    "uploadPrescription": "Choose prescription"
 }
