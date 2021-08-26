@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'package:eshop/provider/city_provider.dart';
+import 'package:eshop/provider/configurations_provider.dart';
+import 'package:eshop/screen/intro/intro_screen.dart';
 import 'package:eshop/screen/login/login.dart';
+import 'package:eshop/utils/animations.dart';
+import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/style.dart';
-import 'package:eshop/screen/home/home_screen.dart';
 import 'package:eshop/utils/cache_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,26 +17,29 @@ class SplashAppScreen extends StatefulWidget {
 }
 
 class _SplashAppScreenState extends State<SplashAppScreen> {
-  late String token = "";
+  String token = "";
   Timer? timer;
-  getSharedPrefs() async {
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
-    token = CacheHelper.getPrefs(key: "token");
-    setState(() {});
-  }
 
   @override
   void initState() {
     super.initState();
-    Provider.of<CityProvider>(context, listen: false)
-        .fetchGovernateList(1, 200);
-    getSharedPrefs();
-    timer = Timer(
-      const Duration(seconds: 4),
-      () => Navigator.of(context).pushReplacementNamed(
-        token == null || token == "" ? Login.route : HomeScreen.route,
-      ),
-    );
+    checkConnection().then((value) {
+      if (value) {
+        Provider.of<CityProvider>(context, listen: false)
+            .fetchGovernateList(1, 200);
+        Provider.of<ConfigurationProvider>(context, listen: false)
+            .getConfigurations();
+
+        token = CacheHelper.getPrefs(key: "token") ?? "";
+
+        timer = Timer(const Duration(seconds: 4), () {
+          Navigator.of(context).pushReplacementNamed(IntroScreen.route);
+        });
+      } else {
+        WidgetsBinding.instance!
+            .addPostFrameCallback((_) => _showStartDialog());
+      }
+    });
   }
 
   @override
@@ -54,7 +60,46 @@ class _SplashAppScreenState extends State<SplashAppScreen> {
       ),
     );
   }
+
+  _showStartDialog() async {
+    return showGeneralDialog(
+      context: context,
+      barrierLabel: '',
+      barrierDismissible: false,
+      transitionBuilder: (context, _animation, _secondaryAnimation, _child) {
+        return Animations.grow(_animation, _secondaryAnimation, _child);
+      },
+      pageBuilder: (_animation, _secondaryAnimation, _child) {
+        return AlertDialog(
+          content: Text(
+            getString(context, "internetProblem"),
+            style: TextStyle(
+              color: primaryColor,
+              fontSize: 20,
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                getString(context, "yes"),
+                style: TextStyle(
+                  color: primaryColor,
+                  fontSize: 20,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context)
+                    .pushReplacementNamed(SplashAppScreen.route);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
+
 //  SplashScreen(
 //       seconds: 5,
 //       navigateAfterSeconds: cityId == "0" ? CityScreen() : HomeScreen(),

@@ -12,6 +12,7 @@ import 'package:eshop/utils/style.dart';
 import 'package:eshop/utils/constants.dart';
 import 'package:eshop/widget/badge.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 import '../product_screen.dart';
@@ -256,9 +257,12 @@ class _SupplierScreenState extends State<SupplierScreen> {
                                             imageUrl: Constants.imagePath +
                                                 supplierList![index].imagePath!,
                                             fit: BoxFit.fill,
-                                            placeholder: (context, url) => Center(
-                                                child:
-                                                    CircularProgressIndicator()),
+                                            placeholder: (context, url) =>
+                                                Center(
+                                              child: const SpinKitChasingDots(
+                                                color: Color(0XFFE5A352),
+                                              ),
+                                            ),
                                             errorWidget:
                                                 (context, url, error) =>
                                                     Icon(Icons.error),
@@ -291,7 +295,9 @@ class _SupplierScreenState extends State<SupplierScreen> {
                           },
                         )
                       : Center(
-                          child: CircularProgressIndicator(),
+                          child: const SpinKitChasingDots(
+                            color: Color(0XFFE5A352),
+                          ),
                         ),
                 )
         ],

@@ -68,12 +68,12 @@ class ProductProvider extends ChangeNotifier {
       offset,
       limit,
     ));
-    print(_searchProductList!.length);
+    // print(_searchProductList!.length);
     notifyListeners();
   }
 
   getProductById(int? productId) async {
-    Log.d(productId.toString());
+    // Log.d(productId.toString());
     String accessToken = CacheHelper.getPrefs(key: 'token');
     _productData = await fetchProductById(productId, accessToken);
 
@@ -148,7 +148,7 @@ class ProductProvider extends ChangeNotifier {
 
   getFavouriteProducts() async {
     String accessToken = CacheHelper.getPrefs(key: 'token');
-    print(accessToken + "dfsafa");
+    // print(accessToken + "dfsafa");
     _favouriteProducts = await getAllFavouriteProducts(accessToken);
 
     notifyListeners();

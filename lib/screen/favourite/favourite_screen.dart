@@ -2,6 +2,7 @@ import 'package:eshop/model/FavouriteProduct.dart';
 import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/screen/cart/cart_screen.dart';
+import 'package:eshop/screen/home/home_screen.dart';
 import 'package:eshop/screen/online_support/online_support_screen.dart';
 import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/components.dart';
@@ -90,10 +91,8 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                       ),
                       OutlinedButton(
                         onPressed: () {
-                          Navigator.pushNamed(
-                            context,
-                            OnlineSupportScreen.route,
-                          );
+                          Navigator.pushReplacementNamed(
+                              context, HomeScreen.route);
                         },
                         style: OutlinedButton.styleFrom(
                           side: BorderSide(
@@ -105,9 +104,9 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                   BorderRadius.all(Radius.circular(15))),
                         ),
                         child: Text(
-                          getString(context, "onlineSupport"),
+                          'مواصلة التسوق',
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 13,
                             fontWeight: FontWeight.bold,
                             color: primaryColor,
                           ),

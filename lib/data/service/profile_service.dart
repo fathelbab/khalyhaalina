@@ -2,13 +2,11 @@ import 'dart:convert';
 import 'package:eshop/model/user_data.dart';
 import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/constants.dart';
-import 'package:eshop/utils/log.dart';
+// import 'package:eshop/utils/log.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> signIn(String email, String password) async {
-  Log.d(Constants.apiPath + "/MyLogin/Login");
-  Log.d(json.encode({"email": email, "password": password}));
   try {
     final http.Response response = await http.post(
       Uri.parse(Constants.apiPath + "/MyLogin/Login"),
@@ -19,8 +17,6 @@ Future<void> signIn(String email, String password) async {
     );
     UserData resultData = userDataFromJson(response.body);
 
-    Log.d(response.body.toString());
-    Log.d(response.statusCode.toString());
     if (response.statusCode == 200) {
       String token = resultData.token ?? "";
       CacheHelper.savePrefs(key: 'token', value: token);
@@ -34,8 +30,6 @@ Future<void> signIn(String email, String password) async {
       throw "Unauthorized";
     }
   } catch (e) {
-    // print(e);
-    Log.e(e.toString());
     throw e;
   }
 }

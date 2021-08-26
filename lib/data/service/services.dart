@@ -7,10 +7,10 @@ import 'package:eshop/model/product_data.dart';
 import 'package:eshop/model/product_details_data.dart' hide Category, Supplier;
 
 import 'package:eshop/model/supplier_data.dart';
-import 'package:eshop/utils/cache_helper.dart';
+
 import 'package:eshop/utils/constants.dart';
+
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 // headers: {HttpHeaders.contentTypeHeader: "application/json",
 // HttpHeaders.authorizationHeader: "Bearer $token"}
@@ -34,89 +34,6 @@ Future<List<Product>?> searchWithTerm(
     } else {
       // print(response.statusCode);
       return null;
-    }
-  } catch (e) {
-    throw e;
-  }
-}
-
-Future<List<CartData>> fetchCartItems(String token) async {
-  try {
-    final response =
-        await http.get(Uri.parse(Constants.apiPath + "/Carts"), headers: {
-      "access_token": token,
-    });
-    print("token" + token);
-    // print(response.body.toString());
-    if (response.statusCode == 200) {
-      return cartDataFromJson(response.body);
-    } else {
-      throw response.body;
-    }
-  } catch (e) {
-    throw e;
-  }
-}
-
-Future<String> addProductToCart(
-    int? productId, int quantity, String? token) async {
-  try {
-    final response = await http.post(Uri.parse(Constants.apiPath + "/Carts"),
-        body: jsonEncode({
-          "productId": productId,
-          "quantity": quantity,
-        }),
-        headers: {'Content-Type': 'application/json', "access_token": token!});
-    // print(response.statusCode);
-    // print(response.body.toString());
-    if (response.statusCode == 201) {
-      return "done";
-    } else if (response.statusCode == 401) {
-      return "auth";
-    } else {
-      return "failed";
-    }
-    // print("abdo" + response.body.toString());
-  } catch (e) {
-    throw e;
-  }
-}
-
-Future<String> removeItemFromCart(int productId, String? token) async {
-  try {
-    final response = await http.delete(
-      Uri.parse("https://api.khlihaalina.com/api/Carts/$productId"),
-      headers: {'Content-Type': 'application/json', "access_token": token!},
-    );
-    print(response.statusCode);
-    print(productId);
-    print(token);
-    print("abdo" + response.body.toString());
-    if (response.statusCode == 204) {
-      return "done";
-    } else {
-      return "failed";
-    }
-  } catch (e) {
-    print(e);
-    throw e;
-  }
-}
-
-Future<String> cleartUserCart(String? token) async {
-  try {
-    final response = await http.delete(
-      Uri.parse("https://api.khlihaalina.com/api/Orders/DeleteCart"),
-      headers: {
-        'Content-Type': 'application/json',
-        'access_token': token!,
-      },
-    );
-    // print(" abdo $token");
-    if (response.statusCode == 204) {
-      return "done";
-    } else {
-      return "failed";
     }
   } catch (e) {
     throw e;

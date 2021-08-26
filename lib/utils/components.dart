@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:eshop/language/app_locale.dart';
+import 'package:eshop/utils/animations.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -67,5 +68,45 @@ showToast({
     backgroundColor: bgColor,
     textColor: Colors.white,
     fontSize: 16.0,
+  );
+}
+
+_showDialog(String text, BuildContext context) async {
+  return showGeneralDialog(
+    context: context,
+    barrierLabel: '',
+    barrierDismissible: true,
+    transitionBuilder: (context, _animation, _secondaryAnimation, _child) {
+      return Animations.grow(_animation, _secondaryAnimation, _child);
+    },
+    pageBuilder: (_animation, _secondaryAnimation, _child) {
+      return AlertDialog(
+        title: Icon(
+          Icons.priority_high,
+          color: Colors.red,
+        ),
+        content: Text(
+          text,
+          style: TextStyle(
+            color: primaryColor,
+            fontSize: 20,
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text(
+              getString(context, "cancel"),
+              style: TextStyle(
+                color: secondaryColor,
+                fontSize: 20,
+              ),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
   );
 }

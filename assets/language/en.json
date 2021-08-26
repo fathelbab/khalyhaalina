@@ -97,5 +97,12 @@
     "chooseLanguage": "Choose Language",
     "choosePharmacy": "Choose pharmacy",
     "pharmacyError": "Please selece pharmacy first!",
-    "uploadPrescription": "Choose prescription"
+    "uploadPrescription": "Choose prescription",
+    "rewards": "Rewards",
+    "internetProblem": "Please make sure you are connected to the internet?",
+    "quantityError": "Please add the required quantity",
+    "skip": "Skip",
+    "wallet": "Wallet",
+    "appWallet": "Wallet of Khliha Alina",
+    "emptyWallet": "Follow the offers, there are no offers now"
 }

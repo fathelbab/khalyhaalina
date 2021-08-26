@@ -1,3 +1,5 @@
+import 'package:eshop/screen/online_support/online_support_screen.dart';
+import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/provider/cart.dart';
@@ -45,7 +47,12 @@ class CartScreen extends StatelessWidget {
                     height: 10,
                   ),
                   OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        OnlineSupportScreen.route,
+                      );
+                    },
                     style: OutlinedButton.styleFrom(
                       side: BorderSide(
                         color: primaryColor,
@@ -55,9 +62,9 @@ class CartScreen extends StatelessWidget {
                           borderRadius: BorderRadius.all(Radius.circular(15))),
                     ),
                     child: Text(
-                      'مواصلة التسوق',
+                      getString(context, "onlineSupport"),
                       style: TextStyle(
-                        fontSize: 13,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: primaryColor,
                       ),
@@ -99,7 +106,9 @@ class CartScreen extends StatelessWidget {
                   height: 10,
                 ),
                 Expanded(
-                  child: ListView.builder(
+                  child: ListView.separated(
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const Divider(),
                     itemCount: cart.cartItems!.length,
                     itemBuilder: (BuildContext context, int index) {
                       return CartItem(
@@ -109,6 +118,7 @@ class CartScreen extends StatelessWidget {
                         title: cart.cartItems![index].name,
                         image: cart.cartItems![index].image,
                         id: cart.cartItems![index].id,
+                        description: cart.cartItems![index].description ?? "",
                       );
                     },
                   ),

@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:eshop/utils/style.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/provider/city_provider.dart';
-import 'package:eshop/screen/home/category_screen.dart';
+import 'package:eshop/screen/home/home_category_screen.dart';
 import 'package:eshop/utils/components.dart';
 import 'package:eshop/widget/custom_city_dropdown_button.dart';
 import 'package:flutter/material.dart';
@@ -80,7 +80,7 @@ class _CityScreenState extends State<CityScreen> {
                         onPressed: () {
                           if (address.cityId != "0") {
                             Navigator.of(context)
-                                .pushReplacementNamed(CategoryScreen.route);
+                                .pushReplacementNamed(HomeCategoryScreen.route);
                           } else
                             showToast(
                               text: getString(context, "cityError"),

@@ -3,6 +3,7 @@ import 'package:eshop/screen/splash/splash_app_screen.dart';
 import 'package:eshop/utils/app_providers.dart';
 import 'package:eshop/utils/app_routes.dart';
 import 'package:eshop/utils/cache_helper.dart';
+import 'package:eshop/utils/local_notification.dart';
 import 'package:eshop/utils/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -29,7 +30,15 @@ void main() async {
 // this function working when app in background and when terminated
 // to display firebase cloud message
 Future fcmBackgroundMessage(RemoteMessage message) async {
-  print("${message.notification!.body}");
+  print("${message.data}");
+  LocalNotification().showNotification(
+    // title: message.data["Title"].toString(),
+    // body: message.data["Description"].toString(),
+    // image: message.data["Image"].toString(),
+    title: message.notification!.title.toString(),
+    body: message.notification!.body.toString(),
+    image: "",
+  );
 }
 
 class MyApp extends StatelessWidget {

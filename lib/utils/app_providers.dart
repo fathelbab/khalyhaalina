@@ -3,6 +3,7 @@ import 'package:eshop/provider/auth_provider.dart';
 import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/category_provider.dart';
 import 'package:eshop/provider/city_provider.dart';
+import 'package:eshop/provider/configurations_provider.dart';
 import 'package:eshop/provider/contact_us_provider.dart';
 import 'package:eshop/provider/doctor_provider.dart';
 import 'package:eshop/provider/gifmodels_provider.dart';
@@ -68,5 +69,8 @@ List<SingleChildWidget> appProviders = [
   ),
   ChangeNotifierProvider(
     create: (context) => SettingsProvider(),
+  ),
+  ChangeNotifierProvider(
+    create: (context) => ConfigurationProvider(),
   )
 ];

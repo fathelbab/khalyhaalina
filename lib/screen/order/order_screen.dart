@@ -2,7 +2,7 @@ import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/model/order_data.dart';
 import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/order_provider.dart';
-import 'package:eshop/screen/home/category_screen.dart';
+import 'package:eshop/screen/home/home_category_screen.dart';
 import 'package:eshop/utils/components.dart';
 import 'package:eshop/widget/progress_dialog.dart';
 import 'package:flutter/material.dart';
@@ -285,7 +285,8 @@ class _OrderScreenState extends State<OrderScreen> {
                     AppLocale.of(context)!.getString("orderSuccessMessage")!)));
             Provider.of<Cart>(context, listen: false).clearCart();
             Provider.of<Cart>(context, listen: false).fetchCartList();
-            Navigator.of(context).pushReplacementNamed(CategoryScreen.route);
+            Navigator.of(context)
+                .pushReplacementNamed(HomeCategoryScreen.route);
           } else {
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(

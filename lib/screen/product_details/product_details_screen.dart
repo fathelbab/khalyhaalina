@@ -1,4 +1,8 @@
+import 'package:eshop/screen/product_details/view_available_image_details.dart';
+import 'package:eshop/screen/product_details/view_image_screen.dart';
+import 'package:eshop/utils/animations.dart';
 import 'package:eshop/utils/cache_helper.dart';
+import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/model/product_details_data.dart';
@@ -12,6 +16,7 @@ import 'package:eshop/utils/constants.dart';
 import 'package:eshop/widget/badge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -46,9 +51,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   Widget build(BuildContext context) {
     // final productId = ModalRoute.of(context).settings.arguments;
     final size = MediaQuery.of(context).size;
+
     ProductDetailsData? productDetails =
         Provider.of<ProductProvider>(context).productData;
-    // print(productId);
 
     return Scaffold(
       appBar: AppBar(
@@ -82,7 +87,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       ),
       body: productDetails == null
           ? Center(
-              child: CircularProgressIndicator(),
+              child: const SpinKitChasingDots(
+                color: Color(0XFFE5A352),
+              ),
             )
           : Container(
               margin: const EdgeInsets.all(10),
@@ -92,6 +99,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     child: CustomScrollView(
                       slivers: [
                         SliverAppBar(
+                          automaticallyImplyLeading: false,
                           backgroundColor: Colors.transparent,
                           expandedHeight: size.height / 3 + 50,
                           flexibleSpace: FlexibleSpaceBar(
@@ -99,17 +107,39 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               children: [
                                 productDetails.productGalleries != null &&
                                         productDetails.productGalleries!.isEmpty
-                                    ? InteractiveViewer(
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                            PageRouteBuilder(
+                                              pageBuilder: (context, animation,
+                                                      secondaryAnimation) =>
+                                                  ViewImageScreen(
+                                                image:
+                                                    productDetails.imagePath!,
+                                              ),
+                                              transitionsBuilder: (context,
+                                                  _animation,
+                                                  _secondaryAnimation,
+                                                  _child) {
+                                                return Animations.grow(
+                                                    _animation,
+                                                    _secondaryAnimation,
+                                                    _child);
+                                              },
+                                            ),
+                                          );
+                                        },
                                         child: Hero(
-                                        tag: productDetails.id!,
-                                        child: Image.network(
-                                          Constants.imagePath +
-                                              productDetails.imagePath!,
-                                          fit: BoxFit.contain,
-                                          width: double.infinity,
-                                          height: size.height / 3 + 50,
+                                          tag: productDetails.id!,
+                                          child: Image.network(
+                                            Constants.imagePath +
+                                                productDetails.imagePath!,
+                                            fit: BoxFit.contain,
+                                            width: double.infinity,
+                                            height: size.height / 3 + 50,
+                                          ),
                                         ),
-                                      ))
+                                      )
                                     : Hero(
                                         tag: productDetails.id!,
                                         child: Container(
@@ -190,32 +220,34 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     ],
                                   ),
                                 ),
-                                // Positioned(
-                                //   top: 1,
-                                //   right: 1,
-                                //   child: productDetails.discountProduct != null
-                                //       ? Container(
-                                //           padding: const EdgeInsets.only(
-                                //               right: 10,
-                                //               left: 10,
-                                //               top: 5,
-                                //               bottom: 5),
-                                //           margin: const EdgeInsets.all(5),
-                                //           decoration: BoxDecoration(
-                                //             color: Color(0xFFF8973D),
-                                //             shape: BoxShape.rectangle,
-                                //           ),
-                                //           child: Text(
-                                //             "${productDetails.discountProduct} ",
-                                //             style: TextStyle(
-                                //               color: Colors.white,
-                                //               fontSize: 15,
-                                //               fontWeight: FontWeight.bold,
-                                //             ),
-                                //           ),
-                                //         )
-                                //       : Container(),
-                                // ),
+                                Positioned(
+                                  top: 1,
+                                  right: 1,
+                                  child: getDiscount(productDetails.price ?? 0,
+                                              productDetails.oldPrice ?? 0) !=
+                                          0
+                                      ? Container(
+                                          padding: const EdgeInsets.only(
+                                              right: 10,
+                                              left: 10,
+                                              top: 5,
+                                              bottom: 5),
+                                          margin: const EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                            color: Theme.of(context).errorColor,
+                                            shape: BoxShape.rectangle,
+                                          ),
+                                          child: Text(
+                                            "${getDiscount(productDetails.price, productDetails.oldPrice)} %",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        )
+                                      : Container(),
+                                ),
                               ],
                             ),
                           ),
@@ -242,9 +274,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             SizedBox(
                               width: 5,
                             ),
-                            SizedBox(
-                              height: 5,
-                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
@@ -269,6 +298,59 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       ),
                               ],
                             ),
+                            if (productDetails.avilabeProductGalleries !=
+                                    null &&
+                                productDetails
+                                    .avilabeProductGalleries!.isNotEmpty)
+                              SizedBox(
+                                height: size.height / 6,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: productDetails
+                                      .avilabeProductGalleries?.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                          PageRouteBuilder(
+                                            pageBuilder: (context, animation,
+                                                    secondaryAnimation) =>
+                                                ViewAvailableImageDetailsScreen(
+                                                    index: index),
+                                            transitionsBuilder: (context,
+                                                _animation,
+                                                _secondaryAnimation,
+                                                _child) {
+                                              return Animations.grow(_animation,
+                                                  _secondaryAnimation, _child);
+                                            },
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        width: size.height / 6 - 20,
+                                        height: size.height / 6 - 20,
+                                        padding: const EdgeInsets.all(5),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          child: Image.network(
+                                            Constants.imagePath +
+                                                productDetails
+                                                    .avilabeProductGalleries![
+                                                        index]
+                                                    .imagePath!,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            SizedBox(
+                              height: 5,
+                            ),
                             Html(
                                 data: locale == "ar"
                                     ? productDetails.descriptionAr ?? ""
@@ -277,6 +359,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               height: 10,
                             ),
                             buildQuantityIncrementer(),
+                            SizedBox(
+                              height: 10,
+                            ),
                           ]),
                         ),
                       ],
@@ -285,8 +370,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   GestureDetector(
                     onTap: () {
                       if (quantity > 0) {
-                        addToCart(quantity, productDetails.id);
-                      } else {}
+                        addToCart(quantity, productDetails.id, "");
+                      } else {
+                        showToast(
+                            text: getString(context, "quantityError"),
+                            bgColor: hintColor);
+                      }
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -411,23 +500,34 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
-  Container sliderBuilder(int index, List<ProductGallery> productGalleries) {
-    return Container(
-      margin: EdgeInsets.only(left: 5.0, right: 5),
-      child: InteractiveViewer(
+  Widget sliderBuilder(int index, List<ProductGallery> productGalleries) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (BuildContext context) => ViewImageScreen(
+              image: productGalleries[index].imagePath!,
+            ),
+          ),
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.only(left: 5.0, right: 5),
         child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(5.0)),
-            child: Image.network(
-                Constants.imagePath + productGalleries[index].imagePath!,
-                fit: BoxFit.contain,
-                width: double.infinity)),
+          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          child: Image.network(
+            Constants.imagePath + productGalleries[index].imagePath!,
+            fit: BoxFit.contain,
+            width: double.infinity,
+          ),
+        ),
       ),
     );
   }
 
-  void addToCart(int quantity, int? id) async {
+  void addToCart(int quantity, int? id, String? description) async {
     Provider.of<Cart>(context, listen: false)
-        .addItemToCart(id, quantity)
+        .addItemToCart(id, quantity, description)
         .then((value) {
       print(value);
       if (value == "done") {
@@ -447,4 +547,67 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           content: Text(AppLocale.of(context)!.getString("addedError")!)));
     });
   }
+
+  int getDiscount(double? price, double? oldPrice) {
+    double discount = oldPrice! - price!;
+    if (price == oldPrice) {
+      return 0;
+    } else {
+      double discountPercent = discount.abs() / oldPrice * 100;
+
+      return discountPercent.toInt();
+    }
+  }
+
+  // _showDialog(AvilabeProductGallery avilabeProductGallery) async {
+  //   return showGeneralDialog(
+  //     context: context,
+  //     barrierLabel: '',
+  //     barrierDismissible: true,
+  //     transitionBuilder: (context, _animation, _secondaryAnimation, _child) {
+  //       return Animations.grow(_animation, _secondaryAnimation, _child);
+  //     },
+  //     pageBuilder: (_animation, _secondaryAnimation, _child) {
+  //       return AlertDialog(
+  //         content: SizedBox(
+  //           height: MediaQuery.of(context).size.height / 2,
+  //           child: Column(
+  //             children: [
+  //               Expanded(
+  //                 child: Image.network(
+  //                   Constants.imagePath + avilabeProductGallery.imagePath!,
+  //                 ),
+  //               ),
+  //               Text(
+  //                 locale == "ar"
+  //                     ? avilabeProductGallery.textAr ?? ""
+  //                     : avilabeProductGallery.textEn ??
+  //                         avilabeProductGallery.textAr,
+  //                 style: TextStyle(
+  //                   color: primaryColor,
+  //                   fontSize: 20,
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //         actions: <Widget>[
+  //           TextButton(
+  //             child: Text(
+  //               getString(context, "cancel"),
+  //               style: TextStyle(
+  //                 color: secondaryColor,
+  //                 fontSize: 20,
+  //               ),
+  //             ),
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //               quantity++;
+  //             },
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 }

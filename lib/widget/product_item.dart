@@ -194,24 +194,24 @@ class _ProductItemsState extends State<ProductItems> {
     _textFieldController.dispose();
   }
 
-  void addToCart(int quantity, int? id) async {
-    Provider.of<Cart>(context, listen: false)
-        .addItemToCart(id, quantity)
-        .then((value) {
-      print(value);
-      if (value == "done") {
-        Provider.of<Cart>(context, listen: false).fetchCartList();
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(AppLocale.of(context)!.getString("addedSuccess")!)));
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(AppLocale.of(context)!.getString("addedError")!)));
-      }
-    }).catchError((e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(AppLocale.of(context)!.getString("addedError")!)));
-    });
-  }
+  // void addToCart(int quantity, int? id) async {
+  //   Provider.of<Cart>(context, listen: false)
+  //       .addItemToCart(id, quantity, "")
+  //       .then((value) {
+  //     print(value);
+  //     if (value == "done") {
+  //       Provider.of<Cart>(context, listen: false).fetchCartList();
+  //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  //           content: Text(AppLocale.of(context)!.getString("addedSuccess")!)));
+  //     } else {
+  //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  //           content: Text(AppLocale.of(context)!.getString("addedError")!)));
+  //     }
+  //   }).catchError((e) {
+  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  //         content: Text(AppLocale.of(context)!.getString("addedError")!)));
+  //   });
+  // }
 
   int getDiscount(double? price, double? oldPrice) {
     double discount = oldPrice! - price!;

@@ -1,10 +1,20 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
 import 'package:eshop/model/CityData.dart';
 import 'package:eshop/model/announcement_data.dart';
+import 'package:eshop/model/configurations_data.dart';
 import 'package:eshop/model/doctor_data.dart' hide City;
 import 'package:eshop/model/gif_models_data.dart';
 import 'package:eshop/model/image_data.dart';
+import 'package:eshop/model/notification_data.dart';
 import 'package:eshop/model/product_data.dart';
 import 'package:eshop/model/service_details_data.dart' hide City;
 import 'package:eshop/model/supplier_data.dart';
@@ -12,6 +22,7 @@ import 'package:eshop/provider/announcement_provider.dart';
 import 'package:eshop/provider/auth_provider.dart';
 import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/category_provider.dart';
+import 'package:eshop/provider/configurations_provider.dart';
 import 'package:eshop/provider/doctor_provider.dart';
 import 'package:eshop/provider/gifmodels_provider.dart';
 import 'package:eshop/provider/images_provider.dart';
@@ -24,30 +35,30 @@ import 'package:eshop/screen/favourite/favourite_screen.dart';
 import 'package:eshop/screen/home/sections/doctor_section.dart';
 import 'package:eshop/screen/home/sections/main_category.dart';
 import 'package:eshop/screen/home/sections/service_section.dart';
+import 'package:eshop/screen/info/info_screen.dart';
 import 'package:eshop/screen/login/login.dart';
 import 'package:eshop/screen/online_support/online_support_screen.dart';
+import 'package:eshop/screen/rewards/rewards_screen.dart';
 import 'package:eshop/screen/search/search_screen.dart';
 import 'package:eshop/screen/settings/language.dart';
+import 'package:eshop/screen/terms_conditions/terms_conditions_screen.dart';
+import 'package:eshop/screen/wallet/wallet_screen.dart';
+import 'package:eshop/utils/animations.dart';
 import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/constants.dart';
-import 'package:eshop/widget/product_item.dart';
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:eshop/model/notification_data.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:eshop/utils/style.dart';
+import 'package:eshop/widget/product_item.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class CategoryScreen extends StatefulWidget {
+class HomeCategoryScreen extends StatefulWidget {
   static const String route = "/category_screen";
 
   @override
-  _CategoryScreenState createState() => _CategoryScreenState();
+  _HomeCategoryScreenState createState() => _HomeCategoryScreenState();
 }
 
-class _CategoryScreenState extends State<CategoryScreen> {
+class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
   List<City> cityList = [];
   int _gifModelsActiveIndex = 0;
   List<AnnouncementData>? announcementList = [];
@@ -62,7 +73,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   List<Product>? newHotProduct = [];
   ScrollController _categoryScrollController = new ScrollController();
   ScrollController _hotProductScrollController = new ScrollController();
-
+  late Size size;
   int limit = 20;
   bool isLoaded = false;
   bool isSearch = false;
@@ -75,7 +86,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   late String governorateName;
   final _searchController = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
+  ConfigurationsData? configuration;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -159,7 +170,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
     statusHotProduct =
         Provider.of<ProductProvider>(context).statusHotProductList;
     newHotProduct = Provider.of<ProductProvider>(context).newHotProduct;
-
+    configuration = Provider.of<ConfigurationProvider>(context).configuration;
+    size = MediaQuery.of(context).size;
     return buildScaffold(supplierList);
 
     // : NoInternet();
@@ -252,9 +264,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                            image: NetworkImage(
-                                'https://googleflutter.com/sample_image.jpg'),
-                            fit: BoxFit.fill),
+                          image: AssetImage('assets/images/person.png'),
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -271,6 +282,114 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     ),
                   ],
                 ),
+                SizedBox(
+                  height: 10,
+                ),
+                LayoutBuilder(builder: (context, constraints) {
+                  return Container(
+                    margin: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  isHome = true;
+                                  isLoaded = false;
+                                  isDoctor = false;
+                                  isService = false;
+                                });
+                                Navigator.pop(context);
+                                Navigator.pushNamed(
+                                    context, FavouriteScreen.route);
+                              },
+                              child: Image.asset(
+                                'assets/images/like.png',
+                                width: constraints.maxWidth / 4,
+                                height: 40,
+                              ),
+                            ),
+                            Text(
+                              getString(context, "favourite"),
+                              style: TextStyle(
+                                color: primaryColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                Navigator.pop(context);
+                                isHome = true;
+                                isLoaded = false;
+                                isDoctor = false;
+                                isService = false;
+                              });
+                              Navigator.pushNamed(context, RewardsScreen.route);
+                            },
+                            child: Column(
+                              children: [
+                                Image.asset(
+                                  'assets/images/online_shopping.png',
+                                  width: constraints.maxWidth / 4,
+                                  height: 40,
+                                ),
+                                Text(
+                                  getString(context, "rewards"),
+                                  style: TextStyle(
+                                    color: primaryColor,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            )),
+                        GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                Navigator.pop(context);
+                                isHome = true;
+                                isLoaded = false;
+                                isDoctor = false;
+                                isService = false;
+                              });
+                              Navigator.pop(context);
+                              if (configuration != null &&
+                                  configuration!.minLimt != 0.0) {
+                                Navigator.pushNamed(
+                                    context, WalletScreen.route);
+                              } else {
+                                _showDialog(getString(context, "emptyWallet"));
+                              }
+                            },
+                            child: Column(
+                              children: [
+                                Image.asset(
+                                  'assets/images/wallet.png',
+                                  width: constraints.maxWidth / 4,
+                                  height: 40,
+                                ),
+                                Text(
+                                  getString(context, "wallet"),
+                                  style: TextStyle(
+                                    color: primaryColor,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            )),
+                      ],
+                    ),
+                  );
+                }),
                 ListTile(
                   title: Text(
                     getString(context, "startShopping"),
@@ -340,6 +459,30 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     });
                   },
                 ),
+                // ListTile(
+                //   title: Text(
+                //     getString(context, "rewards"),
+                //     style: TextStyle(
+                //       color: Colors.white,
+                //       fontSize: 16,
+                //       fontWeight: FontWeight.bold,
+                //     ),
+                //   ),
+                //   leading: Icon(
+                //     Icons.money,
+                //     color: Colors.white,
+                //   ),
+                //   onTap: () {
+                //     setState(() {
+                //       Navigator.pop(context);
+                //       isHome = true;
+                //       isLoaded = false;
+                //       isDoctor = false;
+                //       isService = false;
+                //     });
+                //     Navigator.pushNamed(context, RewardsScreen.route);
+                //   },
+                // ),
                 ListTile(
                   title: Text(
                     getString(context, "customerService"),
@@ -386,8 +529,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       isDoctor = false;
                       isService = false;
                     });
+
+                    // Navigator.pop(context);
+                    Navigator.pushNamed(context, InfoScreen.route);
                   },
                 ),
+
                 ListTile(
                   title: Text(
                     getString(context, "termsAndConditions"),
@@ -398,7 +545,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     ),
                   ),
                   leading: Icon(
-                    Icons.home,
+                    Icons.verified_user,
                     color: Colors.white,
                   ),
                   onTap: () {
@@ -409,35 +556,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       isDoctor = false;
                       isService = false;
                     });
-                  },
-                ),
-                ListTile(
-                  title: Text(
-                    getString(context, "favourite"),
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  leading: Icon(
-                    Icons.favorite,
-                    color: Colors.white,
-                  ),
-                  onTap: () {
-                    setState(() {
-                      isHome = true;
-                      isLoaded = false;
-                      isDoctor = false;
-                      isService = false;
-                    });
                     Navigator.pop(context);
-                    Navigator.pushNamed(context, FavouriteScreen.route);
+                    Navigator.pushNamed(
+                        context, TermsAndConditionsScreen.route);
                   },
                 ),
                 // ListTile(
                 //   title: Text(
-                //     getString(context, ""),
+                //     getString(context, "favourite"),
                 //     style: TextStyle(
                 //       color: Colors.white,
                 //       fontSize: 16,
@@ -445,7 +571,31 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 //     ),
                 //   ),
                 //   leading: Icon(
-                //     Icons.home,
+                //     Icons.favorite,
+                //     color: Colors.white,
+                //   ),
+                //   onTap: () {
+                //     setState(() {
+                //       isHome = true;
+                //       isLoaded = false;
+                //       isDoctor = false;
+                //       isService = false;
+                //     });
+                //     Navigator.pop(context);
+                //     Navigator.pushNamed(context, FavouriteScreen.route);
+                //   },
+                // ),
+                // ListTile(
+                //   title: Text(
+                //     getString(context, "wallet"),
+                //     style: TextStyle(
+                //       color: Colors.white,
+                //       fontSize: 16,
+                //       fontWeight: FontWeight.bold,
+                //     ),
+                //   ),
+                //   leading: Icon(
+                //     Icons.account_balance_wallet_rounded,
                 //     color: Colors.white,
                 //   ),
                 //   onTap: () {
@@ -456,6 +606,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 //       isDoctor = false;
                 //       isService = false;
                 //     });
+                //     Navigator.pop(context);
+                //     if (configuration != null &&
+                //         configuration!.minLimt != 0.0) {
+                //       Navigator.pushNamed(context, WalletScreen.route);
+                //     } else {
+                //       _showDialog(getString(context, "emptyWallet"));
+                //     }
                 //   },
                 // ),
                 // ListTile(
@@ -502,6 +659,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       isDoctor = false;
                       isService = false;
                     });
+
+                    _launchURL(
+                        "https://play.google.com/store/apps/details?id=com.kira.eshop");
                   },
                 ),
                 ListTile(
@@ -606,55 +766,52 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Widget buildGifModelsSlider() {
     return _gifModelsList != null && _gifModelsList!.isEmpty
         ? Text("")
-        : Container(
-            height: MediaQuery.of(context).size.height / 4,
-            width: double.infinity,
-            child: Column(
-              children: [
-                Expanded(
-                  child: CarouselSlider.builder(
-                    itemCount: _gifModelsList!.length,
-                    itemBuilder:
-                        (BuildContext context, int index, int realIndex) {
-                      return Container(
-                        width: double.infinity,
-                        child: Image.network(
-                          Constants.imagePath +
-                              _gifModelsList![index].imagePath.toString(),
-                          fit: BoxFit.fill,
-                        ),
-                      );
+        : Column(
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height / 4,
+                width: double.infinity,
+                child: CarouselSlider.builder(
+                  itemCount: _gifModelsList!.length,
+                  itemBuilder:
+                      (BuildContext context, int index, int realIndex) {
+                    return Container(
+                      width: double.infinity,
+                      child: Image.network(
+                        Constants.imagePath +
+                            _gifModelsList![index].imagePath.toString(),
+                        fit: BoxFit.fill,
+                      ),
+                    );
+                  },
+                  options: CarouselOptions(
+                    autoPlay: true,
+                    enableInfiniteScroll: true,
+                    enlargeCenterPage: true,
+                    viewportFraction: 1,
+                    autoPlayInterval: const Duration(seconds: 3),
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        _gifModelsActiveIndex = index;
+                      });
                     },
-                    // items: imageSliders,
-                    options: CarouselOptions(
-                      autoPlay: true,
-                      enableInfiniteScroll: true,
-                      enlargeCenterPage: true,
-                      viewportFraction: 1,
-                      autoPlayInterval: const Duration(seconds: 3),
-                      onPageChanged: (index, reason) {
-                        setState(() {
-                          _gifModelsActiveIndex = index;
-                        });
-                      },
-                    ),
                   ),
                 ),
-                SizedBox(
-                  height: 5,
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              AnimatedSmoothIndicator(
+                effect: ExpandingDotsEffect(
+                  dotWidth: 8.0,
+                  dotHeight: 8.0,
+                  dotColor: secondaryColor,
+                  activeDotColor: primaryColor,
                 ),
-                AnimatedSmoothIndicator(
-                  effect: ExpandingDotsEffect(
-                    dotWidth: 8.0,
-                    dotHeight: 8.0,
-                    dotColor: secondaryColor,
-                    activeDotColor: primaryColor,
-                  ),
-                  activeIndex: _gifModelsActiveIndex,
-                  count: _gifModelsList!.length,
-                ),
-              ],
-            ),
+                activeIndex: _gifModelsActiveIndex,
+                count: _gifModelsList!.length,
+              ),
+            ],
           );
   }
 
@@ -706,8 +863,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
                           imageUrl: Constants.imagePath +
                               imageList![index].imagePath!,
                           fit: BoxFit.fill,
-                          placeholder: (context, url) =>
-                              Center(child: CircularProgressIndicator()),
+                          placeholder: (context, url) => Center(
+                            child: const SpinKitChasingDots(
+                                color: Color(0XFFE5A352)),
+                          ),
                           errorWidget: (context, url, error) =>
                               Icon(Icons.error),
                         ),
@@ -848,8 +1007,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       imageUrl: Constants.imagePath +
                           notificationsList![0].imagePath!,
                       fit: BoxFit.fill,
-                      placeholder: (context, url) =>
-                          Center(child: CircularProgressIndicator()),
+                      placeholder: (context, url) => Center(
+                        child:
+                            const SpinKitChasingDots(color: Color(0XFFE5A352)),
+                      ),
                       errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
                   ),
@@ -863,8 +1024,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       imageUrl: Constants.imagePath +
                           notificationsList![1].imagePath!,
                       fit: BoxFit.fill,
-                      placeholder: (context, url) =>
-                          Center(child: CircularProgressIndicator()),
+                      placeholder: (context, url) => Center(
+                        child:
+                            const SpinKitChasingDots(color: Color(0XFFE5A352)),
+                      ),
                       errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
                   ),
@@ -879,27 +1042,31 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       imageUrl: Constants.imagePath +
                           notificationsList![2].imagePath!,
                       fit: BoxFit.fill,
-                      placeholder: (context, url) =>
-                          Center(child: CircularProgressIndicator()),
+                      placeholder: (context, url) => Center(
+                        child:
+                            const SpinKitChasingDots(color: Color(0XFFE5A352)),
+                      ),
                       errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
                   ),
             if (statusHotProduct != null)
               buildProductHotList(statusHotProduct!),
-            // notificationsList != null && notificationsList!.isEmpty
-            //     ? Text("")
-            //     : Container(
-            //         height: MediaQuery.of(context).size.height / 4,
-            //         width: double.infinity,
-            //         child: CachedNetworkImage(
-            //           imageUrl: Constants.imagePath +
-            //               notificationsList![3].imagePath!,
-            //           fit: BoxFit.fill,
-            //           placeholder: (context, url) =>
-            //               Center(child: CircularProgressIndicator()),
-            //           errorWidget: (context, url, error) => Icon(Icons.error),
-            //         ),
-            //       ),
+            notificationsList != null && notificationsList!.isEmpty
+                ? Text("")
+                : Container(
+                    height: MediaQuery.of(context).size.height / 4,
+                    width: double.infinity,
+                    child: CachedNetworkImage(
+                      imageUrl: Constants.imagePath +
+                          notificationsList![3].imagePath!,
+                      fit: BoxFit.fill,
+                      placeholder: (context, url) => Center(
+                        child:
+                            const SpinKitChasingDots(color: Color(0XFFE5A352)),
+                      ),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                    ),
+                  ),
             // buildNotificationsSlider(),
           ],
         ),
@@ -910,4 +1077,41 @@ class _CategoryScreenState extends State<CategoryScreen> {
       return ServiceSection();
     }
   }
+
+  _showDialog(String text) async {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Icon(
+          Icons.report,
+          color: Colors.red,
+          size: 30,
+        ),
+        content: Text(
+          text,
+          style: TextStyle(
+            color: primaryColor,
+            fontSize: 25,
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text(
+              getString(context, "cancel"),
+              style: TextStyle(
+                color: secondaryColor,
+                fontSize: 20,
+              ),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _launchURL(String url) async =>
+      await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
 }

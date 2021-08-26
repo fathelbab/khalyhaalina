@@ -1,10 +1,11 @@
+import 'package:eshop/screen/category/category_screen.dart';
+import 'package:eshop/utils/log.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/model/bar_item.dart';
 import 'package:eshop/provider/cart.dart';
 import 'package:eshop/screen/cart/cart_screen.dart';
-import 'package:eshop/screen/home/category_screen.dart';
-import 'package:eshop/screen/info/info_screen.dart';
+import 'package:eshop/screen/home/home_category_screen.dart';
 import 'package:eshop/screen/pharmacy/pharmacy_screen.dart';
 import 'package:eshop/utils/local_notification.dart';
 import 'package:eshop/widget/badge.dart';
@@ -25,8 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedPageIndex = 0;
   List<BarItem>? barItems;
   List<Widget> _screens = [
+    HomeCategoryScreen(),
     CategoryScreen(),
-    InfoScreen(),
     // CallUsScreen(),
     PharmacyScreen()
   ];
@@ -71,10 +72,12 @@ class _HomeScreenState extends State<HomeScreen> {
     firebaseMessaging.getToken().then((token) {
       print("============================");
       print(token);
+      Log.d(token!);
       print("============================");
     });
     firebaseMessaging.onTokenRefresh.listen((token) {
       print(token);
+      Log.d(token.toString());
     });
     // this method need to request FCM permission just in ios
     requestFirebasePermission();
@@ -85,10 +88,10 @@ class _HomeScreenState extends State<HomeScreen> {
       Navigator.pushNamed(context, HomeScreen.route);
     });
     //when user click message and app is terminated
-    initalMessage();
+    initialMessage();
   }
 
-  initalMessage() async {
+  initialMessage() async {
     var message = await FirebaseMessaging.instance.getInitialMessage();
     if (message != null) {
       // TODO: do something
@@ -97,11 +100,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void getFirebaseToken() async {
     FirebaseMessaging.onMessage.listen((notification) {
-      print("${notification.notification!.body}");
-      Fluttertoast.showToast(msg: "${notification.notification!.body}");
+      Fluttertoast.showToast(msg: "${notification.data["Title"]}");
+      print(notification.data.toString());
       LocalNotification().showNotification(
-        title: notification.notification!.title.toString(),
-        body: notification.notification!.body.toString(),
+        title: notification.data["Title"].toString(),
+        body: notification.data["Description"].toString(),
+        image: notification.data["Image"].toString(),
+        // title: notification.notification!.title.toString(),
+        // body: notification.notification!['description'].toString(),
+        // image:notification.notification!.["image"].toString(),
       );
     });
   }

@@ -97,5 +97,12 @@
     "chooseLanguage": "اختيار اللغة",
     "choosePharmacy": "اختر الصيدلية",
     "pharmacyError": "يرجى اختيار الصيدلية",
-    "uploadPrescription": "اختر الروشتة"
+    "uploadPrescription": "اختر الروشتة",
+    "rewards": "المكافآت",
+    "internetProblem": "يرجى التاكد من الاتصال بشبكة الانترنت ؟",
+    "quantityError": "يرجى اضافة الكمية المطلوبة",
+    "skip": "تخطى",
+    "wallet": "المحفظة",
+    "appWallet": "محفظه خليها علينا",
+    "emptyWallet": "تابع العروض لايوجد عروض الان"
 }

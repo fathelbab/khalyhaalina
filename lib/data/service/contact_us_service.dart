@@ -3,8 +3,12 @@ import 'package:eshop/utils/constants.dart';
 import 'package:eshop/utils/log.dart';
 import 'package:http/http.dart' as http;
 
-Future<String> sendComplainsOrSuggestionService(String firstName, String lastName,
-    String email, String phoneNumber, String userMessage) async {
+Future<String> sendComplainsOrSuggestionService(
+    String firstName,
+    String lastName,
+    String email,
+    String phoneNumber,
+    String userMessage) async {
   try {
     final response = await http
         .post(Uri.parse(Constants.apiPath + "/ContactUs/PostPharmacy"),
@@ -50,15 +54,13 @@ Future<String> sendOnlineSupportService(
       ),
       headers: {'Content-Type': 'application/json'},
     );
-    Log.d(response.statusCode.toString());
-    Log.d(response.body.toString());
+
     if (response.statusCode == 201) {
       return "done";
     } else {
       return "failed";
     }
   } catch (e) {
-    Log.e(e.toString());
     throw e;
   }
 }

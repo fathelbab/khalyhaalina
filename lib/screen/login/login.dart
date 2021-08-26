@@ -114,22 +114,22 @@ class _LoginState extends State<Login> {
                   SizedBox(
                     height: 10,
                   ),
-                  Container(
-                    alignment: Alignment.topRight,
-                    margin: const EdgeInsets.symmetric(horizontal: 10),
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        AppLocale.of(context)!
-                            .getString("forgetPassword")
-                            .toString(),
-                        style: TextStyle(
-                            fontSize: 18.0,
-                            color: secondaryColor,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   alignment: Alignment.topRight,
+                  //   margin: const EdgeInsets.symmetric(horizontal: 10),
+                  //   child: TextButton(
+                  //     onPressed: () {},
+                  //     child: Text(
+                  //       AppLocale.of(context)!
+                  //           .getString("forgetPassword")
+                  //           .toString(),
+                  //       style: TextStyle(
+                  //           fontSize: 18.0,
+                  //           color: secondaryColor,
+                  //           fontWeight: FontWeight.bold),
+                  //     ),
+                  //   ),
+                  // ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,

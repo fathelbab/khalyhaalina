@@ -1,5 +1,5 @@
 import 'package:eshop/model/bar_item.dart';
-import 'package:eshop/provider/bar_style.dart';
+import 'package:eshop/utils/bar_style.dart';
 import 'package:flutter/material.dart';
 
 class AnimatedBottomBar extends StatefulWidget {

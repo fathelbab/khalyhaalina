@@ -11,6 +11,7 @@ import 'package:eshop/utils/style.dart';
 import 'package:eshop/widget/badge.dart';
 import 'package:eshop/widget/product_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 import 'cart/cart_screen.dart';
@@ -33,7 +34,7 @@ class _ProductScreenState extends State<ProductScreen> {
   ScrollController _productScrollController = new ScrollController();
   bool isLoading = false;
   int mainCategorySelectedIndex = 0;
-  int subCategorySelectedIndex = 0;
+  int subCategorySelectedIndex = -1;
   late String locale;
   List<Category>? _supplierMainCategory;
   List<Category>? _supplierSubCategory;
@@ -101,8 +102,9 @@ class _ProductScreenState extends State<ProductScreen> {
             child: CachedNetworkImage(
               imageUrl: Constants.imagePath + supplierImage!,
               fit: BoxFit.fill,
-              placeholder: (context, url) =>
-                  Center(child: CircularProgressIndicator()),
+              placeholder: (context, url) => Center(
+                child: const SpinKitChasingDots(color: Color(0XFFE5A352)),
+              ),
               errorWidget: (context, url, error) => Icon(Icons.error),
             ),
           ),
@@ -240,7 +242,7 @@ class _ProductScreenState extends State<ProductScreen> {
               padding: EdgeInsets.all(10),
               child: isLoading
                   ? Center(
-                      child: CircularProgressIndicator(),
+                      child: const SpinKitChasingDots(color: Color(0XFFE5A352)),
                     )
                   : _productList == null || _productList!.length == 0
                       ? Center(
