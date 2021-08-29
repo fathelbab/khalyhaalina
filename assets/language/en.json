@@ -101,8 +101,18 @@
     "rewards": "Rewards",
     "internetProblem": "Please make sure you are connected to the internet?",
     "quantityError": "Please add the required quantity",
-    "skip": "Skip",
+    "skip": "Start shopping",
     "wallet": "Wallet",
     "appWallet": "Wallet of Khliha Alina",
-    "emptyWallet": "Follow the offers, there are no offers now"
+    "emptyWallet": "Follow the offers, there are no offers now",
+    "buyPackage": "buy",
+    "packages": "Packages",
+    "currency": "EGP",
+    "confirmedPackageBuyMessage": "Package has been successfully purchased",
+    "ok": "Ok",
+    "close": "Close",
+    "open": "Open",
+    "receivedDate": "Received date",
+    "moreOrder": "Other orders",
+    "doctor": "Doctor"
 }

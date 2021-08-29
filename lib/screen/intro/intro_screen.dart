@@ -46,37 +46,51 @@ class _IntroScreenState extends State<IntroScreen> {
         body: Column(
           children: [
             Expanded(
-              child: Image.network(
-                Constants.imagePath +
-                    configuration.configuration!.gif.toString(),
-                fit: BoxFit.contain,
-              ),
+              child: configuration.configuration!.gif != null
+                  ? Image.network(
+                      Constants.imagePath +
+                          configuration.configuration!.gif.toString(),
+                      fit: BoxFit.contain,
+                    )
+                  : CircularProgressIndicator(),
             ),
-            Row(
-              children: [
-                TextButton.icon(
-                  style: ButtonStyle(),
-                  icon: Icon(
-                    Icons.arrow_back_ios,
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                  side: BorderSide(
+                    width: 3.0,
                     color: primaryColor,
                   ),
-                  onPressed: () {
-                    timer!.cancel();
-                    Navigator.of(context).pushReplacementNamed(
-                      HomeScreen.route,
-                    );
-                  },
-                  label: Text(
-                    getString(context, "skip"),
-                    style: TextStyle(
-                      color: primaryColor,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(25.0),
                   ),
+                  primary: Colors.white,
+                  padding: const EdgeInsets.all(10)),
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: primaryColor,
+              ),
+              onPressed: () {
+                timer!.cancel();
+                if (token == "") {
+                  Navigator.of(context).pushReplacementNamed(Login.route);
+                } else {
+                  Navigator.of(context).pushReplacementNamed(
+                    HomeScreen.route,
+                  );
+                }
+              },
+              label: Text(
+                getString(context, "skip"),
+                style: TextStyle(
+                  color: primaryColor,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
                 ),
-              ],
+              ),
             ),
+            SizedBox(
+              height: 20,
+            )
           ],
         ),
       ),

@@ -113,10 +113,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                             PageRouteBuilder(
                                               pageBuilder: (context, animation,
                                                       secondaryAnimation) =>
-                                                  ViewImageScreen(
-                                                image:
-                                                    productDetails.imagePath!,
-                                              ),
+                                                  ViewImageScreen(),
                                               transitionsBuilder: (context,
                                                   _animation,
                                                   _secondaryAnimation,
@@ -129,47 +126,40 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                             ),
                                           );
                                         },
-                                        child: Hero(
-                                          tag: productDetails.id!,
-                                          child: Image.network(
-                                            Constants.imagePath +
-                                                productDetails.imagePath!,
-                                            fit: BoxFit.contain,
-                                            width: double.infinity,
-                                            height: size.height / 3 + 50,
-                                          ),
+                                        child: Image.network(
+                                          Constants.imagePath +
+                                              productDetails.imagePath!,
+                                          fit: BoxFit.contain,
+                                          width: double.infinity,
+                                          height: size.height / 3 + 50,
                                         ),
                                       )
-                                    : Hero(
-                                        tag: productDetails.id!,
-                                        child: Container(
-                                          height: MediaQuery.of(context)
-                                                      .size
-                                                      .height /
-                                                  3 +
-                                              50,
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          child: CarouselSlider.builder(
-                                            itemCount: productDetails
-                                                .productGalleries?.length,
-                                            itemBuilder: (BuildContext context,
-                                                itemIndex, int pageViewIndex) {
-                                              print(itemIndex);
-                                              return sliderBuilder(
-                                                  itemIndex,
-                                                  productDetails
-                                                      .productGalleries!);
-                                            },
-                                            // items: imageSliders,
-                                            options: CarouselOptions(
-                                              autoPlay: true,
-                                              enableInfiniteScroll: true,
-                                              aspectRatio: 1.0,
-                                              disableCenter: false,
-                                              enlargeCenterPage: true,
-                                              // enlargeStrategy: CenterPageEnlargeStrategy.height,
-                                            ),
+                                    : Container(
+                                        height:
+                                            MediaQuery.of(context).size.height /
+                                                    3 +
+                                                50,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: CarouselSlider.builder(
+                                          itemCount: productDetails
+                                              .productGalleries?.length,
+                                          itemBuilder: (BuildContext context,
+                                              itemIndex, int pageViewIndex) {
+                                            print(itemIndex);
+                                            return sliderBuilder(
+                                                itemIndex,
+                                                productDetails
+                                                    .productGalleries!);
+                                          },
+                                          // items: imageSliders,
+                                          options: CarouselOptions(
+                                            autoPlay: true,
+                                            enableInfiniteScroll: true,
+                                            aspectRatio: 1.0,
+                                            disableCenter: false,
+                                            enlargeCenterPage: true,
+                                            // enlargeStrategy: CenterPageEnlargeStrategy.height,
                                           ),
                                         ),
                                       ),
@@ -328,21 +318,40 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           ),
                                         );
                                       },
-                                      child: Container(
-                                        width: size.height / 6 - 20,
-                                        height: size.height / 6 - 20,
-                                        padding: const EdgeInsets.all(5),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          child: Image.network(
-                                            Constants.imagePath +
-                                                productDetails
-                                                    .avilabeProductGalleries![
-                                                        index]
-                                                    .imagePath!,
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            width: size.height / 6 - 20,
+                                            height: size.height / 6 - 20,
+                                            padding: const EdgeInsets.all(5),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              child: Image.network(
+                                                Constants.imagePath +
+                                                    productDetails
+                                                        .avilabeProductGalleries![
+                                                            index]
+                                                        .imagePath!,
+                                              ),
+                                            ),
                                           ),
-                                        ),
+                                          Text(
+                                            locale == "ar"
+                                                ? productDetails
+                                                        .avilabeProductGalleries![
+                                                            index]
+                                                        .textAr ??
+                                                    ""
+                                                : productDetails
+                                                        .avilabeProductGalleries![
+                                                            index]
+                                                        .textEn ??
+                                                    "",
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          )
+                                        ],
                                       ),
                                     );
                                   },
@@ -450,10 +459,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 });
               else if (quantity > 0)
                 setState(() {
-                  print(quantity);
+                  // print(quantity);
                   quantity--;
                 });
-              print(quantity);
+              // print(quantity);
             },
           ),
         ),
@@ -492,7 +501,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               //   setState(() {
               //     quantity = 0;
               //   });
-              print(quantity);
+              // print(quantity);
             },
           ),
         ),
@@ -506,8 +515,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (BuildContext context) => ViewImageScreen(
-              image: productGalleries[index].imagePath!,
-            ),
+                // image: productGalleries[index].imagePath!,
+                ),
           ),
         );
       },

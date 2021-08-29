@@ -14,16 +14,31 @@ class InfoScreen extends StatelessWidget {
     final configuration =
         Provider.of<ConfigurationProvider>(context).configuration;
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        elevation: 20,
-        title: Text(AppLocale.of(context)!.getString("info")!),
-      ),
+      // appBar: AppBar(
+      //   centerTitle: true,
+      //   elevation: 20,
+      //   title: Text(AppLocale.of(context)!.getString("info")!),
+      // ),
       body: Container(
         width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            GestureDetector(
+              onTap: () {
+                _launchURL("${configuration!.linkWebSite}");
+              },
+              child: Container(
+                height: 200,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/app_logo.png"),
+                    scale: 1,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+            ),
             ListTile(
               title: Text(
                 AppLocale.of(context)!.getString('location')!,
@@ -78,7 +93,7 @@ class InfoScreen extends StatelessWidget {
                 textAlign: TextAlign.end,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize: 20,
                 ),
                 textDirection: TextDirection.ltr,
               ),
@@ -88,65 +103,163 @@ class InfoScreen extends StatelessWidget {
               height: 10,
             ),
             Wrap(
-              spacing: 5,
+              spacing: 10,
               children: [
-                GFButton(
-                  onPressed: () {
+                InkWell(
+                  onTap: () {
                     _launchURL("${configuration.linkFaceBook}");
                   },
-                  text: "Facebook",
-                  icon: FaIcon(FontAwesomeIcons.facebook, color: Colors.white),
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.blue,
+                          blurRadius: 4,
+                          offset: Offset(4, 8), // Shadow position
+                        ),
+                      ],
+                    ),
+                    child: FaIcon(
+                      FontAwesomeIcons.facebook,
+                      color: Colors.blue,
+                      size: 30,
+                    ),
+                  ),
                 ),
-                GFButton(
-                  onPressed: () {
+                InkWell(
+                  onTap: () {
                     _launchURL("${configuration.linkYouTube}");
                   },
-                  text: "Youtube",
-                  color: Colors.red,
-                  icon: FaIcon(FontAwesomeIcons.youtube, color: Colors.white),
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.red,
+                          blurRadius: 4,
+                          offset: Offset(4, 8), // Shadow position
+                        ),
+                      ],
+                    ),
+                    child: FaIcon(
+                      FontAwesomeIcons.youtube,
+                      color: Colors.red,
+                      size: 30,
+                    ),
+                  ),
                 ),
-                GFButton(
-                  onPressed: () {
-                    _launchURL("${configuration.linkWebSite}");
+                // InkWell(
+                //   onTap: () {},
+                //   child: Container(
+                //     padding: const EdgeInsets.all(10),
+                //     decoration: BoxDecoration(
+                //       color: Colors.white,
+                //       shape: BoxShape.circle,
+                // boxShadow: [
+                //       BoxShadow(
+                //         color: Colors.red,
+                //         blurRadius: 4,
+                //         offset: Offset(4, 8), // Shadow position
+                //       ),
+                //     ],
+                //     ),
+                //     child: FaIcon(
+                //       FontAwesomeIcons.,
+                //       color: Colors.,
+                //       size: 30,
+                //     ),
+                //   ),
+                // ),
+                InkWell(
+                  onTap: () {
+                    _launchURL("${configuration.linkTikTok}");
                   },
-                  text: "Tiktok",
-                  textStyle: TextStyle(fontWeight: FontWeight.bold),
-                  color: Colors.black,
-                  elevation: 5,
-                  icon: FaIcon(FontAwesomeIcons.tiktok, color: Colors.white),
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black,
+                          blurRadius: 4,
+                          offset: Offset(4, 8), // Shadow position
+                        ),
+                      ],
+                    ),
+                    child: FaIcon(
+                      FontAwesomeIcons.tiktok,
+                      color: Colors.black,
+                      size: 30,
+                    ),
+                  ),
                 ),
-                GFButton(
-                  onPressed: () {
-                    _launchURL("${configuration.linkWebSite}");
-                  },
-                  text: "Eshop",
-                  textStyle: TextStyle(fontWeight: FontWeight.bold),
-                  color: primaryColor,
-                  elevation: 5,
-                  icon: FaIcon(FontAwesomeIcons.globe, color: Colors.white),
-                ),
-                GFButton(
-                  onPressed: () {
+                InkWell(
+                  onTap: () {
                     _launchURL("${configuration.linkInstagram}");
                   },
-                  text: "Instagram",
-                  textStyle: TextStyle(
-                      color: Colors.purple, fontWeight: FontWeight.bold),
-                  color: Colors.white,
-                  elevation: 5,
-                  icon:
-                      FaIcon(FontAwesomeIcons.instagram, color: Colors.purple),
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.purple,
+                          blurRadius: 4,
+                          offset: Offset(4, 8), // Shadow position
+                        ),
+                      ],
+                    ),
+                    child: FaIcon(
+                      FontAwesomeIcons.instagram,
+                      color: Colors.purple,
+                      size: 30,
+                    ),
+                  ),
                 ),
-                GFButton(
-                  onPressed: () {
+                InkWell(
+                  onTap: () {
                     _launchURL("${configuration.linkWebSite}");
                   },
-                  text: "Eshop",
-                  textStyle: TextStyle(fontWeight: FontWeight.bold),
-                  color: primaryColor,
-                  elevation: 5,
-                  icon: FaIcon(FontAwesomeIcons.globe, color: Colors.white),
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: primaryColor,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: secondaryColor,
+                          blurRadius: 4,
+                          offset: Offset(4, 8), // Shadow position
+                        ),
+                      ],
+                    ),
+                    child: FaIcon(
+                      FontAwesomeIcons.globe,
+                      color: secondaryColor,
+                      size: 30,
+                    ),
+                  ),
                 ),
+
+                // GFButton(
+                //   onPressed: () {
+                //     _launchURL("${configuration.linkInstagram}");
+                //   },
+                //   text: "Instagram",
+                //   textStyle: TextStyle(
+                //       color: Colors.purple, fontWeight: FontWeight.bold),
+                //   color: Colors.white,
+                //   elevation: 5,
+                //   icon:
+                //       FaIcon(FontAwesomeIcons.instagram, color: Colors.purple),
+                // ),
               ],
             ),
             // ElevatedButton(

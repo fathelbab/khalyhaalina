@@ -3,19 +3,28 @@ import 'package:eshop/model/FavouriteProduct.dart';
 import 'package:eshop/model/product_data.dart';
 import 'package:eshop/model/product_details_data.dart';
 import 'package:eshop/utils/constants.dart';
+import 'package:eshop/utils/log.dart';
 // import 'package:eshop/utils/log.dart';
 import 'package:http/http.dart' as http;
 
-Future<List<Product>?> fetchProduct(String accessToken, String? supplierId,
-    String? categoryId, String searchTerm, int offset, int limit) async {
+Future<List<Product>?> fetchProduct(
+  String accessToken,
+  String? supplierId,
+  String cityId,
+  String? categoryId,
+  String searchTerm,
+  int offset,
+  int limit,
+) async {
   final response = await http.get(
       Uri.parse(Constants.apiPath +
-          "/Product/GetAll?CategoryId=$categoryId&SupplierId=$supplierId&SearchTerm=$searchTerm&Offset=1&Limit=$limit"),
+          "/Product/GetAll?CategoryId=$categoryId&SupplierId=$supplierId&cityid=$cityId&SearchTerm=$searchTerm&Offset=1&Limit=$limit"),
       headers: {
         'Content-Type': 'application/json',
         'access_token': accessToken,
       });
-
+  // Log.w(Constants.apiPath +
+  //     "/Product/GetAll?CategoryId=$categoryId&SupplierId=$supplierId&SearchTerm=$searchTerm&Offset=1&Limit=$limit");
   if (response.statusCode == 200) {
     return productDataFromJson(response.body).product;
   } else {

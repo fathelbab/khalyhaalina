@@ -18,22 +18,29 @@ import 'cart/cart_screen.dart';
 
 class ProductScreen extends StatefulWidget {
   static const String route = "/product_screen";
+  final String? supplierId;
 
+  final String? supplierName;
+  final String? supplierImage;
+
+  const ProductScreen(
+      {Key? key, this.supplierId, this.supplierName, this.supplierImage})
+      : super(key: key);
   @override
   _ProductScreenState createState() => _ProductScreenState();
 }
 
 class _ProductScreenState extends State<ProductScreen> {
   List<Product>? _productList = [];
-  String? supplierId = "0";
+  // String? supplierId = "0";
 
-  String? supplierName = "";
-  String? supplierImage = "";
+  // String? supplierName = "";
+  // String? supplierImage = "";
   int limit = 20;
   final _searchController = TextEditingController();
   ScrollController _productScrollController = new ScrollController();
-  bool isLoading = false;
-  int mainCategorySelectedIndex = 0;
+  bool isLoading = true;
+  int mainCategorySelectedIndex = -1;
   int subCategorySelectedIndex = -1;
   late String locale;
   List<Category>? _supplierMainCategory;
@@ -43,16 +50,24 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   void initState() {
     super.initState();
+    Provider.of<ProductProvider>(context, listen: false)
+        .fetchProductList(widget.supplierId, "0", "", 1, 20)
+        .then((value) {
+      // print("ssssssssssssssssssssssssssssssssssssssssssssssss");
+      setState(() {
+        isLoading = false;
+      });
+    });
     locale = CacheHelper.getPrefs(key: "locale") ?? "ar";
     _productScrollController.addListener(() {
       if (_productScrollController.position.pixels ==
           _productScrollController.position.maxScrollExtent) {
-        print(limit);
+        // print(limit);
 
         limit += 20;
         // print("kira =============== $categoryId");
         Provider.of<ProductProvider>(context, listen: false)
-            .fetchProductList(supplierId, "", "", 1, limit);
+            .fetchProductList(widget.supplierId, "", "", 1, limit);
         // print(limit);
       }
     });
@@ -60,21 +75,22 @@ class _ProductScreenState extends State<ProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Map args = ModalRoute.of(context)!.settings.arguments as Map;
-    supplierId = args["supplierId"];
-    supplierName = args["supplierName"];
-    supplierImage = args["supplierImage"];
+    // Map args = ModalRoute.of(context)!.settings.arguments as Map;
+    // supplierId = args["supplierId"];
+    // supplierName = args["supplierName"];
+    // supplierImage = args["supplierImage"];
     var productProvider = Provider.of<ProductProvider>(context);
     var supplierProvider = Provider.of<SupplierProvider>(context);
     _supplierMainCategory = supplierProvider.supplierMainCategory;
     _supplierSubCategory = supplierProvider.supplierSubCategory;
     _productList = productProvider.productList;
-    print("kira$supplierImage");
+
+    // print("kira$supplierImage");
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         title: Text(
-          supplierName.toString(),
+          widget.supplierName ?? "",
           style: TextStyle(fontSize: 20),
         ),
         actions: [
@@ -96,18 +112,19 @@ class _ProductScreenState extends State<ProductScreen> {
       ),
       body: Column(
         children: [
-          Container(
-            height: MediaQuery.of(context).size.height / 4,
-            width: double.infinity,
-            child: CachedNetworkImage(
-              imageUrl: Constants.imagePath + supplierImage!,
-              fit: BoxFit.fill,
-              placeholder: (context, url) => Center(
-                child: const SpinKitChasingDots(color: Color(0XFFE5A352)),
+          if (widget.supplierImage != null)
+            Container(
+              height: MediaQuery.of(context).size.height / 4,
+              width: double.infinity,
+              child: CachedNetworkImage(
+                imageUrl: Constants.imagePath + widget.supplierImage!,
+                fit: BoxFit.fill,
+                placeholder: (context, url) => Center(
+                  child: const SpinKitChasingDots(color: Color(0XFFE5A352)),
+                ),
+                errorWidget: (context, url, error) => Icon(Icons.error),
               ),
-              errorWidget: (context, url, error) => Icon(Icons.error),
             ),
-          ),
           if (_supplierMainCategory != null &&
               _supplierMainCategory!.isNotEmpty)
             Container(
@@ -120,45 +137,25 @@ class _ProductScreenState extends State<ProductScreen> {
                 itemCount: _supplierMainCategory!.length,
                 itemBuilder: (context, index) => GestureDetector(
                   onTap: () {
-                    if (_supplierMainCategory![index].childs != null &&
-                        _supplierMainCategory![index].childs!.isNotEmpty) {
-                      Provider.of<ProductProvider>(context, listen: false)
-                          .fetchProductList(
-                              supplierId,
-                              _supplierMainCategory![index]
-                                  .childs![0]
-                                  .id
-                                  .toString(),
-                              "",
-                              1,
-                              limit)
-                          .then((value) {
-                        setState(() {
-                          isLoading = false;
-                        });
-                      });
+                    Provider.of<SupplierProvider>(context, listen: false)
+                        .setSubCategory(_supplierMainCategory![index].id!);
+                    Provider.of<ProductProvider>(context, listen: false)
+                        .fetchProductList(
+                            widget.supplierId,
+                            _supplierMainCategory![index].id.toString(),
+                            "",
+                            1,
+                            limit)
+                        .then((value) {
                       setState(() {
-                        isLoading = true;
-                        mainCategorySelectedIndex = index;
+                        isLoading = false;
                       });
-                    } else {
-                      Provider.of<ProductProvider>(context, listen: false)
-                          .fetchProductList(
-                              supplierId,
-                              _supplierMainCategory![index].id.toString(),
-                              "",
-                              1,
-                              limit)
-                          .then((value) {
-                        setState(() {
-                          isLoading = false;
-                        });
-                      });
-                      setState(() {
-                        isLoading = true;
-                        mainCategorySelectedIndex = index;
-                      });
-                    }
+                    });
+                    setState(() {
+                      isLoading = true;
+                      mainCategorySelectedIndex = index;
+                      subCategorySelectedIndex = -1;
+                    });
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -197,7 +194,7 @@ class _ProductScreenState extends State<ProductScreen> {
                   onTap: () {
                     Provider.of<ProductProvider>(context, listen: false)
                         .fetchProductList(
-                            supplierId,
+                            widget.supplierId,
                             _supplierSubCategory![index].id.toString(),
                             "",
                             1,

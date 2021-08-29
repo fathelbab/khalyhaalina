@@ -1,4 +1,6 @@
+import 'package:eshop/provider/auth_provider.dart';
 import 'package:eshop/screen/category/category_screen.dart';
+import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/log.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:eshop/language/app_locale.dart';
@@ -68,16 +70,22 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    final String token = CacheHelper.getPrefs(key: "token");
 
-    firebaseMessaging.getToken().then((token) {
-      print("============================");
-      print(token);
-      Log.d(token!);
-      print("============================");
+    firebaseMessaging.getToken().then((mobileToken) {
+      // print("============================");
+      // print(mobileToken);
+
+      // print("============================");
+      if (mobileToken != null && mobileToken.isNotEmpty)
+        Provider.of<Auth>(context, listen: false).storeMobileToken(mobileToken);
     });
-    firebaseMessaging.onTokenRefresh.listen((token) {
-      print(token);
-      Log.d(token.toString());
+    firebaseMessaging.onTokenRefresh.listen((mobileToken) {
+      // print(mobileToken);
+      Log.d(mobileToken.toString());
+      if (token != null || token != "") {
+        Provider.of<Auth>(context, listen: false).storeMobileToken(mobileToken);
+      }
     });
     // this method need to request FCM permission just in ios
     requestFirebasePermission();
@@ -95,21 +103,22 @@ class _HomeScreenState extends State<HomeScreen> {
     var message = await FirebaseMessaging.instance.getInitialMessage();
     if (message != null) {
       // TODO: do something
+      Navigator.pushNamed(context, HomeScreen.route);
     }
   }
 
   void getFirebaseToken() async {
     FirebaseMessaging.onMessage.listen((notification) {
-      Fluttertoast.showToast(msg: "${notification.data["Title"]}");
+      // Fluttertoast.showToast(msg: "${notification.data["title"]}");
       print(notification.data.toString());
-      LocalNotification().showNotification(
-        title: notification.data["Title"].toString(),
-        body: notification.data["Description"].toString(),
-        image: notification.data["Image"].toString(),
-        // title: notification.notification!.title.toString(),
-        // body: notification.notification!['description'].toString(),
-        // image:notification.notification!.["image"].toString(),
-      );
+      // LocalNotification().showNotification(
+      //     title: notification.data["title"].toString(),
+      //     body: notification.data["body"].toString(),
+      //     image: notification.data["imgUrl"].toString()
+      //     // title: notification.notification!.title.toString(),
+      //     // body: notification.notification!.body.toString(),
+      //     // image: "",
+      //     );
     });
   }
 

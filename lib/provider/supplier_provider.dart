@@ -44,8 +44,12 @@ class SupplierProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  setCategoryId(String categoryId) {
-    categoryId = categoryId;
+  setSubCategory(int categoryId) {
+    supplierMainCategory?.map((mainCategory) {
+      if (mainCategory.id == categoryId) {
+        _supplierSupCategory = mainCategory.childs ?? [];
+      }
+    }).toList();
     notifyListeners();
   }
 

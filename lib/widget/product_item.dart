@@ -60,20 +60,16 @@ class _ProductItemsState extends State<ProductItems> {
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
-                    Hero(
-                      tag: widget.product.id!,
-                      child: Container(
-                        child: CachedNetworkImage(
-                          imageUrl:
-                              Constants.imagePath + widget.product.imagePath!,
-                          fit: BoxFit.contain,
-                          placeholder: (context, url) => Center(
-                            child: const SpinKitChasingDots(
-                                color: Color(0XFFE5A352)),
-                          ),
-                          errorWidget: (context, url, error) =>
-                              Icon(Icons.error),
+                    Container(
+                      child: CachedNetworkImage(
+                        imageUrl:
+                            Constants.imagePath + widget.product.imagePath!,
+                        fit: BoxFit.contain,
+                        placeholder: (context, url) => Center(
+                          child: const SpinKitChasingDots(
+                              color: Color(0XFFE5A352)),
                         ),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
                       ),
                     ),
                     Positioned(

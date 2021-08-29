@@ -101,8 +101,20 @@
     "rewards": "المكافآت",
     "internetProblem": "يرجى التاكد من الاتصال بشبكة الانترنت ؟",
     "quantityError": "يرجى اضافة الكمية المطلوبة",
-    "skip": "تخطى",
+    "skip": "ابدأ التسوق",
     "wallet": "المحفظة",
     "appWallet": "محفظه خليها علينا",
-    "emptyWallet": "تابع العروض لايوجد عروض الان"
+    "emptyWallet": "تابع العروض لايوجد عروض الان",
+    "buyPackage": "شراء",
+    "packages": "الباقات",
+    "currency": "جنية",
+    "confirmedPackageBuyMessage": "تم شراء الباقة بنجاح",
+    "ok": "حسنا",
+    "walletTitle": "عروض خليها علينا",
+    "walletSubtitle": "صاحبك_الجدع",
+    "walletDescription": "مع عروض خليها علينا احصل على خصم",
+    "walletSubDescrition": "لماتشترى ب",
+    "close": "مغلق",
+    "open": "مفتوح",
+    "receivedDate": "ميعاد الاستلام","moreOrder":"طلبات اخرى","doctor":"الدكتور"
 }

@@ -1,12 +1,11 @@
 import 'dart:core';
-
 import 'package:eshop/data/service/product_service.dart';
 import 'package:eshop/data/service/services.dart';
 import 'package:eshop/model/FavouriteProduct.dart';
 import 'package:eshop/model/product_data.dart';
 import 'package:eshop/model/product_details_data.dart';
 import 'package:eshop/utils/cache_helper.dart';
-import 'package:eshop/utils/log.dart';
+// import 'package:eshop/utils/log.dart';
 import 'package:flutter/widgets.dart';
 
 class ProductProvider extends ChangeNotifier {
@@ -20,21 +19,24 @@ class ProductProvider extends ChangeNotifier {
   ProductDetailsData? _productData;
   String currentCategoryId = "0";
 
-  fetchProductList(String? supplierId, String? categoryId, String searchTerm,
-      int offset, int limit) async {
+  Future fetchProductList(String? supplierId, String? categoryId,
+      String searchTerm, int offset, int limit) async {
     String accessToken = CacheHelper.getPrefs(key: 'token');
+    String cityId = CacheHelper.getPrefs(key: 'cityId');
+    // Log.w(categoryId.toString());
     if (categoryId!.isEmpty)
       categoryId = currentCategoryId;
     else
       currentCategoryId = categoryId;
-    _productList = await (fetchProduct(
+    _productList = await fetchProduct(
       accessToken,
       supplierId,
+      cityId,
       categoryId,
       searchTerm,
       offset,
       limit,
-    ));
+    );
     notifyListeners();
   }
 

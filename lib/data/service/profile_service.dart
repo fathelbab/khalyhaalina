@@ -34,6 +34,28 @@ Future<void> signIn(String email, String password) async {
   }
 }
 
+Future<void> storeMobileTokenService(
+    String accessToken, String mobileToken) async {
+  try {
+    final http.Response response = await http.post(
+      Uri.parse("http://ahmedinara00-001-site1.dtempurl.com/api/MobileTokens"),
+      headers: {
+        'Content-Type': 'application/json',
+        'access_token': accessToken,
+      },
+      body: json.encode({
+        "token": mobileToken,
+      }),
+    );
+    // Log.d(json.encode({"token": mobileToken}));
+    // Log.w(response.body.toString());
+    // Log.i(response.statusCode.toString());
+  } catch (e) {
+    // Log.e(e.toString());
+    // throw e;
+  }
+}
+
 Future<String> userGoogleSignIn(String? accessToken) async {
   try {
     final http.Response response = await http.post(

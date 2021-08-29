@@ -10,8 +10,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'language/app_locale.dart';
 
 void main() async {
@@ -21,30 +21,30 @@ void main() async {
       [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
   FirebaseMessaging.onBackgroundMessage(fcmBackgroundMessage);
   await CacheHelper.init();
-  final prefs = await SharedPreferences.getInstance();
-  String token = prefs.getString('token') ?? "";
-  print(token);
-  runApp(MyApp(token));
+
+  runApp(MyApp());
 }
 
 // this function working when app in background and when terminated
 // to display firebase cloud message
-Future fcmBackgroundMessage(RemoteMessage message) async {
-  print("${message.data}");
-  LocalNotification().showNotification(
-    // title: message.data["Title"].toString(),
-    // body: message.data["Description"].toString(),
-    // image: message.data["Image"].toString(),
-    title: message.notification!.title.toString(),
-    body: message.notification!.body.toString(),
-    image: "",
-  );
+Future fcmBackgroundMessage(RemoteMessage notification) async {
+  // print("${notification.data}");
+  // print("${notification.data["imgUrl"]}");
+  // Fluttertoast.showToast(msg: "${notification.data["title"]}");
+  // LocalNotification().showNotification(
+  //   title: notification.data["title"].toString(),
+  //   body: notification.data["body"].toString(),
+  //   image: notification.data["imgUrl"].toString(),
+  // title: notification.notification!.title.toString(),
+  // body: notification.notification!.body.toString(),
+  // image: "",
+  // );
 }
 
 class MyApp extends StatelessWidget {
-  final token;
+  // final token;
 
-  MyApp(this.token);
+  // MyApp(this.token);
 
   @override
   Widget build(BuildContext context) {

@@ -59,16 +59,18 @@ Future<DoctorDetailsData?> getDoctorByID(String doctorId) async {
 }
 
 Future<String> sendDoctorBookedDateService(String accessToken, String name,
-    String doctorId, String phoneNumber, String bookedDate) async {
+    int doctorId, String phoneNumber, String bookedDate) async {
   try {
     final response = await http.post(
-      Uri.parse(Constants.apiPath + "/BookedDoctors"),
+      Uri.parse("http://ahmedinara00-001-site1.dtempurl.com/api/BookedDoctors"),
       headers: {
         'Content-Type': 'application/json',
         'access_token': accessToken,
       },
       body: jsonEncode(
         {
+          "userId": 0,
+          "isDeleted": true,
           "bookedDate": bookedDate,
           "doctorId": doctorId,
           "name": name,
@@ -76,24 +78,26 @@ Future<String> sendDoctorBookedDateService(String accessToken, String name,
         },
       ),
     );
-    // Log.d(jsonEncode(
-    //   {
-    //     "bookedDate": bookedDate,
-    //     "doctorId": doctorId,
-    //     "name": name,
-    //     "phone": phoneNumber
-    //   },
-    // ));
-    // Log.d(response.statusCode.toString());
-    // Log.d(accessToken);
-    // Log.d(response.body.toString());
-    if (response.statusCode == 200) {
+    Log.d(jsonEncode(
+      {
+        "userId": 0,
+        "isDeleted": true,
+        "bookedDate": bookedDate,
+        "doctorId": doctorId,
+        "name": name,
+        "phone": phoneNumber
+      },
+    ));
+    Log.d(response.statusCode.toString());
+    Log.d(accessToken);
+    Log.d(response.body.toString());
+    if (response.statusCode == 201) {
       return "done";
     } else {
       return "failed";
     }
   } catch (e) {
-    // Log.e(e.toString());
+    Log.e(e.toString());
     throw e;
   }
 }

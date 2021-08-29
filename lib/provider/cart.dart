@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Cart with ChangeNotifier {
-  List<CartData>? _cartItems;
+  List<CartData>? _cartItems = [];
   // Map<String, CartItem> get items {
   //   return {...?_items};
   // }
@@ -56,20 +56,22 @@ class Cart with ChangeNotifier {
     int productId,
   ) {
     _cartItems?.map((product) {
-      if (product.id == productId && product.qty != null) {
+      if (product.productid == productId && product.qty != null) {
         product.qty = product.qty! + 1;
+        updateCartItemQuantity(
+            product.id, productId, product.qty, product.description ?? "");
       }
     }).toList();
     notifyListeners();
   }
 
-  decreaseQuantity(
-    int productId,
-  ) {
+  decreaseQuantity(int productId) {
     _cartItems?.map((product) {
-      if (product.id == productId && product.qty! > 1) {
+      if (product.productid == productId && product.qty! > 1) {
         product.qty = product.qty! - 1;
         Log.d(product.qty.toString());
+        updateCartItemQuantity(
+            product.id, productId, product.qty, product.description ?? "");
       }
     }).toList();
     notifyListeners();
@@ -80,5 +82,12 @@ class Cart with ChangeNotifier {
     await removeItemFromCart(int.parse(productId), token);
     _cartItems!.removeWhere((element) => element.id == int.parse(productId));
     notifyListeners();
+  }
+
+  void updateCartItemQuantity(
+      int? id, int productId, int? qty, String description) async {
+    final token = CacheHelper.getPrefs(key: "token");
+    await updateCartItemQuantityService(
+        id!, productId, qty!, description, token);
   }
 }

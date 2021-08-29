@@ -4,11 +4,11 @@ import 'package:eshop/model/cart_data.dart';
 import 'package:eshop/model/image_data.dart';
 import 'package:eshop/model/notification_data.dart';
 import 'package:eshop/model/product_data.dart';
-import 'package:eshop/model/product_details_data.dart' hide Category, Supplier;
 
 import 'package:eshop/model/supplier_data.dart';
 
 import 'package:eshop/utils/constants.dart';
+import 'package:eshop/utils/log.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -44,20 +44,12 @@ Future<String> createOrderbyUser(
   String customerName,
   String phoneNumber,
   String address,
+  String receivedDate,
   double subTotal,
   List<CartData> listOfProduct,
   String? token,
 ) async {
   try {
-    // print(jsonEncode({
-    //   "customerName": customerName,
-    //   "phoneNumber": phoneNumber,
-    //   "address": address,
-    //   "subtotale": subTotal,
-    //   "vat": 0,
-    //   "orderdeitalsdto":
-    //       listOfProduct.map((productData) => productData.toJson()).toList(),
-    // }));
     final response = await http.post(
       Uri.parse(Constants.apiPath + "/Orders/PostOrderOrderDitales"),
       body: jsonEncode({
@@ -65,13 +57,14 @@ Future<String> createOrderbyUser(
         "phoneNumber": phoneNumber.toString(),
         "address": address.toString(),
         "subtotale": 0,
+        "recivedDate": receivedDate,
         "orderdeitalsdto":
             listOfProduct.map((productData) => productData.toJson()).toList()
       }),
       headers: {"Content-Type": "application/json", "access_token": token!},
     );
-    // print("abied ${response.statusCode}");
-    // print("abied ${response.body.toString()}");
+    Log.d("abied ${response.statusCode}");
+    Log.d("abied ${response.body.toString()}");
     if (response.statusCode == 200) {
       return "done";
     } else {
@@ -145,33 +138,11 @@ Future<List<ImageData>?> fetchImages() async {
         await http.get(Uri.parse(Constants.apiPath + "/Image/GetAll"));
 
     if (response.statusCode == 200) {
-      // print(response.statusCode);
-      // print(response.body);
       return imageDataFromJson(response.body);
     } else {
-      // print(response.statusCode);
       return null;
     }
   } catch (e) {
     throw e;
   }
 }
-
-// Future<List<City>?> getAllCity(int offset, int limit) async {
-//   final response = await http
-//       .get(Uri.parse(apiPath + "/City/GetAll?Offset=$offset&Limit=$limit"));
-//   try {
-//     if (response.statusCode == 200) {
-//       CityData cityDataFromJson(String str) =>
-//           CityData.fromJson(json.decode(str));
-
-//       // print(response.body);
-//       return cityDataFromJson(response.body).city;
-//     } else {
-//       // print(response.statusCode);
-//       return null;
-//     }
-//   } catch (e) {
-//     throw e;
-//   }
-// }

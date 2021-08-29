@@ -1,12 +1,13 @@
 import 'package:eshop/data/service/pharmacy_service.dart';
 import 'package:eshop/model/pharmacy_data.dart';
+import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/log.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:eshop/data/service/services.dart';
+import 'package:eshop/model/supplier_data.dart';
 
 class PharmacyProvider with ChangeNotifier {
-  List<Pharmacy>? _pharmacyList = [];
+  List<Supplier>? _pharmacyList = [];
   String pharmacyId = "";
   String pharmacyName = "";
   Future<String> addPharmacyItem(
@@ -18,7 +19,8 @@ class PharmacyProvider with ChangeNotifier {
   }
 
   getPharmacyList(int offset, int limit) async {
-    _pharmacyList = await getAllPharmacyService(offset, limit);
+    final cityId = CacheHelper.getPrefs(key: 'cityId');
+    _pharmacyList = await getAllPharmacyService(cityId, offset, limit);
     notifyListeners();
   }
 
@@ -35,5 +37,5 @@ class PharmacyProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  List<Pharmacy>? get pharmacyList => _pharmacyList;
+  List<Supplier>? get pharmacyList => _pharmacyList;
 }

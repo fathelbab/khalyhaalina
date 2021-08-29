@@ -6,6 +6,7 @@ import 'package:eshop/model/doctor_specialist_data.dart';
 import 'package:eshop/provider/doctor_provider.dart';
 import 'package:eshop/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 import '../../doctor/doctor_details_screen.dart';
@@ -96,11 +97,13 @@ class _DoctorSectionState extends State<DoctorSection> {
                                 Text(
                                   locale == "ar"
                                       ? doctorSpeciaList![index]
-                                          .nameAr
-                                          .toString()
-                                      : doctorSpeciaList![index]
-                                          .nameEn
-                                          .toString(),
+                                              .nameAr
+                                              ?.toString() ??
+                                          ""
+                                      : doctorSpeciaList![index].nameEn ??
+                                          doctorSpeciaList![index]
+                                              .nameAr
+                                              .toString(),
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
                                   style: TextStyle(
@@ -119,7 +122,9 @@ class _DoctorSectionState extends State<DoctorSection> {
                       height: 200,
                       child: Center(
                         child: isLoading
-                            ? CircularProgressIndicator()
+                            ? const SpinKitChasingDots(
+                                color: Color(0XFFE5A352),
+                              )
                             : Text("لايوجد طبيب متاح فى هذه المنطقة"),
                       ),
                     )
@@ -205,8 +210,11 @@ class DoctorItem extends StatelessWidget {
           width: 60.0,
           imageUrl: Constants.imagePath + doctor.imagePath!,
           fit: BoxFit.fill,
-          placeholder: (context, url) =>
-              Center(child: CircularProgressIndicator()),
+          placeholder: (context, url) => Center(
+            child: const SpinKitChasingDots(
+              color: Color(0XFFE5A352),
+            ),
+          ),
           errorWidget: (context, url, error) => Icon(Icons.error),
         ),
       ),
@@ -257,8 +265,11 @@ class DoctorGridItem extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl: Constants.imagePath + doctor.imagePath!,
                 fit: BoxFit.fill,
-                placeholder: (context, url) =>
-                    Center(child: CircularProgressIndicator()),
+                placeholder: (context, url) => Center(
+                  child: const SpinKitChasingDots(
+                    color: Color(0XFFE5A352),
+                  ),
+                ),
                 errorWidget: (context, url, error) => Icon(Icons.error),
               ),
             ),

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:eshop/provider/configurations_provider.dart';
 import 'package:eshop/screen/home/home_screen.dart';
+import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,10 +30,30 @@ class _RewardsScreenState extends State<RewardsScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<ConfigurationProvider>(
-      builder: (context, configuration, child) => Container(
-        child: Image.network(
-          Constants.imagePath + configuration.configuration!.gif.toString(),
-          fit: BoxFit.contain,
+      builder: (context, configuration, child) => Scaffold(
+        appBar: AppBar(
+          title: Text(
+            getString(context, "rewards"),
+          ),
+          centerTitle: true,
+          leading: IconButton(
+            color: Colors.white,
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              if (Navigator.canPop(context)) Navigator.pop(context);
+            },
+          ),
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: Image.network(
+                Constants.imagePath +
+                    configuration.configuration!.gif.toString(),
+                fit: BoxFit.contain,
+              ),
+            ),
+          ],
         ),
       ),
     );

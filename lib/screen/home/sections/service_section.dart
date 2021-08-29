@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eshop/utils/cache_helper.dart';
+import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/model/service_details_data.dart' hide ServiceSpecialist;
@@ -8,6 +9,7 @@ import 'package:eshop/provider/service_provider.dart';
 import 'package:eshop/screen/services/services_screen.dart';
 import 'package:eshop/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 
 class ServiceSection extends StatefulWidget {
@@ -222,20 +224,54 @@ class ServiceItem extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Alert!!"),
           content: Container(
             height: 300,
-            child: SingleChildScrollView(
-              child: Text(
-                locale == "ar"
-                    ? service.descriptionAr ?? ""
-                    : service.descriptionAr ?? "",
-              ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Html(
+                      data: locale == "ar"
+                          ? service.descriptionAr ?? ""
+                          : service.descriptionAr ?? "",
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      service.name.toString(),
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: primaryColor,
+                      ),
+                    ),
+                    Text(
+                      locale == "ar"
+                          ? service.serviceSpecialist!.nameAr ?? ""
+                          : service.serviceSpecialist!.nameEn ??
+                              service.serviceSpecialist!.nameAr,
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: primaryColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
           actions: <Widget>[
             new TextButton(
-              child: new Text("OK"),
+              child: Text(
+                getString(context, "ok"),
+                style: TextStyle(
+                  fontSize: 20,
+                  color: primaryColor,
+                ),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },

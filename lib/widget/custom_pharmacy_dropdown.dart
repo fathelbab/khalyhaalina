@@ -69,8 +69,15 @@ class _PharmacyDropDownButtonState extends State<PharmacyDropDownButton> {
                 setState(() {
                   _selectedPharmacy = newValue;
                   pharmcyId = pharmacy.pharmacyList!
-                      .firstWhereOrNull(
-                          (pharmacy) => (pharmacy.name == _selectedPharmacy))!
+                      .firstWhereOrNull((pharmacy) {
+                        String name = locale == "ar"
+                            ? pharmacy.nameAr.toString()
+                            : pharmacy.nameEn.toString();
+                        if (name == _selectedPharmacy)
+                          return true;
+                        else
+                          return false;
+                      })!
                       .id
                       .toString();
                 });
@@ -78,9 +85,11 @@ class _PharmacyDropDownButtonState extends State<PharmacyDropDownButton> {
               },
               items: pharmacy.pharmacyList!
                   .map((pharmacy) => DropdownMenuItem(
-                        value: pharmacy.name,
+                        value: locale == "ar"
+                            ? pharmacy.nameAr
+                            : pharmacy.nameEn ?? pharmacy.nameAr,
                         child: Text(
-                          pharmacy.name ?? "",
+                          locale == "ar" ? pharmacy.nameAr! : pharmacy.nameEn!,
                           style: TextStyle(color: Colors.black, fontSize: 20),
                         ),
                       ))

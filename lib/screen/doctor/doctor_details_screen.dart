@@ -7,6 +7,7 @@ import 'package:eshop/provider/doctor_provider.dart';
 import 'package:eshop/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 class DoctorDetailsScreen extends StatefulWidget {
@@ -33,10 +34,19 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
       appBar: AppBar(
         title: Text("المواعيد"),
         elevation: 0,
+        leading: IconButton(
+          color: Colors.white,
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            if (Navigator.canPop(context)) Navigator.pop(context);
+          },
+        ),
       ),
       body: doctorDetails == null
           ? Center(
-              child: CircularProgressIndicator(),
+              child: const SpinKitChasingDots(
+                color: Color(0XFFE5A352),
+              ),
             )
           : SingleChildScrollView(
               child: Container(
@@ -66,8 +76,11 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                               imageUrl: Constants.imagePath +
                                   doctorDetails.imagePath!,
                               fit: BoxFit.fill,
-                              placeholder: (context, url) =>
-                                  Center(child: CircularProgressIndicator()),
+                              placeholder: (context, url) => Center(
+                                child: const SpinKitChasingDots(
+                                  color: Color(0XFFE5A352),
+                                ),
+                              ),
                               errorWidget: (context, url, error) =>
                                   Icon(Icons.error),
                             ),
@@ -217,30 +230,32 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                                             : Container()
                                       ],
                                     ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  DoctorBookedScreen(
-                                                bookedDate:
-                                                    "${doctorDetails.doctorTimeTable![index].doctorDay}\\${doctorDetails.doctorTimeTable![index].doctorTime}",
-                                                doctorId:
-                                                    doctorDetails.id.toString(),
-                                              ),
-                                            ));
-                                      },
-                                      child: Container(
-                                        margin: const EdgeInsets.all(5),
-                                        alignment: Alignment.topRight,
+                                    Container(
+                                      margin: const EdgeInsets.all(5),
+                                      alignment: Alignment.center,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          primary: primaryColor,
+                                        ),
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DoctorBookedScreen(
+                                                  bookedDate:
+                                                      "${doctorDetails.doctorTimeTable![index].doctorDay}\\${doctorDetails.doctorTimeTable![index].doctorTime}",
+                                                  doctorId: doctorDetails.id,
+                                                ),
+                                              ));
+                                        },
                                         child: Text(
                                           AppLocale.of(context)!
                                               .getString("doctorBooked")
                                               .toString(),
                                           style: TextStyle(
-                                              fontSize: 18,
-                                              color: primaryColor,
+                                              fontSize: 20,
+                                              color: Colors.white,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),

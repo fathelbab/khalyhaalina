@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:eshop/model/pharmacy_data.dart';
+import 'package:eshop/model/supplier_data.dart';
 import 'package:eshop/utils/constants.dart';
 import 'package:eshop/utils/log.dart';
 import 'package:http/http.dart' as http;
@@ -30,22 +30,24 @@ Future<String> addPharmacy(String name, String address, String phoneNumber,
   }
 }
 
-Future<List<Pharmacy>?> getAllPharmacyService(int offset, int limit) async {
-  final response = await http.get(Uri.parse(
-      Constants.apiPath + "/Pharmacy/GetAll?Offset=$offset&Limit=$limit"));
+Future<List<Supplier>?> getAllPharmacyService(
+    String cityId, int offset, int limit) async {
+  final response = await http.get(Uri.parse(Constants.apiPath +
+      "/Supplier/GetAll?Offset=$offset&Limit=200&CityId=$cityId&CategoryId=1069"));
   print(response.statusCode);
   print(response.body);
   Log.d(response.body.toString());
   try {
     if (response.statusCode == 200) {
       // print(response.body);
-      return pharmacyDataFromJson(response.body).result;
+      return supplierDataFromJson(response.body).supplier;
     } else {
       // print(response.statusCode);
-      return null;
+      return [];
     }
   } catch (e) {
     Log.e(e.toString());
-    throw e;
+    return [];
+    // throw e;
   }
 }

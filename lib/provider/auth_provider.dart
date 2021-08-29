@@ -74,6 +74,11 @@ class Auth with ChangeNotifier {
     return pretty;
   }
 
+  Future<void> storeMobileToken(String mobileToken) async {
+    String accessToken = CacheHelper.getPrefs(key: "token");
+    await storeMobileTokenService(accessToken, mobileToken);
+  }
+
   Future<String> facebookLogin() async {
     try {
       // Map<String, dynamic> _userData;

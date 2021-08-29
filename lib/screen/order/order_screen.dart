@@ -1,8 +1,10 @@
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/model/order_data.dart';
 import 'package:eshop/provider/cart.dart';
+import 'package:eshop/provider/configurations_provider.dart';
 import 'package:eshop/provider/order_provider.dart';
 import 'package:eshop/screen/home/home_category_screen.dart';
+import 'package:eshop/screen/home/home_screen.dart';
 import 'package:eshop/utils/components.dart';
 import 'package:eshop/widget/progress_dialog.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +25,7 @@ class _OrderScreenState extends State<OrderScreen> {
   TextEditingController userNameText = TextEditingController();
   TextEditingController userAddressText = TextEditingController();
   TextEditingController userPhoneNumberText = TextEditingController();
+  TextEditingController receivedDateText = TextEditingController();
   TextEditingController couponText = TextEditingController();
   final _userAddressFocusNode = FocusNode();
   final _userPhoneNumberFocusNode = FocusNode();
@@ -46,6 +49,8 @@ class _OrderScreenState extends State<OrderScreen> {
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context);
+    final configuration =
+        Provider.of<ConfigurationProvider>(context).configuration;
     return Container(
       child: Scaffold(
         backgroundColor: Colors.grey[100],
@@ -68,7 +73,8 @@ class _OrderScreenState extends State<OrderScreen> {
                     children: [
                       Text(
                         AppLocale.of(context)!.getString("totalPrice")!,
-                        style: TextStyle(fontSize: 20.0),
+                        style: TextStyle(
+                            fontSize: 18.0, fontWeight: FontWeight.bold),
                       ),
                       Spacer(),
                       Chip(
@@ -76,6 +82,7 @@ class _OrderScreenState extends State<OrderScreen> {
                           'ج.م ${cart.totalMount}',
                           style: TextStyle(
                             color: Colors.white,
+                            fontSize: 18.0,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -148,27 +155,29 @@ class _OrderScreenState extends State<OrderScreen> {
                           },
                         ),
                       ),
-                      Container(
-                        margin: EdgeInsets.all(5.0),
-                        padding: EdgeInsets.only(right: 10, left: 10),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20.0)),
-                        child: TextFormField(
-                          controller: couponText,
-                          textInputAction: TextInputAction.next,
-                          focusNode: _couponFocusNode,
-                          keyboardType: TextInputType.text,
-                          onFieldSubmitted: (_) {
-                            FocusScope.of(context)
-                                .requestFocus(_userPhoneNumberFocusNode);
-                          },
-                          decoration: InputDecoration(
-                            hintText: "كود الخصم",
-                            border: InputBorder.none,
-                          ),
-                        ),
-                      ),
+                      configuration!.isDiscount!
+                          ? Container(
+                              margin: EdgeInsets.all(5.0),
+                              padding: EdgeInsets.only(right: 10, left: 10),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20.0)),
+                              child: TextFormField(
+                                controller: couponText,
+                                textInputAction: TextInputAction.next,
+                                focusNode: _couponFocusNode,
+                                keyboardType: TextInputType.text,
+                                onFieldSubmitted: (_) {
+                                  FocusScope.of(context)
+                                      .requestFocus(_userPhoneNumberFocusNode);
+                                },
+                                decoration: InputDecoration(
+                                  hintText: "كود الخصم",
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                            )
+                          : SizedBox(),
                       Container(
                         margin: EdgeInsets.all(5.0),
                         padding: EdgeInsets.only(right: 10, left: 10),
@@ -191,6 +200,21 @@ class _OrderScreenState extends State<OrderScreen> {
                             }
                             return null;
                           },
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.all(5.0),
+                        padding: EdgeInsets.only(right: 10, left: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20.0)),
+                        child: TextFormField(
+                          controller: receivedDateText,
+                          decoration: InputDecoration(
+                            hintText: getString(context, 'receivedDate'),
+                            border: InputBorder.none,
+                          ),
+                          keyboardType: TextInputType.text,
                         ),
                       ),
                       MaterialButton(
@@ -274,6 +298,7 @@ class _OrderScreenState extends State<OrderScreen> {
                     userNameText.text,
                     userPhoneNumberText.text,
                     "${userAddressText.text}/${couponText.text}",
+                    receivedDateText.text,
                     cart.totalMount,
                     cart.cartItems!)
                 .then((value) {
@@ -285,8 +310,7 @@ class _OrderScreenState extends State<OrderScreen> {
                     AppLocale.of(context)!.getString("orderSuccessMessage")!)));
             Provider.of<Cart>(context, listen: false).clearCart();
             Provider.of<Cart>(context, listen: false).fetchCartList();
-            Navigator.of(context)
-                .pushReplacementNamed(HomeCategoryScreen.route);
+            Navigator.of(context).pushReplacementNamed(HomeScreen.route);
           } else {
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(

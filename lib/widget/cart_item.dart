@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 
 class CartItem extends StatefulWidget {
   final int? id;
-  final String? productId;
+  final int? productId;
   final double? price;
   final int? quantity;
   final String? title;
@@ -34,6 +34,8 @@ class CartItem extends StatefulWidget {
 class _CartItemState extends State<CartItem> {
   @override
   Widget build(BuildContext context) {
+    print("productID${widget.productId}");
+    print("ID${widget.id}");
     return Dismissible(
       direction: DismissDirection.endToStart,
       key: UniqueKey(),
@@ -184,9 +186,7 @@ class _CartItemState extends State<CartItem> {
                           onPressed: () {
                             if (widget.quantity! > 1) {
                               Provider.of<Cart>(context, listen: false)
-                                  .decreaseQuantity(
-                                widget.id!,
-                              );
+                                  .decreaseQuantity(widget.productId!);
                             }
                           },
                         ),
@@ -223,9 +223,7 @@ class _CartItemState extends State<CartItem> {
                           onPressed: () {
                             if (widget.quantity! >= 0) {
                               Provider.of<Cart>(context, listen: false)
-                                  .increaseQuantity(
-                                widget.id!,
-                              );
+                                  .increaseQuantity(widget.productId!);
                             }
                           },
                         ),

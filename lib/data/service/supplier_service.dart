@@ -1,7 +1,6 @@
 import 'package:eshop/model/supplier_category.dart';
 import 'package:eshop/model/supplier_data.dart';
 import 'package:eshop/utils/constants.dart';
-import 'package:eshop/utils/log.dart';
 import 'package:http/http.dart' as http;
 
 Future<List<Supplier>?> fetchSupplier(
@@ -14,7 +13,7 @@ Future<List<Supplier>?> fetchSupplier(
     return supplierDataFromJson(response.body).supplier;
   } else {
     // print(response.statusCode);
-    return null;
+    return [];
   }
 }
 

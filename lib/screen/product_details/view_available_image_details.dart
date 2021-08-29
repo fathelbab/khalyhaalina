@@ -44,6 +44,21 @@ class _ViewAvailableImageDetailsScreenState
         Provider.of<ProductProvider>(context).productData;
     final product = productDetails!.avilabeProductGalleries![widget.index];
     return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          color: primaryColor,
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: primaryColor,
+          ),
+          onPressed: () {
+            if (Navigator.canPop(context)) Navigator.pop(context);
+          },
+        ),
+      ),
       body: productDetails == null
           ? Center(
               child: const SpinKitChasingDots(

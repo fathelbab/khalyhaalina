@@ -76,7 +76,8 @@ class CartScreen extends StatelessWidget {
           : Column(
               children: [
                 Card(
-                  margin: EdgeInsets.all(15.0),
+                  margin: EdgeInsets.only(
+                      top: 15.0, right: 15, left: 15, bottom: 5),
                   child: Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Row(
@@ -102,6 +103,27 @@ class CartScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+                MaterialButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, OnlineSupportScreen.route);
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: primaryColor,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Text(
+                          getString(context, "moreOrder"),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
+                        )),
+                  ),
+                ),
                 SizedBox(
                   height: 10,
                 ),
@@ -112,7 +134,7 @@ class CartScreen extends StatelessWidget {
                     itemCount: cart.cartItems!.length,
                     itemBuilder: (BuildContext context, int index) {
                       return CartItem(
-                        productId: cart.cartItems![index].productid.toString(),
+                        productId: cart.cartItems![index].productid,
                         price: cart.cartItems![index].price,
                         quantity: cart.cartItems![index].qty,
                         title: cart.cartItems![index].name,
@@ -153,7 +175,7 @@ class _OrderButtonState extends State<OrderButton> {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
-        // if (Provider.of<Cart>(context).cartItems.isNotEmpty)
+        Provider.of<Cart>(context, listen: false).fetchCartList();
         Navigator.of(context).pushNamed(OrderScreen.route);
       },
       child: _isLoading

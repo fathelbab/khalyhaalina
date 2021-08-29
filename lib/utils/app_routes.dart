@@ -1,3 +1,4 @@
+import 'package:eshop/model/packages_data.dart';
 import 'package:eshop/screen/address/city_screen.dart';
 import 'package:eshop/screen/address/governorate_screen.dart';
 import 'package:eshop/screen/call_us/call_us.dart';
@@ -12,6 +13,8 @@ import 'package:eshop/screen/intro/intro_screen.dart';
 import 'package:eshop/screen/login/login.dart';
 import 'package:eshop/screen/online_support/online_support_screen.dart';
 import 'package:eshop/screen/order/order_screen.dart';
+import 'package:eshop/screen/packages/order_package_screen.dart';
+import 'package:eshop/screen/packages/packages_screen.dart';
 import 'package:eshop/screen/product_details/product_details_screen.dart';
 import 'package:eshop/screen/product_details/view_image_screen.dart';
 import 'package:eshop/screen/product_screen.dart';
@@ -57,5 +60,7 @@ Map<String, Widget Function(BuildContext)> appRoutes(context) {
     ViewImageScreen.route: (context) => ViewImageScreen(),
     WalletScreen.route: (context) => WalletScreen(),
     TermsAndConditionsScreen.route: (context) => TermsAndConditionsScreen(),
+    PackagesScreen.route: (context) => PackagesScreen(),
+    OrderPackageScreen.route: (context) => OrderPackageScreen(),
   };
 }

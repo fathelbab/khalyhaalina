@@ -7,14 +7,16 @@ import 'package:eshop/provider/supplier_provider.dart';
 import 'package:eshop/screen/cart/cart_screen.dart';
 import 'package:eshop/screen/search/search_screen.dart';
 import 'package:eshop/utils/cache_helper.dart';
+import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/log.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:eshop/utils/constants.dart';
 import 'package:eshop/widget/badge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
-
+import 'package:intl/intl.dart';
 import '../product_screen.dart';
 
 class SupplierScreen extends StatefulWidget {
@@ -169,70 +171,44 @@ class _SupplierScreenState extends State<SupplierScreen> {
                                     supplierProvider.getSupplierCategory(
                                         supplierList![index].id.toString(),
                                         200);
-                                    // .then((supplierCategory) {
-                                    // productProvider.clearProductList();
-                                    // if (supplierCategory != null &&
-                                    //     supplierCategory.category != null &&
-                                    //     supplierCategory
-                                    //         .category!.isNotEmpty) {
-                                    // if (supplierCategory
-                                    //     .category![0].childs!.isNotEmpty) {
-                                    // productProvider.fetchProductList(
-                                    //     supplierList![index].id.toString(),
-                                    //     "0",
-                                    //     "",
-                                    //     1,
-                                    //     20);
-                                    // } else {
-                                    //   productProvider.fetchProductList(
-                                    //       supplierList![index]
-                                    //           .id
-                                    //           .toString(),
-                                    //       "0",
-                                    //       "",
-                                    //       1,
-                                    //       20);
-                                    // }
-                                    // } else {
-                                    //   Log.e(
-                                    //       "${supplierList![index].id.toString()}");
-                                    //   Provider.of<ProductProvider>(context,
-                                    //           listen: false)
-                                    //       .fetchProductList(
-                                    //           supplierList![index]
-                                    //               .id
-                                    //               .toString(),
-                                    //           "0",
-                                    //           "",
-                                    //           1,
-                                    //           20);
-                                    // }
-                                    // }
-                                    // );
+
                                     productProvider.clearProductList();
-                                    productProvider.fetchProductList(
-                                        supplierList![index].id.toString(),
-                                        "0",
-                                        "",
-                                        1,
-                                        20);
-                                    // print(limit);
-                                    Navigator.pushNamed(
-                                        context, ProductScreen.route,
-                                        arguments: {
-                                          "supplierId": supplierList![index]
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ProductScreen(
+                                          supplierId: supplierList![index]
                                               .id
                                               .toString(),
-                                          "supplierImage": supplierList![index]
+                                          supplierImage: supplierList![index]
                                               .imagePath
                                               .toString(),
-                                          "supplierName": locale == "ar"
+                                          supplierName: locale == "ar"
                                               ? supplierList![index]
                                                   .nameAr
                                                   .toString()
                                               : supplierList![index].nameEn ??
                                                   "",
-                                        });
+                                        ),
+                                      ),
+                                    );
+                                    // print(limit);
+                                    // Navigator.pushNamed(
+                                    //     context, ProductScreen.route,
+                                    //     arguments: {
+                                    //       "supplierId": supplierList![index]
+                                    //           .id
+                                    //           .toString(),
+                                    //       "supplierImage": supplierList![index]
+                                    //           .imagePath
+                                    //           .toString(),
+                                    //       "supplierName": locale == "ar"
+                                    //           ? supplierList![index]
+                                    //               .nameAr
+                                    //               .toString()
+                                    //           : supplierList![index].nameEn ??
+                                    //               "",
+                                    //     });
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
@@ -250,9 +226,7 @@ class _SupplierScreenState extends State<SupplierScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Container(
-                                          height: 70.0,
-                                          width: 65.0,
+                                        Expanded(
                                           child: CachedNetworkImage(
                                             imageUrl: Constants.imagePath +
                                                 supplierList![index].imagePath!,
@@ -286,6 +260,42 @@ class _SupplierScreenState extends State<SupplierScreen> {
                                             fontSize: 16.0,
                                           ),
                                         ),
+                                        Container(
+                                          padding: const EdgeInsets.only(
+                                              right: 5, left: 5),
+                                          margin: const EdgeInsets.all(5),
+                                          width: constraints.maxWidth,
+                                          decoration: BoxDecoration(
+                                            color: getSupplierState(
+                                                        context,
+                                                        supplierList![index]
+                                                            .closeTime) ==
+                                                    getString(context, 'open')
+                                                ? Colors.greenAccent
+                                                : Colors.red,
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              getSupplierState(
+                                                  context,
+                                                  supplierList![index]
+                                                      .closeTime),
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                color: getSupplierState(
+                                                            context,
+                                                            supplierList![index]
+                                                                .closeTime) ==
+                                                        getString(
+                                                            context, 'open')
+                                                    ? primaryColor
+                                                    : Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -303,5 +313,19 @@ class _SupplierScreenState extends State<SupplierScreen> {
         ],
       ),
     );
+  }
+
+  String getSupplierState(BuildContext context, String? closeTime) {
+    var now = DateFormat.jms('en').format(DateTime.now()).compareTo(closeTime!);
+    // Log.w(now.toString());
+    // Log.e(closeTime.toString());
+    // Log.e(DateFormat.jms(
+    //   'es',
+    // ).format(DateTime.now()).toString());
+    if (now.isNegative) {
+      return getString(context, "close");
+    } else {
+      return getString(context, "open");
+    }
   }
 }

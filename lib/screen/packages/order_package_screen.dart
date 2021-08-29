@@ -1,45 +1,48 @@
+import 'package:eshop/model/packages_data.dart';
 import 'package:eshop/provider/doctor_provider.dart';
+import 'package:eshop/provider/packages_provider.dart';
 import 'package:eshop/screen/home/home_screen.dart';
 import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class DoctorBookedScreen extends StatefulWidget {
-  static const String route = "/doctor_booked_screen";
-
-  final String? bookedDate;
-  final int? doctorId;
-  DoctorBookedScreen({Key? key, this.doctorId, this.bookedDate})
-      : super(key: key);
+class OrderPackageScreen extends StatefulWidget {
+  static const String route = "/order_package";
+  PackagesData? package;
+  OrderPackageScreen({
+    Key? key,
+    this.package,
+  }) : super(key: key);
 
   @override
-  _DoctorBookedScreenState createState() => _DoctorBookedScreenState();
+  _OrderPackageScreenState createState() => _OrderPackageScreenState();
 }
 
-class _DoctorBookedScreenState extends State<DoctorBookedScreen> {
+class _OrderPackageScreenState extends State<OrderPackageScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final _phoneNumberText = TextEditingController();
   final _nameText = TextEditingController();
+  final _addressText = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: primaryColor,
-        title: Text(
-          getString(context, "confirmDoctorBooked"),
-          style: TextStyle(fontSize: 20),
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          color: Colors.white,
-          icon: Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            if (Navigator.canPop(context)) Navigator.pop(context);
-          },
-        ),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: primaryColor,
+      //   title: Text(
+      //     getString(context, "confirmDoctorBooked"),
+      //     style: TextStyle(fontSize: 20),
+      //   ),
+      //   centerTitle: true,
+      //   leading: IconButton(
+      //     color: Colors.white,
+      //     icon: Icon(Icons.arrow_back_ios),
+      //     onPressed: () {
+      //       if (Navigator.canPop(context)) Navigator.pop(context);
+      //     },
+      //   ),
+      // ),
       body: Container(
         padding: EdgeInsets.all(20.0),
         child: Column(
@@ -51,30 +54,18 @@ class _DoctorBookedScreenState extends State<DoctorBookedScreen> {
                   child: ListView(
                     shrinkWrap: true,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(
-                            getString(context, "bookedDate"),
-                            style: TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
-                              color: primaryColor,
-                            ),
+                      Container(
+                        // margin: const EdgeInsets.only(top: 50, bottom: 15),
+                        height: 250,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage("assets/images/app_logo.png"),
+                            scale: 1,
+                            fit: BoxFit.fill,
                           ),
-                          Text(
-                            "${widget.bookedDate!.split("\\")[0]}  ${widget.bookedDate!.split("\\")[1]}",
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                              color: primaryColor,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
+
                       Container(
                         margin: EdgeInsets.all(5.0),
                         decoration: BoxDecoration(
@@ -155,6 +146,45 @@ class _DoctorBookedScreenState extends State<DoctorBookedScreen> {
                           },
                         ),
                       ),
+                      Container(
+                        margin: EdgeInsets.all(5.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: TextFormField(
+                            controller: _addressText,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.place,
+                                color: primaryColor,
+                              ),
+                              hintStyle: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).primaryColor),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              border: new OutlineInputBorder(
+                                borderRadius: const BorderRadius.all(
+                                  const Radius.circular(10.0),
+                                ),
+                              ),
+                              hintText: getString(context, "address"),
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty || value.length < 1) {
+                                return getString(context, "emptyAddress");
+                              }
+
+                              return null;
+                            }),
+                      ),
 
                       MaterialButton(
                         onPressed: () {
@@ -169,7 +199,7 @@ class _DoctorBookedScreenState extends State<DoctorBookedScreen> {
                           child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                getString(context, "sendDoctorBooked"),
+                                getString(context, "buyPackage"),
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
@@ -196,6 +226,7 @@ class _DoctorBookedScreenState extends State<DoctorBookedScreen> {
   void dispose() {
     _nameText.dispose();
     _phoneNumberText.dispose();
+    _addressText.dispose();
     super.dispose();
   }
 
@@ -206,18 +237,19 @@ class _DoctorBookedScreenState extends State<DoctorBookedScreen> {
     } else {
       checkConnection().then((value) {
         if (value) {
-          Provider.of<DoctorProvider>(context, listen: false)
-              .sendDoctorBookedDate(
+          Provider.of<PackagesProviders>(context, listen: false)
+              .confirmBuyPackage(
             _nameText.text.toString(),
+            _addressText.text.toString(),
             _phoneNumberText.text.toString(),
-            widget.doctorId!,
-            widget.bookedDate!,
+            widget.package!.id!,
+            widget.package!.price!,
           )
               .then((value) {
             print(value);
             if (value == "done") {
               showToast(
-                text: getString(context, "confirmedDoctorBookedMessage"),
+                text: getString(context, "confirmedPackageBuyMessage"),
                 bgColor: Colors.green,
               );
               Navigator.pushNamedAndRemoveUntil(

@@ -44,7 +44,7 @@ class DoctorProvider extends ChangeNotifier {
   Future<String> sendDoctorBookedDate(
     String name,
     String phoneNumber,
-    String doctorId,
+    int doctorId,
     String bookedDate,
   ) async {
     String accessToken = CacheHelper.getPrefs(key: 'token');

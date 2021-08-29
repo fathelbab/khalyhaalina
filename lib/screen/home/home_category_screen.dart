@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:eshop/screen/packages/packages_screen.dart';
+import 'package:eshop/screen/product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -43,7 +45,6 @@ import 'package:eshop/screen/search/search_screen.dart';
 import 'package:eshop/screen/settings/language.dart';
 import 'package:eshop/screen/terms_conditions/terms_conditions_screen.dart';
 import 'package:eshop/screen/wallet/wallet_screen.dart';
-import 'package:eshop/utils/animations.dart';
 import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/constants.dart';
@@ -200,10 +201,11 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
           //   children: [],
           // ),
           IconButton(
-              icon: Icon(FontAwesomeIcons.language),
-              onPressed: () {
-                Navigator.of(context).pushNamed(LanguageScreen.route);
-              }),
+            icon: Icon(FontAwesomeIcons.language),
+            onPressed: () {
+              Navigator.of(context).pushNamed(LanguageScreen.route);
+            },
+          ),
           IconButton(
               icon: Icon(Icons.location_on),
               onPressed: () {
@@ -413,6 +415,82 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
                     });
                   },
                 ),
+                Container(
+                  margin: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        onTap: () {
+                          setState(() {
+                            Navigator.pop(context);
+                            isDoctor = true;
+                            isService = false;
+                          });
+                        },
+                        leading: Icon(
+                          Icons.medical_services,
+                          color: primaryColor,
+                        ),
+                        title: Text(
+                          getString(context, "doctor"),
+                          style: TextStyle(
+                              color: primaryColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      ListTile(
+                        onTap: () {
+                          setState(() {
+                            Navigator.pop(context);
+                            isService = true;
+                            isDoctor = false;
+                          });
+                        },
+                        leading: Icon(
+                          Icons.home_repair_service,
+                          color: primaryColor,
+                        ),
+                        title: Text(
+                          getString(context, "services"),
+                          style: TextStyle(
+                              color: primaryColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      ListTile(
+                        title: Text(
+                          getString(context, "packages"),
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        leading: Icon(
+                          Icons.local_offer,
+                          color: primaryColor,
+                        ),
+                        onTap: () {
+                          setState(() {
+                            Navigator.pop(context);
+                            isHome = true;
+                            isLoaded = false;
+                            isDoctor = false;
+                            isService = false;
+                          });
+                          // Navigator.pop(context);
+                          Navigator.pushNamed(context, PackagesScreen.route);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
                 ListTile(
                   title: Text(
                     getString(context, "changeLocation"),
@@ -434,31 +512,32 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
                       isDoctor = false;
                       isService = false;
                     });
+                    Navigator.of(context).pushNamed(GovernorateScreen.route);
                   },
                 ),
-                ListTile(
-                  title: Text(
-                    getString(context, "profile"),
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  leading: Icon(
-                    Icons.person,
-                    color: Colors.white,
-                  ),
-                  onTap: () {
-                    setState(() {
-                      Navigator.pop(context);
-                      isHome = true;
-                      isLoaded = false;
-                      isDoctor = false;
-                      isService = false;
-                    });
-                  },
-                ),
+                // ListTile(
+                //   title: Text(
+                //     getString(context, "profile"),
+                //     style: TextStyle(
+                //       color: Colors.white,
+                //       fontSize: 16,
+                //       fontWeight: FontWeight.bold,
+                //     ),
+                //   ),
+                //   leading: Icon(
+                //     Icons.person,
+                //     color: Colors.white,
+                //   ),
+                //   onTap: () {
+                //     setState(() {
+                //       Navigator.pop(context);
+                //       isHome = true;
+                //       isLoaded = false;
+                //       isDoctor = false;
+                //       isService = false;
+                //     });
+                //   },
+                // ),
                 // ListTile(
                 //   title: Text(
                 //     getString(context, "rewards"),
@@ -556,7 +635,7 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
                       isDoctor = false;
                       isService = false;
                     });
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
                     Navigator.pushNamed(
                         context, TermsAndConditionsScreen.route);
                   },
@@ -615,29 +694,7 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
                 //     }
                 //   },
                 // ),
-                // ListTile(
-                //   title: Text(
-                //     getString(context, "rateUs"),
-                //     style: TextStyle(
-                //       color: Colors.white,
-                //       fontSize: 16,
-                //       fontWeight: FontWeight.bold,
-                //     ),
-                //   ),
-                //   leading: Icon(
-                //     Icons.rate_review,
-                //     color: Colors.white,
-                //   ),
-                //   onTap: () {
-                //     setState(() {
-                //       Navigator.pop(context);
-                //       isHome = true;
-                //       isLoaded = false;
-                //       isDoctor = false;
-                //       isService = false;
-                //     });
-                //   },
-                // ),
+
                 ListTile(
                   title: Text(
                     getString(context, "share"),
@@ -664,46 +721,7 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
                         "https://play.google.com/store/apps/details?id=com.kira.eshop");
                   },
                 ),
-                ListTile(
-                  onTap: () {
-                    setState(() {
-                      Navigator.pop(context);
-                      isDoctor = true;
-                      isService = false;
-                    });
-                  },
-                  leading: Icon(
-                    Icons.medical_services,
-                    color: Colors.white,
-                  ),
-                  title: Text(
-                    "الدكتور",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                ListTile(
-                  onTap: () {
-                    setState(() {
-                      Navigator.pop(context);
-                      isService = true;
-                      isDoctor = false;
-                    });
-                  },
-                  leading: Icon(
-                    Icons.home_repair_service,
-                    color: Colors.white,
-                  ),
-                  title: Text(
-                    "الخدمات",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
+
                 ListTile(
                   onTap: () {
                     Provider.of<Auth>(context, listen: false).logout();
@@ -775,12 +793,32 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
                   itemCount: _gifModelsList!.length,
                   itemBuilder:
                       (BuildContext context, int index, int realIndex) {
-                    return Container(
-                      width: double.infinity,
-                      child: Image.network(
-                        Constants.imagePath +
-                            _gifModelsList![index].imagePath.toString(),
-                        fit: BoxFit.fill,
+                    return GestureDetector(
+                      onTap: () {
+                        if (_gifModelsList![index].hasSupplier!) {
+                          Provider.of(context, listen: false)
+                              .clearProductList();
+                          Provider.of<SupplierProvider>(context, listen: false)
+                              .getSupplierCategory(
+                                  _gifModelsList![index].supplierId.toString(),
+                                  200);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProductScreen(
+                                  supplierId:
+                                      supplierList![index].id.toString()),
+                            ),
+                          );
+                        }
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        child: Image.network(
+                          Constants.imagePath +
+                              _gifModelsList![index].imagePath.toString(),
+                          fit: BoxFit.fill,
+                        ),
                       ),
                     );
                   },
@@ -857,18 +895,21 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
                       childAspectRatio: 0.8,
                     ),
                     itemBuilder: (context, index) {
-                      return Container(
-                        width: MediaQuery.of(context).size.width / 2,
-                        child: CachedNetworkImage(
-                          imageUrl: Constants.imagePath +
-                              imageList![index].imagePath!,
-                          fit: BoxFit.fill,
-                          placeholder: (context, url) => Center(
-                            child: const SpinKitChasingDots(
-                                color: Color(0XFFE5A352)),
+                      return GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          width: MediaQuery.of(context).size.width / 2,
+                          child: CachedNetworkImage(
+                            imageUrl: Constants.imagePath +
+                                imageList![index].imagePath!,
+                            fit: BoxFit.fill,
+                            placeholder: (context, url) => Center(
+                              child: const SpinKitChasingDots(
+                                  color: Color(0XFFE5A352)),
+                            ),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
                           ),
-                          errorWidget: (context, url, error) =>
-                              Icon(Icons.error),
                         ),
                       );
                     });
@@ -997,7 +1038,7 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
             // buildAnnouncementSlider(),
             if (_gifModelsList != null) buildGifModelsSlider(),
             MainCategorySection(),
-            // buildImagesSlider(),
+            buildImagesSlider(),
             notificationsList != null && notificationsList!.isEmpty
                 ? Text("")
                 : Container(

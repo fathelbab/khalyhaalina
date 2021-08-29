@@ -10,6 +10,7 @@ import 'package:eshop/provider/gifmodels_provider.dart';
 import 'package:eshop/provider/images_provider.dart';
 import 'package:eshop/provider/notification_provider.dart';
 import 'package:eshop/provider/order_provider.dart';
+import 'package:eshop/provider/packages_provider.dart';
 import 'package:eshop/provider/pharmacy_provider.dart';
 import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/provider/service_provider.dart';
@@ -69,6 +70,9 @@ List<SingleChildWidget> appProviders = [
   ),
   ChangeNotifierProvider(
     create: (context) => SettingsProvider(),
+  ),
+  ChangeNotifierProvider(
+    create: (context) => PackagesProviders(),
   ),
   ChangeNotifierProvider(
     create: (context) => ConfigurationProvider(),
