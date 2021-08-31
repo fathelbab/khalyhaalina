@@ -1,4 +1,3 @@
-import 'package:eshop/model/packages_data.dart';
 import 'package:eshop/provider/packages_provider.dart';
 import 'package:eshop/screen/packages/order_package_screen.dart';
 import 'package:eshop/utils/cache_helper.dart';

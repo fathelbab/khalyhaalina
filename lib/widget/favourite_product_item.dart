@@ -1,14 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/model/FavouriteProduct.dart';
-import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/screen/product_details/product_details_screen.dart';
+import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/constants.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:share/share.dart';
 
 class FavouriteProductItem extends StatefulWidget {
   final FavouriteProduct product;
@@ -104,7 +104,9 @@ class _FavouriteProductItemState extends State<FavouriteProductItem> {
                             ),
                           ),
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              shareProduct(widget.product.id!);
+                            },
                             icon: Icon(
                               Icons.share,
                               size: 30,
@@ -188,6 +190,10 @@ class _FavouriteProductItemState extends State<FavouriteProductItem> {
   void dispose() {
     super.dispose();
     _textFieldController.dispose();
+  }
+  shareProduct(int productId) async {
+    Uri id = await createDynamicLinkID(productId.toString());
+    Share.share(id.toString());
   }
 
   // void addToCart(int quantity, int? id) async {

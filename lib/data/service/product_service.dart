@@ -3,7 +3,6 @@ import 'package:eshop/model/FavouriteProduct.dart';
 import 'package:eshop/model/product_data.dart';
 import 'package:eshop/model/product_details_data.dart';
 import 'package:eshop/utils/constants.dart';
-import 'package:eshop/utils/log.dart';
 // import 'package:eshop/utils/log.dart';
 import 'package:http/http.dart' as http;
 

@@ -1,4 +1,3 @@
-import 'package:eshop/model/packages_data.dart';
 import 'package:eshop/screen/address/city_screen.dart';
 import 'package:eshop/screen/address/governorate_screen.dart';
 import 'package:eshop/screen/call_us/call_us.dart';

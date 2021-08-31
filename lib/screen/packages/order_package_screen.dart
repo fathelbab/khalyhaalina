@@ -1,5 +1,4 @@
 import 'package:eshop/model/packages_data.dart';
-import 'package:eshop/provider/doctor_provider.dart';
 import 'package:eshop/provider/packages_provider.dart';
 import 'package:eshop/screen/home/home_screen.dart';
 import 'package:eshop/utils/components.dart';

@@ -78,26 +78,15 @@ Future<String> sendDoctorBookedDateService(String accessToken, String name,
         },
       ),
     );
-    Log.d(jsonEncode(
-      {
-        "userId": 0,
-        "isDeleted": true,
-        "bookedDate": bookedDate,
-        "doctorId": doctorId,
-        "name": name,
-        "phone": phoneNumber
-      },
-    ));
-    Log.d(response.statusCode.toString());
+
     Log.d(accessToken);
-    Log.d(response.body.toString());
+
     if (response.statusCode == 201) {
       return "done";
     } else {
       return "failed";
     }
   } catch (e) {
-    Log.e(e.toString());
     throw e;
   }
 }

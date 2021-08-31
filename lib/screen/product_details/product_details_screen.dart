@@ -20,6 +20,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:share/share.dart';
 
 final List<String> imgList = [
   'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
@@ -32,7 +33,9 @@ final List<String> imgList = [
 
 class ProductDetailsScreen extends StatefulWidget {
   static const String route = "/product_details_screen";
+  final String? id;
 
+  const ProductDetailsScreen({Key? key, this.id}) : super(key: key);
   @override
   _ProductDetailsScreenState createState() => _ProductDetailsScreenState();
 }
@@ -44,6 +47,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   @override
   void initState() {
     super.initState();
+    if (widget.id != null && widget.id!.isNotEmpty) {
+      Provider.of<ProductProvider>(context, listen: false)
+          .getProductById(int.parse(widget.id!));
+    }
     locale = CacheHelper.getPrefs(key: "locale") ?? "ar";
   }
 
@@ -58,9 +65,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          locale == 'ar'
-              ? productDetails?.nameAr ?? ""
-              : productDetails?.nameEn ?? productDetails?.nameAr,
+          productDetails != null
+              ? locale == 'ar'
+                  ? productDetails.nameAr.toString()
+                  : productDetails.nameEn ?? productDetails.nameAr
+              : "",
           overflow: TextOverflow.ellipsis,
         ),
         actions: [
@@ -200,7 +209,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         color: secondaryColor,
                                       ),
                                       IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          shareProduct(productDetails.id!);
+
+                                        },
                                         icon: Icon(
                                           Icons.share,
                                           size: 30,
@@ -566,6 +578,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
       return discountPercent.toInt();
     }
+  }
+  shareProduct(int productId) async {
+    Uri id = await createDynamicLinkID(productId.toString());
+    Share.share(id.toString());
   }
 
   // _showDialog(AvilabeProductGallery avilabeProductGallery) async {

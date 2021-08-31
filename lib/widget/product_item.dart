@@ -1,14 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/model/product_data.dart';
-import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/screen/product_details/product_details_screen.dart';
+import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/constants.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:share/share.dart';
 
 class ProductItems extends StatefulWidget {
   final Product product;
@@ -104,7 +104,9 @@ class _ProductItemsState extends State<ProductItems> {
                             color: secondaryColor,
                           ),
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              shareProduct(widget.product.id!);
+                            },
                             icon: Icon(
                               Icons.share,
                               size: 30,
@@ -208,6 +210,10 @@ class _ProductItemsState extends State<ProductItems> {
   //         content: Text(AppLocale.of(context)!.getString("addedError")!)));
   //   });
   // }
+  shareProduct(int productId) async {
+    Uri id = await createDynamicLinkID(productId.toString());
+    Share.share(id.toString());
+  }
 
   int getDiscount(double? price, double? oldPrice) {
     double discount = oldPrice! - price!;

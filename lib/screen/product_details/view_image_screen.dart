@@ -73,7 +73,8 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
                               options: CarouselOptions(
                                 enableInfiniteScroll: true,
                                 aspectRatio: 1.0,
-                                disableCenter: false, viewportFraction: 1,
+
+                                viewportFraction: 1,
                                 enlargeCenterPage: true,
                                 onPageChanged: (index, reason) {
                                   setState(() {
@@ -93,7 +94,7 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
                             activeDotColor: primaryColor,
                           ),
                           activeIndex: _activeIndex,
-                          count: productDetails.avilabeProductGalleries!.length,
+                          count: productDetails.productGalleries!.length,
                         ),
                         SizedBox(
                           height: 25,
@@ -101,15 +102,6 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
                       ],
                     ),
                   ),
-            // Expanded(
-            //   flex: 1,
-            //   child: InteractiveViewer(
-            //     child: Image.network(
-            //       Constants.imagePath + widget.image!,
-            //       width: double.infinity,
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),

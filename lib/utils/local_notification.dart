@@ -1,14 +1,9 @@
 import 'dart:typed_data';
 import 'package:eshop/utils/constants.dart';
-import 'package:eshop/utils/log.dart';
-import 'package:flutter/services.dart';
+// import 'package:eshop/utils/log.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'dart:ui';
 
 class LocalNotification {
   late FlutterLocalNotificationsPlugin flutterNotificationPlugin;
@@ -53,9 +48,9 @@ class LocalNotification {
         ?.createNotificationChannel(channel);
     final ByteArrayAndroidBitmap bigPicture = ByteArrayAndroidBitmap(
         await _getByteArrayFromUrl("${Constants.imagePath}$image"));
-    Log.d(image);
+    // Log.d(image);
     var bigPictureStyleInformation = BigPictureStyleInformation(
-      DrawableResourceAndroidBitmap('app_logo'),
+      bigPicture,
       largeIcon: DrawableResourceAndroidBitmap('app_logo'),
       contentTitle: title,
       summaryText: body,
@@ -68,8 +63,8 @@ class LocalNotification {
       "This channel is used for important notifications.",
       priority: Priority.high,
       autoCancel: true,
-      icon: 'app_logo',
-      largeIcon: const DrawableResourceAndroidBitmap('app_logo'),
+      // icon: 'app_logo',
+      // largeIcon: const DrawableResourceAndroidBitmap('app_logo'),
       styleInformation: bigPictureStyleInformation,
       importance: Importance.max,
       ongoing: true,

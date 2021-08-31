@@ -2,14 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:eshop/screen/packages/packages_screen.dart';
+import 'package:eshop/screen/product_details/product_details_screen.dart';
 import 'package:eshop/screen/product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
+import 'package:share/share.dart';
 import 'package:eshop/model/CityData.dart';
 import 'package:eshop/model/announcement_data.dart';
 import 'package:eshop/model/configurations_data.dart';
@@ -717,8 +717,9 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
                       isService = false;
                     });
 
-                    _launchURL(
-                        "https://play.google.com/store/apps/details?id=com.kira.eshop");
+                    // _launchURL(
+                    //     "https://play.google.com/store/apps/details?id=com.kira.eshop");
+                    _onShareAppLink(context);
                   },
                 ),
 
@@ -796,7 +797,7 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
                     return GestureDetector(
                       onTap: () {
                         if (_gifModelsList![index].hasSupplier!) {
-                          Provider.of(context, listen: false)
+                          Provider.of<ProductProvider>(context, listen: false)
                               .clearProductList();
                           Provider.of<SupplierProvider>(context, listen: false)
                               .getSupplierCategory(
@@ -896,7 +897,17 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
                     ),
                     itemBuilder: (context, index) {
                       return GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          if (imageList![index].hasProduct!) {
+                            // Log.w(imageList![index].productId.toString());
+                            Provider.of<ProductProvider>(context, listen: false)
+                                .clearProductList();
+                            Provider.of<ProductProvider>(context, listen: false)
+                                .getProductById(imageList![index].productId);
+                            Navigator.pushNamed(
+                                context, ProductDetailsScreen.route);
+                          }
+                        },
                         child: Container(
                           width: MediaQuery.of(context).size.width / 2,
                           child: CachedNetworkImage(
@@ -1155,4 +1166,7 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
 
   void _launchURL(String url) async =>
       await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
+  _onShareAppLink(BuildContext context) async {
+    await Share.share("https://khlihaalina.page.link/shopping");
+  }
 }

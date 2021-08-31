@@ -1,17 +1,24 @@
 import 'dart:async';
 import 'package:eshop/provider/city_provider.dart';
 import 'package:eshop/provider/configurations_provider.dart';
+import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/screen/intro/intro_screen.dart';
 import 'package:eshop/screen/login/login.dart';
+import 'package:eshop/screen/product_details/product_details_screen.dart';
 import 'package:eshop/utils/animations.dart';
 import 'package:eshop/utils/components.dart';
+import 'package:eshop/utils/log.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:eshop/utils/cache_helper.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SplashAppScreen extends StatefulWidget {
   static const String route = "/splash";
+  final String? id;
+
+  const SplashAppScreen({Key? key, this.id}) : super(key: key);
   @override
   _SplashAppScreenState createState() => _SplashAppScreenState();
 }
@@ -99,6 +106,8 @@ class _SplashAppScreenState extends State<SplashAppScreen> {
     );
   }
 }
+
+
 
 //  SplashScreen(
 //       seconds: 5,

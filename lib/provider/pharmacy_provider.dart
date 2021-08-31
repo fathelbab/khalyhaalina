@@ -1,7 +1,5 @@
 import 'package:eshop/data/service/pharmacy_service.dart';
-import 'package:eshop/model/pharmacy_data.dart';
 import 'package:eshop/utils/cache_helper.dart';
-import 'package:eshop/utils/log.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:eshop/model/supplier_data.dart';
@@ -31,7 +29,7 @@ class PharmacyProvider with ChangeNotifier {
   }
 
   saveUserPharmacy(String pharmacyID, String pharmName) {
-    Log.d(pharmacyName);
+    // Log.d(pharmacyName);
     pharmacyId = pharmacyID;
     pharmacyName = pharmName;
     notifyListeners();

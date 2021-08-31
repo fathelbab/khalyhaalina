@@ -319,33 +319,33 @@ class _OnlineSupportScreenState extends State<OnlineSupportScreen> {
               .then((value) {
             if (value == "done") {
               showToast(
-                text: getString(context, "confirmedDoctorBookedMessage"),
-                bgColor: Colors.green,
+                text: getString(context, "orderSuccessMessage"),
+                bgColor: successColor,
               );
               Navigator.pushNamedAndRemoveUntil(
                   context, HomeScreen.route, (route) => false);
             } else {
               showToast(
                 text: getString(context, "orderErrorMessage"),
-                bgColor: Colors.red,
+                bgColor: errorColor,
               );
             }
           }).catchError((e) {
             showToast(
               text: getString(context, "orderErrorMessage"),
-              bgColor: Colors.red,
+              bgColor: errorColor,
             );
           });
         } else {
           showToast(
             text: getString(context, "failedConnectToInternet"),
-            bgColor: Colors.red,
+            bgColor: errorColor,
           );
         }
       }).catchError((e) {
         showToast(
           text: getString(context, "failedConnectToInternet"),
-          bgColor: Colors.red,
+          bgColor: hintColor,
         );
       });
     }

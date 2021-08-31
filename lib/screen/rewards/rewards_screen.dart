@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:eshop/provider/configurations_provider.dart';
-import 'package:eshop/screen/home/home_screen.dart';
 import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class RewardsScreen extends StatefulWidget {
   static const String route = "/rewards";
@@ -47,9 +47,12 @@ class _RewardsScreenState extends State<RewardsScreen> {
         body: Column(
           children: [
             Expanded(
-              child: Image.network(
-                Constants.imagePath +
-                    configuration.configuration!.gif.toString(),
+              child: FadeInImage(
+                placeholder: MemoryImage(kTransparentImage),
+                image: NetworkImage(
+                  Constants.imagePath +
+                      configuration.configuration!.gif.toString(),
+                ),
                 fit: BoxFit.contain,
               ),
             ),

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:eshop/model/supplier_data.dart';
 import 'package:eshop/utils/constants.dart';
-import 'package:eshop/utils/log.dart';
 import 'package:http/http.dart' as http;
 
 Future<String> addPharmacy(String name, String address, String phoneNumber,
@@ -36,7 +35,7 @@ Future<List<Supplier>?> getAllPharmacyService(
       "/Supplier/GetAll?Offset=$offset&Limit=200&CityId=$cityId&CategoryId=1069"));
   print(response.statusCode);
   print(response.body);
-  Log.d(response.body.toString());
+  // Log.d(response.body.toString());
   try {
     if (response.statusCode == 200) {
       // print(response.body);
@@ -46,7 +45,7 @@ Future<List<Supplier>?> getAllPharmacyService(
       return [];
     }
   } catch (e) {
-    Log.e(e.toString());
+    // Log.e(e.toString());
     return [];
     // throw e;
   }

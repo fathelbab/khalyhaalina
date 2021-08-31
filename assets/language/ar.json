@@ -116,5 +116,8 @@
     "walletSubDescrition": "لماتشترى ب",
     "close": "مغلق",
     "open": "مفتوح",
-    "receivedDate": "ميعاد الاستلام","moreOrder":"طلبات اخرى","doctor":"الدكتور"
+    "receivedDate": "ميعاد الاستلام",
+    "moreOrder": "طلبات اخرى",
+    "doctor": "الدكتور",
+    "coupon": "كود الخصم"
 }

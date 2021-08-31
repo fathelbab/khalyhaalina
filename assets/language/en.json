@@ -114,5 +114,6 @@
     "open": "Open",
     "receivedDate": "Received date",
     "moreOrder": "Other orders",
-    "doctor": "Doctor"
+    "doctor": "Doctor",
+    "coupon": "Discount coupon"
 }

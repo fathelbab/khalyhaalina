@@ -1,9 +1,7 @@
 import 'package:eshop/data/service/cart_service.dart';
 import 'package:eshop/model/cart_data.dart';
 import 'package:eshop/utils/cache_helper.dart';
-import 'package:eshop/utils/log.dart';
 import 'package:flutter/widgets.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Cart with ChangeNotifier {
   List<CartData>? _cartItems = [];
@@ -69,7 +67,7 @@ class Cart with ChangeNotifier {
     _cartItems?.map((product) {
       if (product.productid == productId && product.qty! > 1) {
         product.qty = product.qty! - 1;
-        Log.d(product.qty.toString());
+        // Log.d(product.qty.toString());
         updateCartItemQuantity(
             product.id, productId, product.qty, product.description ?? "");
       }

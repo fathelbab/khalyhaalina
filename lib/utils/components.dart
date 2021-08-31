@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/utils/animations.dart';
 import 'package:eshop/utils/style.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -109,4 +110,56 @@ _showDialog(String text, BuildContext context) async {
       );
     },
   );
+}
+
+Future<Uri> createDynamicLink(int id) async {
+  final DynamicLinkParameters parameters = DynamicLinkParameters(
+    uriPrefix: 'https://khlihaalina.page.link',
+    link: Uri.parse('https://khlihaalina.page.link/?id=$id'),
+    androidParameters: AndroidParameters(
+      packageName: 'com.kira.eshop',
+      minimumVersion: 1,
+    ),
+    dynamicLinkParametersOptions: DynamicLinkParametersOptions(
+      shortDynamicLinkPathLength: ShortDynamicLinkPathLength.short,
+    ),
+    iosParameters: IosParameters(
+      bundleId: 'com.kira.eshop',
+      minimumVersion: '1',
+    ),
+    socialMetaTagParameters: SocialMetaTagParameters(
+      title: id.toString(),
+      description: "",
+    ),
+  );
+
+  // Uri url;
+  // if (short) {
+  //   final ShortDynamicLink shortLink = await parameters.buildShortLink();
+  //   url = shortLink.shortUrl;
+  // } else {
+  //   url = await parameters.buildUrl();
+  // }
+  var dynamicUrl = await parameters.buildShortLink();
+  final Uri shortUrl = dynamicUrl.shortUrl;
+  return shortUrl;
+}
+
+Future<Uri> createDynamicLinkID(String id) async {
+  final DynamicLinkParameters parameters = DynamicLinkParameters(
+    uriPrefix: 'https://khlihaalina.page.link',
+    link: Uri.parse('https://www.khlihaalina.com/?id=$id'),
+    androidParameters: AndroidParameters(
+      packageName: 'com.kira.eshop',
+      minimumVersion: 1,
+    ),
+    iosParameters: IosParameters(
+      bundleId: 'com.kira.eshop',
+      minimumVersion: '1',
+      // appStoreId: 'your_app_store_id',
+    ),
+  );
+  var dynamicUrl = await parameters.buildUrl();
+
+  return dynamicUrl;
 }

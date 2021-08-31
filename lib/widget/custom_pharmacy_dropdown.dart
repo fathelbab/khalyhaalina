@@ -1,10 +1,9 @@
 import 'dart:ui';
 import 'package:collection/collection.dart' show IterableExtension;
-import 'package:eshop/provider/city_provider.dart';
 import 'package:eshop/provider/pharmacy_provider.dart';
 import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/components.dart';
-import 'package:eshop/utils/log.dart';
+// import 'package:eshop/utils/log.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -72,7 +71,7 @@ class _PharmacyDropDownButtonState extends State<PharmacyDropDownButton> {
                       .firstWhereOrNull((pharmacy) {
                         String name = locale == "ar"
                             ? pharmacy.nameAr.toString()
-                            : pharmacy.nameEn.toString();
+                            : pharmacy.nameEn ?? pharmacy.nameAr.toString();
                         if (name == _selectedPharmacy)
                           return true;
                         else
@@ -89,7 +88,9 @@ class _PharmacyDropDownButtonState extends State<PharmacyDropDownButton> {
                             ? pharmacy.nameAr
                             : pharmacy.nameEn ?? pharmacy.nameAr,
                         child: Text(
-                          locale == "ar" ? pharmacy.nameAr! : pharmacy.nameEn!,
+                          locale == "ar"
+                              ? pharmacy.nameAr!
+                              : pharmacy.nameEn ?? pharmacy.nameAr.toString(),
                           style: TextStyle(color: Colors.black, fontSize: 20),
                         ),
                       ))
@@ -100,8 +101,8 @@ class _PharmacyDropDownButtonState extends State<PharmacyDropDownButton> {
   }
 
   saveNewValue(context, String pharmacyId, String pharmacyName) {
-    Log.d(pharmacyId);
-    Log.d(pharmacyName);
+    // Log.d(pharmacyId);
+    // Log.d(pharmacyName);
     Provider.of<PharmacyProvider>(context, listen: false)
         .saveUserPharmacy(pharmacyId, pharmacyName);
   }

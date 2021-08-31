@@ -3,8 +3,9 @@ import 'package:eshop/model/order_data.dart';
 import 'package:eshop/provider/cart.dart';
 import 'package:eshop/provider/configurations_provider.dart';
 import 'package:eshop/provider/order_provider.dart';
-import 'package:eshop/screen/home/home_category_screen.dart';
+
 import 'package:eshop/screen/home/home_screen.dart';
+import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/components.dart';
 import 'package:eshop/widget/progress_dialog.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +45,19 @@ class _OrderScreenState extends State<OrderScreen> {
     _userPhoneNumberFocusNode.dispose();
     _couponFocusNode.dispose();
     couponText.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    String address = CacheHelper.getPrefs(key: "phoneNumber") ?? "";
+    String phoneNumber = CacheHelper.getPrefs(key: "address") ?? "";
+    String userName = CacheHelper.getPrefs(key: "userName") ?? "";
+    if (address.isNotEmpty) {
+      userAddressText.text = address;
+      userPhoneNumberText.text = phoneNumber;
+      userNameText.text = userName;
+    }
   }
 
   @override
@@ -172,7 +186,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                       .requestFocus(_userPhoneNumberFocusNode);
                                 },
                                 decoration: InputDecoration(
-                                  hintText: "كود الخصم",
+                                  hintText: getString(context, "coupon"),
                                   border: InputBorder.none,
                                 ),
                               ),
@@ -292,6 +306,9 @@ class _OrderScreenState extends State<OrderScreen> {
                 message: "...جارى تنفيذ طلبك ,يرجى الانتظار",
               );
             });
+        CacheHelper.savePrefs(key: "address", value: userAddressText.text);
+        CacheHelper.savePrefs(
+            key: "phoneNumber", value: userPhoneNumberText.text);
         final dynamic response =
             await Provider.of<OrderProvider>(context, listen: false)
                 .createOrder(
@@ -305,32 +322,48 @@ class _OrderScreenState extends State<OrderScreen> {
           print(value);
           if (value == "done") {
             Navigator.pop(context);
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(
-                    AppLocale.of(context)!.getString("orderSuccessMessage")!)));
+            // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            //     content: Text(
+            //         AppLocale.of(context)!.getString("orderSuccessMessage")!)));
+            showToast(
+              text: getString(context, "orderSuccessMessage"),
+              bgColor: successColor,
+            );
             Provider.of<Cart>(context, listen: false).clearCart();
             Provider.of<Cart>(context, listen: false).fetchCartList();
             Navigator.of(context).pushReplacementNamed(HomeScreen.route);
           } else {
             Navigator.pop(context);
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(
-                    AppLocale.of(context)!.getString("orderErrorMessage")!)));
+            // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            //     content: Text(
+            //         AppLocale.of(context)!.getString("orderErrorMessage")!)));
+            showToast(
+              text: getString(context, "orderErrorMessage"),
+              bgColor: errorColor,
+            );
           }
         }).catchError((e) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content:
-                  Text("${AppLocale.of(context)!.getString("addedError")}")));
+          // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          //     content:
+          //         Text("${AppLocale.of(context)!.getString("addedError")}")));
+          showToast(
+            text: getString(context, "orderErrorMessage"),
+            bgColor: errorColor,
+          );
         });
       } else {
-        Fluttertoast.showToast(
-            msg: AppLocale.of(context)!.getString("emptyData")!,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 4,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        // Fluttertoast.showToast(
+        //     msg: AppLocale.of(context)!.getString("emptyData")!,
+        //     toastLength: Toast.LENGTH_SHORT,
+        //     gravity: ToastGravity.BOTTOM,
+        //     timeInSecForIosWeb: 4,
+        //     backgroundColor: Colors.red,
+        //     textColor: Colors.white,
+        //     fontSize: 16.0);
+        showToast(
+          text: getString(context, "emptyData"),
+          bgColor: hintColor,
+        );
       }
     }
   }

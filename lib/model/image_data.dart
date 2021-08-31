@@ -12,52 +12,33 @@ String imageDataToJson(List<ImageData> data) =>
 
 class ImageData {
   ImageData({
-    this.id,
-    this.order,
-    this.createdDate,
-    this.updatedDate,
-    this.isActive,
-    this.isDeleted,
-    this.createdBy,
-    this.updatedBy,
-    this.title,
     this.imagePath,
+    this.title,
+    this.cityId,
+    this.hasProduct,
+    this.productId,
   });
 
-  int? id;
-  dynamic order;
-  String? createdDate;
-  String? updatedDate;
-  bool? isActive;
-  bool? isDeleted;
-  dynamic createdBy;
-  dynamic updatedBy;
   String? title;
   String? imagePath;
 
+  int? cityId;
+  bool? hasProduct;
+  int? productId;
+
   factory ImageData.fromJson(Map<String, dynamic> json) => ImageData(
-        id: json["id"],
-        order: json["order"],
-        createdDate: json["createdDate"],
-        updatedDate: json["updatedDate"],
-        isActive: json["isActive"],
-        isDeleted: json["isDeleted"],
-        createdBy: json["createdBy"],
-        updatedBy: json["updatedBy"],
+        cityId: json["cityId"],
+        hasProduct: json["hasProduct"],
+        productId: json["productId"],
         title: json["title"] == null ? null : json["title"],
         imagePath: json["imagePath"],
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "order": order,
-        "createdDate": createdDate,
-        "updatedDate": updatedDate,
-        "isActive": isActive,
-        "isDeleted": isDeleted,
-        "createdBy": createdBy,
-        "updatedBy": updatedBy,
-        "title": title == null ? null : title,
         "imagePath": imagePath,
+        "title": title,
+        "cityId": cityId,
+        "hasProduct": hasProduct,
+        "productId": productId,
       };
 }

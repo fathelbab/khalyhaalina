@@ -7,6 +7,7 @@ import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 class CategoryScreen extends StatefulWidget {
@@ -71,8 +72,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         imageUrl: Constants.imagePath +
                             mainCategoryList![index].image1.toString(),
                         fit: BoxFit.fill,
-                        placeholder: (context, url) =>
-                            Center(child: CircularProgressIndicator()),
+                        placeholder: (context, url) => Center(
+                          child: const SpinKitChasingDots(
+                              color: Color(0XFFE5A352)),
+                        ),
                         errorWidget: (context, url, error) => Icon(Icons.error),
                       ),
                     ),

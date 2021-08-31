@@ -8,6 +8,7 @@ import 'package:eshop/utils/constants.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class IntroScreen extends StatefulWidget {
   static const String route = "/intro";
@@ -47,9 +48,12 @@ class _IntroScreenState extends State<IntroScreen> {
           children: [
             Expanded(
               child: configuration.configuration!.gif != null
-                  ? Image.network(
-                      Constants.imagePath +
-                          configuration.configuration!.gif.toString(),
+                  ? FadeInImage(
+                      placeholder: MemoryImage(kTransparentImage),
+                      image: NetworkImage(
+                        Constants.imagePath +
+                            configuration.configuration!.gif.toString(),
+                      ),
                       fit: BoxFit.contain,
                     )
                   : CircularProgressIndicator(),

@@ -1,7 +1,6 @@
 import 'package:eshop/provider/auth_provider.dart';
 import 'package:eshop/screen/category/category_screen.dart';
 import 'package:eshop/utils/cache_helper.dart';
-import 'package:eshop/utils/log.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:eshop/language/app_locale.dart';
 import 'package:eshop/model/bar_item.dart';
@@ -11,6 +10,7 @@ import 'package:eshop/screen/home/home_category_screen.dart';
 import 'package:eshop/screen/pharmacy/pharmacy_screen.dart';
 import 'package:eshop/utils/local_notification.dart';
 import 'package:eshop/widget/badge.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -82,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     firebaseMessaging.onTokenRefresh.listen((mobileToken) {
       // print(mobileToken);
-      Log.d(mobileToken.toString());
+      // Log.d(mobileToken.toString());
       if (token != null || token != "") {
         Provider.of<Auth>(context, listen: false).storeMobileToken(mobileToken);
       }
@@ -100,25 +100,22 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   initialMessage() async {
-    var message = await FirebaseMessaging.instance.getInitialMessage();
-    if (message != null) {
-      // TODO: do something
+    var notification = await FirebaseMessaging.instance.getInitialMessage();
+
+    if (notification != null) {
       Navigator.pushNamed(context, HomeScreen.route);
     }
   }
 
   void getFirebaseToken() async {
     FirebaseMessaging.onMessage.listen((notification) {
-      // Fluttertoast.showToast(msg: "${notification.data["title"]}");
-      print(notification.data.toString());
-      // LocalNotification().showNotification(
-      //     title: notification.data["title"].toString(),
-      //     body: notification.data["body"].toString(),
-      //     image: notification.data["imgUrl"].toString()
-      //     // title: notification.notification!.title.toString(),
-      //     // body: notification.notification!.body.toString(),
-      //     // image: "",
-      //     );
+      String image =
+          notification.notification!.body!.split(":::")[1].toString();
+      LocalNotification().showNotification(
+        title: notification.notification!.title.toString(),
+        body: notification.notification!.body!.split(":::")[0].toString(),
+        image: image,
+      );
     });
   }
 
@@ -232,6 +229,50 @@ class _HomeScreenState extends State<HomeScreen> {
   //   });
   // }
 }
+
+// void initDynamicLinks() async {
+//   // configure listeners for link callbacks
+//   // when the application is active or in background calling onLink.
+// //https://khlihaalina.page.link/?link=khlihaalina.page.link&apn=com.kira.eshop&amv=13&ibi=com.kira.eshop&st
+//   FirebaseDynamicLinks.instance.onLink(
+//       onSuccess: (PendingDynamicLinkData? dynamicLink) async {
+//     final Uri? deepLink = dynamicLink?.link;
+
+//     if (deepLink != null) {
+//       if (deepLink.queryParameters.containsKey('id')) {
+//         String id = deepLink.queryParameters['id'].toString();
+//         Log.w(id);
+//         Provider.of<ProductProvider>(context).getProductById(int.parse(id));
+//         showToast(text: id);
+//         Navigator.pop(context);
+//         // Navigator.of(context).push(MaterialPageRoute(
+//         //     builder: (context) => SplashAppScreen(
+//         //           id: id,
+//         //         )));
+//       }
+//     }
+//   }, onError: (OnLinkErrorException e) async {
+//     print('onLinkError');
+//     Log.e(e.message.toString());
+//   });
+//   // getInitialLink() will called when app is terminated
+//   //If your app did not open from a dynamic link, getInitialLink()
+//   final PendingDynamicLinkData? data =
+//       await FirebaseDynamicLinks.instance.getInitialLink();
+//   final Uri? deepLink = data?.link;
+
+//   if (deepLink != null) {}
+
+//   if (deepLink != null) {
+//     if (deepLink.queryParameters.containsKey('id')) {
+//       String id = deepLink.queryParameters['id']!;
+//       Log.w(deepLink.queryParameters.toString());
+//       Provider.of<ProductProvider>(context).getProductById(
+//           int.parse(deepLink.queryParameters['title'].toString()));
+//       Navigator.pushNamed(context, ProductDetailsScreen.route);
+//     }
+//   }
+// }
 // Scaffold(
 //       body: _screens[_selectedPageIndex],
 //       floatingActionButtonLocation: FloatingActionButtonLocation.startDocked,
