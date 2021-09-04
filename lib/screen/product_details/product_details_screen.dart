@@ -94,6 +94,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           ),
         ],
       ),
+      backgroundColor: Colors.white,
       body: productDetails == null
           ? Center(
               child: const SpinKitChasingDots(
@@ -211,7 +212,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       IconButton(
                                         onPressed: () {
                                           shareProduct(productDetails.id!);
-
                                         },
                                         icon: Icon(
                                           Icons.share,
@@ -305,7 +305,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 productDetails
                                     .avilabeProductGalleries!.isNotEmpty)
                               SizedBox(
-                                height: size.height / 6,
+                                width: size.height / 5,
+                                height: size.height / 5,
                                 child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
                                   itemCount: productDetails
@@ -330,40 +331,42 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           ),
                                         );
                                       },
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            width: size.height / 6 - 20,
-                                            height: size.height / 6 - 20,
-                                            padding: const EdgeInsets.all(5),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                              child: Image.network(
-                                                Constants.imagePath +
-                                                    productDetails
-                                                        .avilabeProductGalleries![
-                                                            index]
-                                                        .imagePath!,
+                                      child: Container(
+                                        width: size.height / 5 - 10,
+                                        height: size.height / 6,
+                                        margin: const EdgeInsets.all(5),
+                                        child: Column(
+                                          children: [
+                                            Expanded(
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                child: Image.network(
+                                                  Constants.imagePath +
+                                                      productDetails
+                                                          .avilabeProductGalleries![
+                                                              index]
+                                                          .imagePath!,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          Text(
-                                            locale == "ar"
-                                                ? productDetails
-                                                        .avilabeProductGalleries![
-                                                            index]
-                                                        .textAr ??
-                                                    ""
-                                                : productDetails
-                                                        .avilabeProductGalleries![
-                                                            index]
-                                                        .textEn ??
-                                                    "",
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                          )
-                                        ],
+                                            Text(
+                                              locale == "ar"
+                                                  ? productDetails
+                                                          .avilabeProductGalleries![
+                                                              index]
+                                                          .textAr ??
+                                                      ""
+                                                  : productDetails
+                                                          .avilabeProductGalleries![
+                                                              index]
+                                                          .textEn ??
+                                                      "",
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                            )
+                                          ],
+                                        ),
                                       ),
                                     );
                                   },
@@ -553,19 +556,31 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       print(value);
       if (value == "done") {
         Provider.of<Cart>(context, listen: false).fetchCartList();
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(AppLocale.of(context)!.getString("addedSuccess")!)));
+        showToast(
+          text: getString(context, "addedSuccess"),
+          bgColor: errorColor,
+        );
+        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        //     content: Text(AppLocale.of(context)!.getString("addedSuccess")!)));
       } else if (value == "auth") {
         Provider.of<Auth>(context).logout();
         Navigator.pushNamedAndRemoveUntil(
             context, Login.route, (Route<dynamic> route) => false);
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(AppLocale.of(context)!.getString("addedError")!)));
+        showToast(
+          text: getString(context, "addedError"),
+          bgColor: errorColor,
+        );
+        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        //     content: Text(AppLocale.of(context)!.getString("addedError")!)));
       }
     }).catchError((e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(AppLocale.of(context)!.getString("addedError")!)));
+      showToast(
+        text: getString(context, "addedError"),
+        bgColor: errorColor,
+      );
+      // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      //     content: Text(AppLocale.of(context)!.getString("addedError")!)));
     });
   }
 
@@ -579,6 +594,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       return discountPercent.toInt();
     }
   }
+
   shareProduct(int productId) async {
     Uri id = await createDynamicLinkID(productId.toString());
     Share.share(id.toString());

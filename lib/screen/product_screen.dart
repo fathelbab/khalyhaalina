@@ -7,6 +7,7 @@ import 'package:eshop/provider/supplier_provider.dart';
 import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/constants.dart';
+import 'package:eshop/utils/product_status.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:eshop/widget/badge.dart';
 import 'package:eshop/widget/product_item.dart';
@@ -266,8 +267,10 @@ class _ProductScreenState extends State<ProductScreen> {
                                 ),
                                 itemBuilder: (context, index) {
                                   return ProductItems(
-                                      product: _productList![index],
-                                      index: index);
+                                    product: _productList![index],
+                                    index: index,
+                                    status: ProductStatus.discountStatus,
+                                  );
                                 });
                           },
                         ),

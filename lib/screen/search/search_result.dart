@@ -1,5 +1,6 @@
 import 'package:eshop/model/product_data.dart';
 import 'package:eshop/provider/product_provider.dart';
+import 'package:eshop/utils/product_status.dart';
 import 'package:eshop/widget/product_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +33,10 @@ class SearchResultListView extends StatelessWidget {
                       crossAxisCount: 2),
                   itemBuilder: (context, index) {
                     return ProductItems(
-                        product: productList![index], index: index);
+                      product: productList![index],
+                      index: index,
+                      status: ProductStatus.discountStatus,
+                    );
                   }),
     );
   }

@@ -18,8 +18,7 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  RegExp regex = new RegExp(
-      r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+  RegExp regex = new RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$');
   final GlobalKey<FormState> _formKey = GlobalKey();
   final _passwordController = TextEditingController();
   final _emailController = TextEditingController();
@@ -102,30 +101,27 @@ class _SignUpState extends State<SignUp> {
                           },
                         ),
                         DefaultFormField(
-                            isPassword: isPassword,
-                            suffixIcon: isPassword
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            suffixPressed: () {
-                              setState(() {
-                                isPassword = !isPassword;
-                              });
-                            },
-                            prefixIcon: Icons.lock_outline,
-                            controller: _passwordController,
-                            hint: AppLocale.of(context)!.getString("password")!,
-                            validatorFunction: (value) {
-                              if (value!.isEmpty || value.length < 6) {
-                                return AppLocale.of(context)!
-                                    .getString("emptyPassword")!;
-                              } else {
-                                if (!regex.hasMatch(value))
-                                  return AppLocale.of(context)!
-                                      .getString("correctPassword")!;
-                                else
-                                  return null;
-                              }
-                            }),
+                          isPassword: isPassword,
+                          suffixIcon: isPassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          suffixPressed: () {
+                            setState(() {
+                              isPassword = !isPassword;
+                            });
+                          },
+                          prefixIcon: Icons.lock_outline,
+                          controller: _passwordController,
+                          hint: AppLocale.of(context)!.getString("password")!,
+                          validatorFunction: (value) {
+                            if (value!.isEmpty)
+                              return getString(context, "emptyPassword");
+                            else if (!regex.hasMatch(value))
+                              return getString(context, "correctPassword");
+                            else
+                              return null;
+                          },
+                        ),
                         DefaultFormField(
                           prefixIcon: Icons.lock,
                           controller: _passwordConfirmController,

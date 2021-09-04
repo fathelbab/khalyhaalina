@@ -4,6 +4,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:eshop/screen/packages/packages_screen.dart';
 import 'package:eshop/screen/product_details/product_details_screen.dart';
 import 'package:eshop/screen/product_screen.dart';
+import 'package:eshop/utils/log.dart';
+import 'package:eshop/utils/product_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -783,7 +785,7 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
   }
 
   Widget buildGifModelsSlider() {
-    return _gifModelsList != null && _gifModelsList!.isEmpty
+    return _gifModelsList!.isEmpty
         ? Text("")
         : Column(
             children: [
@@ -800,24 +802,37 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
                           Provider.of<ProductProvider>(context, listen: false)
                               .clearProductList();
                           Provider.of<SupplierProvider>(context, listen: false)
+                              .clearSuppliertList();
+                          Provider.of<SupplierProvider>(context, listen: false)
                               .getSupplierCategory(
-                                  _gifModelsList![index].supplierId.toString(),
-                                  200);
+                            _gifModelsList![index].supplierId.toString(),
+                            limit,
+                          );
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => ProductScreen(
-                                  supplierId:
-                                      supplierList![index].id.toString()),
+                                supplierId: _gifModelsList![index]
+                                    .supplierId
+                                    .toString(),
+                              ),
                             ),
                           );
                         }
                       },
                       child: Container(
                         width: double.infinity,
-                        child: Image.network(
-                          Constants.imagePath +
+                        child: CachedNetworkImage(
+                          imageUrl: Constants.imagePath +
                               _gifModelsList![index].imagePath.toString(),
+                          placeholder: (context, url) => Center(
+                            child: const SpinKitChasingDots(
+                                color: Color(0XFFE5A352)),
+                          ),
+                          errorWidget: (context, url, error) => Center(
+                              child: Image.asset(
+                            'assets/images/app_logo.png',
+                          )),
                           fit: BoxFit.fill,
                         ),
                       ),
@@ -901,7 +916,7 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
                           if (imageList![index].hasProduct!) {
                             // Log.w(imageList![index].productId.toString());
                             Provider.of<ProductProvider>(context, listen: false)
-                                .clearProductList();
+                                .clearProductData();
                             Provider.of<ProductProvider>(context, listen: false)
                                 .getProductById(imageList![index].productId);
                             Navigator.pushNamed(
@@ -928,7 +943,7 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
             ));
   }
 
-  Widget buildProductHotList(List<Product> hotProduct) {
+  Widget buildProductHotList(List<Product> hotProduct, ProductStatus status) {
     return hotProduct == null || hotProduct.isEmpty
         ? Text("")
         : LayoutBuilder(
@@ -951,7 +966,10 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
                     ),
                     itemBuilder: (context, index) {
                       return ProductItems(
-                          product: hotProduct[index], index: index);
+                        product: hotProduct[index],
+                        index: index,
+                        status: status,
+                      );
                     }),
               );
             },
@@ -1058,7 +1076,7 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
                     child: CachedNetworkImage(
                       imageUrl: Constants.imagePath +
                           notificationsList![0].imagePath!,
-                      fit: BoxFit.fill,
+                      fit: BoxFit.contain,
                       placeholder: (context, url) => Center(
                         child:
                             const SpinKitChasingDots(color: Color(0XFFE5A352)),
@@ -1066,7 +1084,8 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
                       errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
                   ),
-            if (newHotProduct != null) buildProductHotList(newHotProduct!),
+            if (newHotProduct != null)
+              buildProductHotList(newHotProduct!, ProductStatus.newStatus),
             notificationsList != null && notificationsList!.isEmpty
                 ? Text("")
                 : Container(
@@ -1075,7 +1094,7 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
                     child: CachedNetworkImage(
                       imageUrl: Constants.imagePath +
                           notificationsList![1].imagePath!,
-                      fit: BoxFit.fill,
+                      fit: BoxFit.contain,
                       placeholder: (context, url) => Center(
                         child:
                             const SpinKitChasingDots(color: Color(0XFFE5A352)),
@@ -1084,7 +1103,8 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
                     ),
                   ),
             if (discountHotProduct != null)
-              buildProductHotList(discountHotProduct!),
+              buildProductHotList(
+                  discountHotProduct!, ProductStatus.discountStatus),
             notificationsList != null && notificationsList!.isEmpty
                 ? Text("")
                 : Container(
@@ -1093,7 +1113,7 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
                     child: CachedNetworkImage(
                       imageUrl: Constants.imagePath +
                           notificationsList![2].imagePath!,
-                      fit: BoxFit.fill,
+                      fit: BoxFit.contain,
                       placeholder: (context, url) => Center(
                         child:
                             const SpinKitChasingDots(color: Color(0XFFE5A352)),
@@ -1102,7 +1122,7 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
                     ),
                   ),
             if (statusHotProduct != null)
-              buildProductHotList(statusHotProduct!),
+              buildProductHotList(statusHotProduct!, ProductStatus.offerStatus),
             notificationsList != null && notificationsList!.isEmpty
                 ? Text("")
                 : Container(
@@ -1111,7 +1131,7 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
                     child: CachedNetworkImage(
                       imageUrl: Constants.imagePath +
                           notificationsList![3].imagePath!,
-                      fit: BoxFit.fill,
+                      fit: BoxFit.contain,
                       placeholder: (context, url) => Center(
                         child:
                             const SpinKitChasingDots(color: Color(0XFFE5A352)),

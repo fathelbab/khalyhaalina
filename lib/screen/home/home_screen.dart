@@ -73,17 +73,11 @@ class _HomeScreenState extends State<HomeScreen> {
     final String token = CacheHelper.getPrefs(key: "token");
 
     firebaseMessaging.getToken().then((mobileToken) {
-      // print("============================");
-      // print(mobileToken);
-
-      // print("============================");
       if (mobileToken != null && mobileToken.isNotEmpty)
         Provider.of<Auth>(context, listen: false).storeMobileToken(mobileToken);
     });
     firebaseMessaging.onTokenRefresh.listen((mobileToken) {
-      // print(mobileToken);
-      // Log.d(mobileToken.toString());
-      if (token != null || token != "") {
+      if (token.isNotEmpty || token != "") {
         Provider.of<Auth>(context, listen: false).storeMobileToken(mobileToken);
       }
     });

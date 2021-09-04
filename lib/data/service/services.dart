@@ -8,6 +8,7 @@ import 'package:eshop/model/product_data.dart';
 import 'package:eshop/model/supplier_data.dart';
 
 import 'package:eshop/utils/constants.dart';
+import 'package:eshop/utils/log.dart';
 import 'package:http/http.dart' as http;
 
 // headers: {HttpHeaders.contentTypeHeader: "application/json",
@@ -61,7 +62,16 @@ Future<String> createOrderbyUser(
       }),
       headers: {"Content-Type": "application/json", "access_token": token!},
     );
-
+    // Log.d(jsonEncode({
+    //   "customerName": customerName.toString(),
+    //   "phoneNumber": phoneNumber.toString(),
+    //   "address": address.toString(),
+    //   "subtotale": 0,
+    //   "recivedDate": receivedDate,
+    //   "orderdeitalsdto":
+    //       listOfProduct.map((productData) => productData.toJson()).toList()
+    // }));
+    // Log.d(token);
     if (response.statusCode == 200) {
       return "done";
     } else {

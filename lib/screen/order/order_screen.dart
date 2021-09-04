@@ -52,7 +52,7 @@ class _OrderScreenState extends State<OrderScreen> {
     super.initState();
     String address = CacheHelper.getPrefs(key: "phoneNumber") ?? "";
     String phoneNumber = CacheHelper.getPrefs(key: "address") ?? "";
-    String userName = CacheHelper.getPrefs(key: "userName") ?? "";
+    String userName = CacheHelper.getPrefs(key: "userOrderName") ?? "";
     if (address.isNotEmpty) {
       userAddressText.text = address;
       userPhoneNumberText.text = phoneNumber;
@@ -309,6 +309,7 @@ class _OrderScreenState extends State<OrderScreen> {
         CacheHelper.savePrefs(key: "address", value: userAddressText.text);
         CacheHelper.savePrefs(
             key: "phoneNumber", value: userPhoneNumberText.text);
+        CacheHelper.savePrefs(key: "userOrderName", value: userNameText.text);
         final dynamic response =
             await Provider.of<OrderProvider>(context, listen: false)
                 .createOrder(

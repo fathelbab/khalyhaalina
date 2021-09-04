@@ -7,6 +7,7 @@ class AppTheme {
     fontFamily: 'Anton',
     visualDensity: VisualDensity.adaptivePlatformDensity,
     accentColor: Colors.blueGrey,
+    // errorColor: secondaryColor,
   );
   final darkTheme = ThemeData(
     primaryColor: primaryColor,

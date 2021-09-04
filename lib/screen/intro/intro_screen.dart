@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eshop/provider/configurations_provider.dart';
 import 'package:eshop/screen/home/home_screen.dart';
 import 'package:eshop/screen/login/login.dart';
@@ -7,6 +8,7 @@ import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/constants.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -48,11 +50,21 @@ class _IntroScreenState extends State<IntroScreen> {
           children: [
             Expanded(
               child: configuration.configuration!.gif != null
-                  ? FadeInImage(
-                      placeholder: MemoryImage(kTransparentImage),
-                      image: NetworkImage(
-                        Constants.imagePath +
-                            configuration.configuration!.gif.toString(),
+                  ? CachedNetworkImage(
+                      imageUrl: Constants.imagePath +
+                          configuration.configuration!.logo.toString(),
+                      placeholder: (context, url) => Center(
+                        child:
+                            const SpinKitChasingDots(color: Color(0XFFE5A352)),
+                      ),
+                      errorWidget: (context, url, error) => Center(
+                        child: Text(
+                          getString(context, "emptyWallet"),
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                       fit: BoxFit.contain,
                     )
@@ -99,5 +111,11 @@ class _IntroScreenState extends State<IntroScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    timer!.cancel();
+    super.dispose();
   }
 }

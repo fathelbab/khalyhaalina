@@ -1,3 +1,4 @@
+import 'package:eshop/utils/style.dart';
 import 'package:flutter/material.dart';
 
 class DefaultFormField extends StatelessWidget {
@@ -29,6 +30,9 @@ class DefaultFormField extends StatelessWidget {
         decoration: InputDecoration(
           fillColor: Colors.white,
           filled: true,
+          errorStyle: TextStyle(
+            color: hintColor,
+          ),
           hintStyle: TextStyle(fontSize: 13),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
@@ -40,6 +44,13 @@ class DefaultFormField extends StatelessWidget {
           ),
           border: new OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
+            borderRadius: BorderRadius.circular(30),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: hintColor,
+              width: 3,
+            ),
             borderRadius: BorderRadius.circular(30),
           ),
           prefixIcon: Icon(prefixIcon),

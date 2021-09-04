@@ -4,6 +4,7 @@ import 'package:eshop/provider/product_provider.dart';
 import 'package:eshop/screen/product_details/product_details_screen.dart';
 import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/constants.dart';
+import 'package:eshop/utils/product_status.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,10 +14,11 @@ import 'package:share/share.dart';
 class ProductItems extends StatefulWidget {
   final Product product;
   final int index;
-
+  final ProductStatus status;
   ProductItems({
     required this.product,
     required this.index,
+    required this.status,
   });
 
   @override
@@ -25,10 +27,10 @@ class ProductItems extends StatefulWidget {
 
 class _ProductItemsState extends State<ProductItems> {
   TextEditingController _textFieldController = TextEditingController();
-
+  late int productDiscount;
   @override
   Widget build(BuildContext context) {
-    int productDiscount =
+    productDiscount =
         getDiscount(widget.product.price, widget.product.oldPrice);
     return InkWell(
       onTap: () {
@@ -125,11 +127,11 @@ class _ProductItemsState extends State<ProductItems> {
                                   right: 10, left: 10, top: 5, bottom: 5),
                               margin: const EdgeInsets.all(5),
                               decoration: BoxDecoration(
-                                color: Theme.of(context).errorColor,
+                                color: getStatusColor(widget.status),
                                 shape: BoxShape.rectangle,
                               ),
                               child: Text(
-                                "${productDiscount.toString()} %",
+                                getStatusString(widget.status),
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 15,
@@ -224,5 +226,23 @@ class _ProductItemsState extends State<ProductItems> {
 
       return discountPercent.toInt();
     }
+  }
+
+  String getStatusString(ProductStatus status) {
+    if (status == ProductStatus.newStatus) {
+      return getString(context, "new");
+    } else if (status == ProductStatus.offerStatus) {
+      return getString(context, "offer");
+    } else
+      return "${productDiscount.toString()} %";
+  }
+
+  Color getStatusColor(ProductStatus status) {
+    if (status == ProductStatus.newStatus) {
+      return successColor;
+    } else if (status == ProductStatus.offerStatus) {
+      return secondaryColor;
+    } else
+      return errorColor;
   }
 }

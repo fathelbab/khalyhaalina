@@ -115,5 +115,7 @@
     "receivedDate": "Received date",
     "moreOrder": "Other orders",
     "doctor": "Doctor",
-    "coupon": "Discount coupon"
+    "coupon": "Discount coupon",
+    "offer": "Offer",
+    "new": "New"
 }

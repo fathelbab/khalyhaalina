@@ -59,7 +59,7 @@ class ProductProvider extends ChangeNotifier {
         .where((product) => product.stutesProduct != null)
         .toList();
     _newHotProductList = _productHotList!
-        .where((product) => product.discountProduct != null)
+        .where((product) => product.newProduct != null)
         .toList();
     notifyListeners();
   }
@@ -107,7 +107,7 @@ class ProductProvider extends ChangeNotifier {
         .where((product) => product.stutesProduct != null)
         .toList();
     _newHotProductList = _productHotList!
-        .where((product) => product.discountProduct != null)
+        .where((product) => product.newProduct != null)
         .toList();
     _productList?.map((product) {
       if (product.id.toString() == productId) {
@@ -137,7 +137,7 @@ class ProductProvider extends ChangeNotifier {
         .where((product) => product.stutesProduct != null)
         .toList();
     _newHotProductList = _productHotList!
-        .where((product) => product.discountProduct != null)
+        .where((product) => product.newProduct != null)
         .toList();
     _productList?.map((product) {
       if (product.id.toString() == productId) {

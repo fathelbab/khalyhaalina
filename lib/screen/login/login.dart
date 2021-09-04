@@ -22,6 +22,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  RegExp regex = new RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$');
+
   final GlobalKey<FormState> _formKey = GlobalKey();
   final _passwordController = TextEditingController();
   final _emailController = TextEditingController();
@@ -82,11 +84,12 @@ class _LoginState extends State<Login> {
                               .getString('password')
                               .toString(),
                           validatorFunction: (value) {
-                            if (value!.isEmpty || value.length < 6) {
-                              return AppLocale.of(context)!
-                                  .getString("emptyPassword");
-                            }
-                            return null;
+                            if (value!.isEmpty)
+                              return getString(context, "emptyPassword");
+                            else if (!regex.hasMatch(value))
+                              return getString(context, "correctPassword");
+                            else
+                              return null;
                           },
                           isPassword: isPassword,
                           suffixIcon: isPassword

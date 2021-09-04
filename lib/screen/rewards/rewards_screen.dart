@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eshop/provider/configurations_provider.dart';
 import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/constants.dart';
+import 'package:eshop/utils/style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -47,11 +50,21 @@ class _RewardsScreenState extends State<RewardsScreen> {
         body: Column(
           children: [
             Expanded(
-              child: FadeInImage(
-                placeholder: MemoryImage(kTransparentImage),
-                image: NetworkImage(
-                  Constants.imagePath +
-                      configuration.configuration!.gif.toString(),
+              child: CachedNetworkImage(
+                imageUrl: Constants.imagePath +
+                    configuration.configuration!.gif.toString(),
+                placeholder: (context, url) => Center(
+                  child: const SpinKitChasingDots(color: Color(0XFFE5A352)),
+                ),
+                errorWidget: (context, url, error) => Center(
+                  child: Text(
+                    getString(context, "emptyWallet"),
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: primaryColor,
+                    ),
+                  ),
                 ),
                 fit: BoxFit.contain,
               ),

@@ -245,19 +245,31 @@ class _ViewAvailableImageDetailsScreenState
       print(value);
       if (value == "done") {
         Provider.of<Cart>(context, listen: false).fetchCartList();
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(AppLocale.of(context)!.getString("addedSuccess")!)));
+        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        //     content: Text(AppLocale.of(context)!.getString("addedSuccess")!)));
+        showToast(
+          text: getString(context, "addedSuccess"),
+          bgColor: errorColor,
+        );
       } else if (value == "auth") {
         Provider.of<Auth>(context).logout();
         Navigator.pushNamedAndRemoveUntil(
             context, Login.route, (Route<dynamic> route) => false);
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(AppLocale.of(context)!.getString("addedError")!)));
+        showToast(
+          text: getString(context, "addedError"),
+          bgColor: errorColor,
+        );
+        // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        //     content: Text(AppLocale.of(context)!.getString("addedError")!)));
       }
     }).catchError((e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(AppLocale.of(context)!.getString("addedError")!)));
+      showToast(
+        text: getString(context, "addedError"),
+        bgColor: errorColor,
+      );
+      // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      //     content: Text(AppLocale.of(context)!.getString("addedError")!)));
     });
   }
 
