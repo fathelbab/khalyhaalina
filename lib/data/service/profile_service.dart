@@ -37,8 +37,9 @@ Future<void> signIn(String email, String password) async {
 Future<void> storeMobileTokenService(
     String accessToken, String mobileToken) async {
   try {
+    // kira
     final http.Response response = await http.post(
-      Uri.parse("http://ahmedinara00-001-site1.dtempurl.com/api/MobileTokens"),
+      Uri.parse(Constants.apiPath+"/MobileTokens"),
       headers: {
         'Content-Type': 'application/json',
         'access_token': accessToken,

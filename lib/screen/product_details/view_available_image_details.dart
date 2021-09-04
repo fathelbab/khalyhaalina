@@ -249,7 +249,7 @@ class _ViewAvailableImageDetailsScreenState
         //     content: Text(AppLocale.of(context)!.getString("addedSuccess")!)));
         showToast(
           text: getString(context, "addedSuccess"),
-          bgColor: errorColor,
+          bgColor: successColor,
         );
       } else if (value == "auth") {
         Provider.of<Auth>(context).logout();

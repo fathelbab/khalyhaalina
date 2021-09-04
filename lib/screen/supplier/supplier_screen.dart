@@ -86,7 +86,10 @@ class _SupplierScreenState extends State<SupplierScreen> {
               imageUrl: Constants.imagePath + mainCategory.image2.toString(),
               fit: BoxFit.fill,
               placeholder: (context, url) =>
-                  Center(child: CircularProgressIndicator()),
+                  Center(
+                    child: const SpinKitChasingDots(
+                        color: Color(0XFFE5A352)),
+                  ),
               errorWidget: (context, url, error) => Icon(Icons.error),
             ),
           ),

@@ -95,9 +95,9 @@ Future<String> updateCartItemQuantityService(int id, int? productId,
 
 Future<String> removeItemFromCart(int productId, String? token) async {
   try {
+    // kira
     final response = await http.delete(
-      Uri.parse(
-          "http://ahmedinara00-001-site1.dtempurl.com/api/Carts/$productId"),
+      Uri.parse(Constants.apiPath+ "/Carts/$productId"),
       headers: {
         'Content-Type': 'application/json',
         "access_token": token!,

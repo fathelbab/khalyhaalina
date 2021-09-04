@@ -139,6 +139,29 @@ class _OrderScreenState extends State<OrderScreen> {
                             return null;
                           },
                         ),
+                      ),      Container(
+                        margin: EdgeInsets.all(5.0),
+                        padding: EdgeInsets.only(right: 10, left: 10),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20.0)),
+                        child: TextFormField(
+                          controller: userPhoneNumberText,
+                          decoration: InputDecoration(
+                            hintText:
+                            AppLocale.of(context)!.getString('phoneNumber'),
+                            border: InputBorder.none,
+                          ),
+                          keyboardType: TextInputType.phone,
+                          focusNode: _userPhoneNumberFocusNode,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return AppLocale.of(context)!
+                                  .getString('emptyPhoneNumber');
+                            }
+                            return null;
+                          },
+                        ),
                       ),
                       Container(
                         margin: EdgeInsets.all(5.0),
@@ -192,30 +215,7 @@ class _OrderScreenState extends State<OrderScreen> {
                               ),
                             )
                           : SizedBox(),
-                      Container(
-                        margin: EdgeInsets.all(5.0),
-                        padding: EdgeInsets.only(right: 10, left: 10),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20.0)),
-                        child: TextFormField(
-                          controller: userPhoneNumberText,
-                          decoration: InputDecoration(
-                            hintText:
-                                AppLocale.of(context)!.getString('phoneNumber'),
-                            border: InputBorder.none,
-                          ),
-                          keyboardType: TextInputType.phone,
-                          focusNode: _userPhoneNumberFocusNode,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return AppLocale.of(context)!
-                                  .getString('emptyPhoneNumber');
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
+
                       Container(
                         margin: EdgeInsets.all(5.0),
                         padding: EdgeInsets.only(right: 10, left: 10),

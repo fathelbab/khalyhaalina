@@ -62,7 +62,7 @@ Future<String> sendDoctorBookedDateService(String accessToken, String name,
     int doctorId, String phoneNumber, String bookedDate) async {
   try {
     final response = await http.post(
-      Uri.parse("http://ahmedinara00-001-site1.dtempurl.com/api/BookedDoctors"),
+      Uri.parse("${Constants.apiPath}/BookedDoctors"),
       headers: {
         'Content-Type': 'application/json',
         'access_token': accessToken,

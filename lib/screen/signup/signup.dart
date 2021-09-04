@@ -125,6 +125,7 @@ class _SignUpState extends State<SignUp> {
                         DefaultFormField(
                           prefixIcon: Icons.lock,
                           controller: _passwordConfirmController,
+                          isPassword: isPassword,
                           hint: AppLocale.of(context)!
                               .getString("confirmPassword")
                               .toString(),
@@ -169,10 +170,11 @@ class _SignUpState extends State<SignUp> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Login()));
+                            Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              Login.route,
+                              (route) => false,
+                            );
                           },
                           child: Text(
                             AppLocale.of(context)!.getString("login")!,

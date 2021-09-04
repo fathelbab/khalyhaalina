@@ -8,10 +8,7 @@ import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-// const String apiPath = "http://eshop5827-001-site3.etempurl.com/api";
-// const String apiPath = "https://api.khlihaalina.com/api";
-// const String imagePath = "http://eshop5827-001-site3.etempurl.com";
-// const String imagePath = "https://api.khlihaalina.com/";
+
 
 Future<bool> checkConnection() async {
   try {

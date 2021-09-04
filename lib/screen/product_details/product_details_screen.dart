@@ -558,7 +558,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         Provider.of<Cart>(context, listen: false).fetchCartList();
         showToast(
           text: getString(context, "addedSuccess"),
-          bgColor: errorColor,
+          bgColor: successColor,
         );
         // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         //     content: Text(AppLocale.of(context)!.getString("addedSuccess")!)));
