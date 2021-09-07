@@ -34,14 +34,14 @@ class _MainCategorySectionState extends State<MainCategorySection> {
       width: 120,
       child: ListView.builder(
         // controller: _categoryScrollController,
-        itemCount: mainCategoryList?.length,
+        itemCount: mainCategoryList.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
               Provider.of<SupplierProvider>(context, listen: false)
                   .fetchSupplierList(
-                      mainCategoryList![index].subCategory![0].id.toString(),
+                      mainCategoryList[index].subCategory![0].id.toString(),
                       1,
                       20);
               Navigator.pushNamed(
@@ -61,7 +61,7 @@ class _MainCategorySectionState extends State<MainCategorySection> {
                   child: Center(
                     child: CachedNetworkImage(
                       imageUrl: Constants.imagePath +
-                          mainCategoryList![index].image1.toString(),
+                          mainCategoryList[index].image1.toString(),
                       fit: BoxFit.fill,
                       placeholder: (context, url) => Center(
                         child: const SpinKitChasingDots(

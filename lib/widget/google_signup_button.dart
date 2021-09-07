@@ -1,5 +1,6 @@
 import 'package:eshop/provider/auth_provider.dart';
 import 'package:eshop/screen/address/city_screen.dart';
+import 'package:eshop/screen/address/governorate_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +18,8 @@ class GoogleSignupButton extends StatelessWidget {
           provider.googleLogin().then((value) {
             print(value);
             if (value == "done") {
-              Navigator.of(context).pushReplacementNamed(CityScreen.route);
+              Navigator.of(context)
+                  .pushReplacementNamed(GovernorateScreen.route);
             } else {
               _showErrorDialog(context);
             }
@@ -25,7 +27,7 @@ class GoogleSignupButton extends StatelessWidget {
         }
       },
       child: Container(
-         padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: Colors.white,
           shape: BoxShape.circle,

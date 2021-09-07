@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:eshop/model/user_data.dart';
 import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/constants.dart';
+import 'package:eshop/utils/log.dart';
 // import 'package:eshop/utils/log.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -39,7 +40,7 @@ Future<void> storeMobileTokenService(
   try {
     // kira
     final http.Response response = await http.post(
-      Uri.parse(Constants.apiPath+"/MobileTokens"),
+      Uri.parse(Constants.apiPath + "/MobileTokens"),
       headers: {
         'Content-Type': 'application/json',
         'access_token': accessToken,
@@ -66,14 +67,19 @@ Future<String> userGoogleSignIn(String? accessToken) async {
         'access_token': accessToken!,
       },
     );
-    final resultData = json.decode(response.body);
+    // final resultData = json.decode(response.body);
+    UserData resultData = userDataFromJson(response.body);
     // print(resultData['token'].toString());
     if (response.statusCode == 200) {
-      // print("abdoo ${resultData['token']}");
-      final prefs = await SharedPreferences.getInstance();
-      String token = resultData['token'] ?? "";
-      prefs.setString('token', token);
-      // print("done");
+      // Log.d(resultData.token.toString());
+      String token = resultData.token ?? "";
+      // Log.d(token);
+      CacheHelper.savePrefs(key: 'token', value: token);
+      CacheHelper.savePrefs(
+          key: 'userName',
+          value:
+              "${resultData.userData?.firstName} ${resultData.userData?.lastName}");
+      CacheHelper.savePrefs(key: 'email', value: resultData.userData?.email);
       return "done";
     } else {
       return "failed";
@@ -129,7 +135,7 @@ Future<String> userFacebookSignIn(String? email, String authToken,
           "name": name
         })}");
     final response = await http.post(
-        Uri.parse("$Constants.apiPath/User/FaceBookRegisterlogin"),
+        Uri.parse(Constants.apiPath + "/User/FaceBookRegisterlogin"),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -144,19 +150,20 @@ Future<String> userFacebookSignIn(String? email, String authToken,
         }));
 
     print("abdo 111 ${response.statusCode}");
-    final resultData = json.decode(response.body);
+    // final resultData = json.decode(response.body);
     print("abdo status code  ${response.statusCode}");
     print("abdo body ${response.body.toString()}");
-
+    UserData resultData = userDataFromJson(response.body);
     if (response.statusCode == 200) {
-      print("abdo token ${resultData['token']}");
-      final prefs = await SharedPreferences.getInstance();
-      String token = resultData['token'] ?? "";
-      prefs.setString('token', token);
-      // final prefs = await SharedPreferences.getInstance();
-      // String token = resultData['result'] ?? "";
-      // prefs.setString('token', token);
-      //  return "done";
+      //  Log.d(resultData.token.toString());
+      String token = resultData.token ?? "";
+      // Log.d(token);
+      CacheHelper.savePrefs(key: 'token', value: token);
+      CacheHelper.savePrefs(
+          key: 'userName',
+          value:
+              "${resultData.userData?.firstName} ${resultData.userData?.lastName}");
+      CacheHelper.savePrefs(key: 'email', value: resultData.userData?.email);
       return "done";
     } else {
       return "failed";

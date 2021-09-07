@@ -4,6 +4,7 @@ import 'package:eshop/screen/splash/splash_app_screen.dart';
 import 'package:eshop/utils/app_providers.dart';
 import 'package:eshop/utils/app_routes.dart';
 import 'package:eshop/utils/cache_helper.dart';
+import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/local_notification.dart';
 import 'package:eshop/utils/log.dart';
 import 'package:eshop/utils/theme.dart';
@@ -113,7 +114,7 @@ class _MyAppState extends State<MyApp> {
         builder: (context, settings, child) {
           return MaterialApp(
             navigatorKey: navigatorKey,
-            title: 'Flutter Demo',
+            title: '',
             debugShowCheckedModeBanner: false,
             theme: AppTheme().lightTheme,
             darkTheme: AppTheme().darkTheme,

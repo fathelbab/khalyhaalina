@@ -72,7 +72,7 @@ class _SplashAppScreenState extends State<SplashAppScreen> {
     return showGeneralDialog(
       context: context,
       barrierLabel: '',
-      barrierDismissible: false,
+      barrierDismissible: true,
       transitionBuilder: (context, _animation, _secondaryAnimation, _child) {
         return Animations.grow(_animation, _secondaryAnimation, _child);
       },

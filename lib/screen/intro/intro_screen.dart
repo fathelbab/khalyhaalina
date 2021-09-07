@@ -34,9 +34,16 @@ class _IntroScreenState extends State<IntroScreen> {
         if (token == "") {
           Navigator.of(context).pushReplacementNamed(Login.route);
         } else {
-          Navigator.of(context).pushReplacementNamed(
-            HomeScreen.route,
-          );
+          bool isCached = CacheHelper.getPrefs(key: 'isCached') ?? true;
+          if (isCached) {
+            CacheHelper.clearAll();
+            CacheHelper.savePrefs(value: false, key: 'isCached');
+            Navigator.of(context).pushReplacementNamed(Login.route);
+          } else {
+            Navigator.of(context).pushReplacementNamed(
+              HomeScreen.route,
+            );
+          }
         }
       },
     );
@@ -49,7 +56,7 @@ class _IntroScreenState extends State<IntroScreen> {
         body: Column(
           children: [
             Expanded(
-              child: configuration.configuration!.gif != null
+              child: configuration.configuration?.gif != null
                   ? CachedNetworkImage(
                       imageUrl: Constants.imagePath +
                           configuration.configuration!.logo.toString(),
@@ -68,7 +75,11 @@ class _IntroScreenState extends State<IntroScreen> {
                       ),
                       fit: BoxFit.contain,
                     )
-                  : CircularProgressIndicator(),
+                  : Center(
+                      child: const SpinKitChasingDots(
+                        color: Color(0XFFE5A352),
+                      ),
+                    ),
             ),
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(

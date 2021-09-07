@@ -48,7 +48,7 @@ Future<String> confirmBuyPackageService(
       ),
     );
 
-    Log.d(accessToken);
+    // Log.d(accessToken);
 
     if (response.statusCode == 201) {
       return "done";

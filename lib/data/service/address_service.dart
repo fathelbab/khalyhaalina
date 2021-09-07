@@ -11,10 +11,10 @@ Future<List<Governate>?> getAllGovernate(int offset, int limit) async {
     if (response.statusCode == 200) {
       return governateFromJson(response.body).governate;
     } else {
-      return null;
+      return [];
     }
   } catch (e) {
-    throw e;
+    return [];
   }
 }
 
@@ -26,9 +26,9 @@ Future<List<City>?> getCityByGovernateId(
     if (response.statusCode == 200) {
       return cityDataFromJson(response.body).city;
     } else {
-      return null;
+      return [];
     }
   } catch (e) {
-    throw e;
+    return [];
   }
 }

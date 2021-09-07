@@ -32,9 +32,9 @@ Future<List<ServiceSpecialist>?> getAllServiceSpecialist() async {
       return serviceSpecialistDataFromJson(response.body).result;
     } else {
       // print(response.statusCode);
-      return null;
+      return [];
     }
   } catch (e) {
-    throw e;
+    return [];
   }
 }

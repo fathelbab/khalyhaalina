@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:eshop/screen/packages/packages_screen.dart';
 import 'package:eshop/screen/product_details/product_details_screen.dart';
 import 'package:eshop/screen/product_screen.dart';
+import 'package:eshop/utils/curved_appbar.dart';
 import 'package:eshop/utils/log.dart';
 import 'package:eshop/utils/product_status.dart';
 import 'package:flutter/material.dart';
@@ -112,8 +113,9 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
     Provider.of<ServiceProvider>(context, listen: false)
         .fetchServiceSpecialist()
         .then((serviceSpecialistList) {
-      Provider.of<ServiceProvider>(context, listen: false)
-          .fetchServiceInfoList(serviceSpecialistList![0].id.toString());
+      if (serviceSpecialistList != null && serviceSpecialistList.isNotEmpty)
+        Provider.of<ServiceProvider>(context, listen: false)
+            .fetchServiceInfoList(serviceSpecialistList[0].id.toString());
     });
     governorateName = CacheHelper.getPrefs(key: "governorateName") ?? "";
     cityName = CacheHelper.getPrefs(key: "cityName") ?? "";
@@ -122,8 +124,9 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
     Provider.of<DoctorProvider>(context, listen: false)
         .fetchDoctorSpecialist()
         .then((value) {
-      Provider.of<DoctorProvider>(context, listen: false)
-          .fetchDoctorList(value![0].id.toString());
+      if (value != null && value.isNotEmpty)
+        Provider.of<DoctorProvider>(context, listen: false)
+            .fetchDoctorList(value[0].id.toString());
     });
 
     Provider.of<ProductProvider>(context, listen: false)
@@ -183,9 +186,16 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
   Scaffold buildScaffold(supplierList) {
     return Scaffold(
       key: _scaffoldKey,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         // centerTitle: true,
+
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(20),
+          ),
+        ),
         title: SizedBox(
           height: kToolbarHeight,
           child: Image.asset(
@@ -1068,7 +1078,7 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
             if (_gifModelsList != null) buildGifModelsSlider(),
             MainCategorySection(),
             buildImagesSlider(),
-            notificationsList != null && notificationsList!.isEmpty
+            notificationsList == null || notificationsList!.isEmpty
                 ? Text("")
                 : Container(
                     height: MediaQuery.of(context).size.height / 4,
@@ -1086,7 +1096,7 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
                   ),
             if (newHotProduct != null)
               buildProductHotList(newHotProduct!, ProductStatus.newStatus),
-            notificationsList != null && notificationsList!.isEmpty
+            notificationsList == null || notificationsList!.isEmpty
                 ? Text("")
                 : Container(
                     height: MediaQuery.of(context).size.height / 4,
@@ -1105,7 +1115,7 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
             if (discountHotProduct != null)
               buildProductHotList(
                   discountHotProduct!, ProductStatus.discountStatus),
-            notificationsList != null && notificationsList!.isEmpty
+            notificationsList == null || notificationsList!.isEmpty
                 ? Text("")
                 : Container(
                     height: MediaQuery.of(context).size.height / 4,
@@ -1123,7 +1133,7 @@ class _HomeCategoryScreenState extends State<HomeCategoryScreen> {
                   ),
             if (statusHotProduct != null)
               buildProductHotList(statusHotProduct!, ProductStatus.offerStatus),
-            notificationsList != null && notificationsList!.isEmpty
+            notificationsList == null || notificationsList!.isEmpty
                 ? Text("")
                 : Container(
                     height: MediaQuery.of(context).size.height / 4,

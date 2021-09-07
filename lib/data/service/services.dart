@@ -139,10 +139,10 @@ Future<List<Notifications>?> fetchNotification() async {
   }
 }
 
-Future<List<ImageData>?> fetchImages() async {
+Future<List<ImageData>?> fetchImages(String cityId) async {
   try {
-    final response =
-        await http.get(Uri.parse(Constants.apiPath + "/Image/GetAll"));
+    final response = await http
+        .get(Uri.parse(Constants.apiPath + "/Image/GetAll?city=$cityId"));
 
     if (response.statusCode == 200) {
       return imageDataFromJson(response.body);

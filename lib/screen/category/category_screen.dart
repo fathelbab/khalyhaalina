@@ -41,66 +41,74 @@ class _CategoryScreenState extends State<CategoryScreen> {
         ),
       ),
       body: LayoutBuilder(
-        builder: (context, constraints) => GridView.builder(
-          // controller: _categoryScrollController,
-          itemCount: mainCategoryList?.length,
+        builder: (context, constraints) => mainCategoryList.isNotEmpty
+            ? GridView.builder(
+                // controller: _categoryScrollController,
+                itemCount: mainCategoryList.length,
 
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              onTap: () {
-                Provider.of<SupplierProvider>(context, listen: false)
-                    .fetchSupplierList(
-                        mainCategoryList![index].subCategory![0].id.toString(),
-                        1,
-                        20);
-                Navigator.pushNamed(
-                  context,
-                  SupplierScreen.route,
-                  arguments: mainCategoryList[index],
-                );
-              },
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                    height: 90,
-                    width: 90,
-                    child: Center(
-                      child: CachedNetworkImage(
-                        imageUrl: Constants.imagePath +
-                            mainCategoryList![index].image1.toString(),
-                        fit: BoxFit.fill,
-                        placeholder: (context, url) => Center(
-                          child: const SpinKitChasingDots(
-                              color: Color(0XFFE5A352)),
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      Provider.of<SupplierProvider>(context, listen: false)
+                          .fetchSupplierList(
+                              mainCategoryList[index]
+                                  .subCategory![0]
+                                  .id
+                                  .toString(),
+                              1,
+                              20);
+                      Navigator.pushNamed(
+                        context,
+                        SupplierScreen.route,
+                        arguments: mainCategoryList[index],
+                      );
+                    },
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 5, vertical: 5),
+                          height: 90,
+                          width: 90,
+                          child: Center(
+                            child: CachedNetworkImage(
+                              imageUrl: Constants.imagePath +
+                                  mainCategoryList[index].image1.toString(),
+                              fit: BoxFit.fill,
+                              placeholder: (context, url) => Center(
+                                child: const SpinKitChasingDots(
+                                    color: Color(0XFFE5A352)),
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
+                            ),
+                          ),
                         ),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
-                      ),
+                        Text(
+                          locale == "ar"
+                              ? mainCategoryList[index].nameAr.toString()
+                              : mainCategoryList[index].nameEn.toString(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Color(0XFFE5A352),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
                     ),
-                  ),
-                  Text(
-                    locale == "ar"
-                        ? mainCategoryList[index].nameAr.toString()
-                        : mainCategoryList[index].nameEn.toString(),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Color(0XFFE5A352),
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ],
+                  );
+                },
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisSpacing: 4,
+                  mainAxisSpacing: 4,
+                  crossAxisCount: constraints.maxWidth > 480 ? 5 : 3,
+                  childAspectRatio: 0.8,
+                ),
+              )
+            : Center(
+                child: const SpinKitChasingDots(color: Color(0XFFE5A352)),
               ),
-            );
-          },
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisSpacing: 4,
-            mainAxisSpacing: 4,
-            crossAxisCount: constraints.maxWidth > 480 ? 5 : 3,
-            childAspectRatio: 0.8,
-          ),
-        ),
       ),
     );
   }

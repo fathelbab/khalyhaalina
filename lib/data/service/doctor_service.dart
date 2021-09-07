@@ -16,10 +16,10 @@ Future<List<DoctorSpecialistt>?> getAllDoctorSpecialist() async {
       return doctorSpecialistDataFromJson(response.body).doctorSpecialist;
     } else {
       // print(response.statusCode);
-      return null;
+      return [];
     }
   } catch (e) {
-    throw e;
+    return [];
   }
 }
 
@@ -36,10 +36,10 @@ Future<List<DoctorInfo>?> getAllDoctorList(
       return doctorDataFromJson(response.body).result;
     } else {
       // print(response.statusCode);
-      return null;
+      return [];
     }
   } catch (e) {
-    throw e;
+    return [];
   }
 }
 
@@ -79,7 +79,7 @@ Future<String> sendDoctorBookedDateService(String accessToken, String name,
       ),
     );
 
-    Log.d(accessToken);
+    // Log.d(accessToken);
 
     if (response.statusCode == 201) {
       return "done";
@@ -87,6 +87,7 @@ Future<String> sendDoctorBookedDateService(String accessToken, String name,
       return "failed";
     }
   } catch (e) {
-    throw e;
+    // throw e;
+    return "failed";
   }
 }

@@ -58,7 +58,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
                 ),
                 errorWidget: (context, url, error) => Center(
                   child: Text(
-                    getString(context, "emptyWallet"),
+                    getString(context, "emptyRewards"),
                     style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,

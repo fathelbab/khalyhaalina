@@ -85,7 +85,7 @@ class _ServiceSectionState extends State<ServiceSection> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Image.asset(
-                                "assets/images/app_logo.png",
+                                "assets/images/service.png",
                                 height: 60,
                               ),
                               Text(

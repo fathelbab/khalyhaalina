@@ -105,6 +105,7 @@
     "wallet": "Wallet",
     "appWallet": "Wallet of Khliha Alina",
     "emptyWallet": "Follow the offers, there are no offers now",
+    "emptyRewards": "Follow the reward, there are no rewards now",
     "buyPackage": "buy",
     "packages": "Packages",
     "currency": "EGP",

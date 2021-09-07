@@ -34,7 +34,7 @@ class _DoctorSectionState extends State<DoctorSection> {
     doctorSpeciaList =
         Provider.of<DoctorProvider>(context).doctorSpecialistList;
     return Scaffold(
-      backgroundColor: primaryColor,
+      backgroundColor: Colors.white,
       body: Container(
         height: double.infinity,
         margin: const EdgeInsets.only(top: 10),
@@ -91,7 +91,7 @@ class _DoctorSectionState extends State<DoctorSection> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Image.asset(
-                                  "assets/images/app_logo.png",
+                                  "assets/images/doctor.png",
                                   height: 60,
                                 ),
                                 Text(
