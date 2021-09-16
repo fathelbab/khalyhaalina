@@ -2,10 +2,7 @@ import 'dart:convert';
 import 'package:eshop/model/user_data.dart';
 import 'package:eshop/utils/cache_helper.dart';
 import 'package:eshop/utils/constants.dart';
-import 'package:eshop/utils/log.dart';
-// import 'package:eshop/utils/log.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> signIn(String email, String password) async {
   try {
@@ -58,40 +55,6 @@ Future<void> storeMobileTokenService(
   }
 }
 
-Future<String> userGoogleSignIn(String? accessToken) async {
-  try {
-    final http.Response response = await http.post(
-      Uri.parse(Constants.apiPath + "/User/GoogleRegisterLogin"),
-      headers: {
-        'Content-Type': 'application/json',
-        'access_token': accessToken!,
-      },
-    );
-    // final resultData = json.decode(response.body);
-    UserData resultData = userDataFromJson(response.body);
-    // print(resultData['token'].toString());
-    if (response.statusCode == 200) {
-      // Log.d(resultData.token.toString());
-      String token = resultData.token ?? "";
-      // Log.d(token);
-      CacheHelper.savePrefs(key: 'token', value: token);
-      CacheHelper.savePrefs(
-          key: 'userName',
-          value:
-              "${resultData.userData?.firstName} ${resultData.userData?.lastName}");
-      CacheHelper.savePrefs(key: 'email', value: resultData.userData?.email);
-      return "done";
-    } else {
-      return "failed";
-      // throw "${resultData['message']}";
-    }
-  } catch (e) {
-    // throw e;
-    // print(e);
-    return "failed";
-  }
-}
-
 Future<void> register(
     String email, String password, String firstName, String lastName) async {
   // print(email + " " + password + " " + firstName + " " + lastName);
@@ -119,59 +82,5 @@ Future<void> register(
     }
   } catch (e) {
     throw e;
-  }
-}
-
-Future<String> userFacebookSignIn(String? email, String authToken,
-    String userId, String? name, String? firstName, String? lastName) async {
-  try {
-    print("abdo ${json.encode({
-          "authToken": authToken,
-          "email": email,
-          "fristName": firstName,
-          "id": userId,
-          "lastName": lastName,
-          "provider": "FACEBOOK",
-          "name": name
-        })}");
-    final response = await http.post(
-        Uri.parse(Constants.apiPath + "/User/FaceBookRegisterlogin"),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: json.encode({
-          "authToken": authToken,
-          "email": email,
-          "fristName": firstName,
-          "id": userId,
-          "lastName": lastName,
-          "provider": "FACEBOOK",
-          "name": name
-        }));
-
-    print("abdo 111 ${response.statusCode}");
-    // final resultData = json.decode(response.body);
-    print("abdo status code  ${response.statusCode}");
-    print("abdo body ${response.body.toString()}");
-    UserData resultData = userDataFromJson(response.body);
-    if (response.statusCode == 200) {
-      //  Log.d(resultData.token.toString());
-      String token = resultData.token ?? "";
-      // Log.d(token);
-      CacheHelper.savePrefs(key: 'token', value: token);
-      CacheHelper.savePrefs(
-          key: 'userName',
-          value:
-              "${resultData.userData?.firstName} ${resultData.userData?.lastName}");
-      CacheHelper.savePrefs(key: 'email', value: resultData.userData?.email);
-      return "done";
-    } else {
-      return "failed";
-      // throw "${resultData['message']}";
-    }
-  } catch (e) {
-    // throw e;
-    print("abdo 111 ${e.toString()}");
-    return "failed";
   }
 }

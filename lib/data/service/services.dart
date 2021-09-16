@@ -43,6 +43,7 @@ Future<String> createOrderbyUser(
   String customerName,
   String phoneNumber,
   String address,
+  String couponCode,
   String receivedDate,
   double subTotal,
   List<CartData> listOfProduct,
@@ -56,6 +57,7 @@ Future<String> createOrderbyUser(
         "phoneNumber": phoneNumber.toString(),
         "address": address.toString(),
         "subtotale": 0,
+        "discountCode": couponCode,
         "recivedDate": receivedDate,
         "orderdeitalsdto":
             listOfProduct.map((productData) => productData.toJson()).toList()

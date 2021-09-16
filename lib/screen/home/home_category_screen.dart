@@ -4,8 +4,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:eshop/screen/packages/packages_screen.dart';
 import 'package:eshop/screen/product_details/product_details_screen.dart';
 import 'package:eshop/screen/product_screen.dart';
-import 'package:eshop/utils/curved_appbar.dart';
-import 'package:eshop/utils/log.dart';
 import 'package:eshop/utils/product_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';

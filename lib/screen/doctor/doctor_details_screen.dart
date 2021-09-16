@@ -111,28 +111,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                         ],
                       ),
                     ),
-                    // Image.network(imagePath + doctorDetails.imagePath,
-                    //     fit: BoxFit.fill, width: double.infinity),
-                    // Container(
-                    //   alignment: Alignment.centerRight,
-                    //   margin: const EdgeInsets.symmetric(
-                    //       horizontal: 15, vertical: 10),
-                    //   child: Text(
-                    //     "الاسم : ${doctorDetails.name}",
-                    //     style: TextStyle(fontWeight: FontWeight.bold),
-                    //   ),
-                    // ),
-                    // Container(
-                    //   alignment: Alignment.centerRight,
-                    //   margin: const EdgeInsets.symmetric(horizontal: 15),
-                    //   child: Text("التليفون : ${doctorDetails.phoneNumber}"),
-                    // ),
-                    // Container(
-                    //   alignment: Alignment.centerRight,
-                    //   margin: const EdgeInsets.symmetric(
-                    //       horizontal: 15, vertical: 5),
-                    //   child: Text("المدينة : ${doctorDetails.city!.name}"),
-                    // ),
+
                     Html(
                         data: locale == "ar"
                             ? doctorDetails.descriptionAr.toString()

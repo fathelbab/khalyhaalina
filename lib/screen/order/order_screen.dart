@@ -139,7 +139,8 @@ class _OrderScreenState extends State<OrderScreen> {
                             return null;
                           },
                         ),
-                      ),      Container(
+                      ),
+                      Container(
                         margin: EdgeInsets.all(5.0),
                         padding: EdgeInsets.only(right: 10, left: 10),
                         decoration: BoxDecoration(
@@ -149,7 +150,7 @@ class _OrderScreenState extends State<OrderScreen> {
                           controller: userPhoneNumberText,
                           decoration: InputDecoration(
                             hintText:
-                            AppLocale.of(context)!.getString('phoneNumber'),
+                                AppLocale.of(context)!.getString('phoneNumber'),
                             border: InputBorder.none,
                           ),
                           keyboardType: TextInputType.phone,
@@ -215,7 +216,6 @@ class _OrderScreenState extends State<OrderScreen> {
                               ),
                             )
                           : SizedBox(),
-
                       Container(
                         margin: EdgeInsets.all(5.0),
                         padding: EdgeInsets.only(right: 10, left: 10),
@@ -310,16 +310,16 @@ class _OrderScreenState extends State<OrderScreen> {
         CacheHelper.savePrefs(
             key: "phoneNumber", value: userPhoneNumberText.text);
         CacheHelper.savePrefs(key: "userOrderName", value: userNameText.text);
-        final dynamic response =
-            await Provider.of<OrderProvider>(context, listen: false)
-                .createOrder(
-                    userNameText.text,
-                    userPhoneNumberText.text,
-                    "${userAddressText.text}/${couponText.text}",
-                    receivedDateText.text,
-                    cart.totalMount,
-                    cart.cartItems!)
-                .then((value) {
+        await Provider.of<OrderProvider>(context, listen: false)
+            .createOrder(
+                userNameText.text,
+                userPhoneNumberText.text,
+                userAddressText.text,
+                couponText.text,
+                receivedDateText.text,
+                cart.totalMount,
+                cart.cartItems!)
+            .then((value) {
           print(value);
           if (value == "done") {
             Navigator.pop(context);

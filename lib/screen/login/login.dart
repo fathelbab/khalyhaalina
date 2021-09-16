@@ -7,8 +7,7 @@ import 'package:eshop/provider/auth_provider.dart';
 import 'package:eshop/screen/signup/signup.dart';
 import 'package:eshop/widget/default_button.dart';
 import 'package:eshop/widget/default_form_field.dart';
-import 'package:eshop/widget/facebook_signup_button.dart';
-import 'package:eshop/widget/google_signup_button.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -158,13 +157,7 @@ class _LoginState extends State<Login> {
                       ),
                     ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      FacebookSignupButton(),
-                      GoogleSignupButton(),
-                    ],
-                  ),
+
                   SizedBox(
                     height: 10,
                   ),

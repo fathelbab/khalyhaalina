@@ -10,10 +10,8 @@ import 'package:eshop/screen/home/home_category_screen.dart';
 import 'package:eshop/screen/pharmacy/pharmacy_screen.dart';
 import 'package:eshop/utils/local_notification.dart';
 import 'package:eshop/widget/badge.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -47,18 +45,6 @@ class _HomeScreenState extends State<HomeScreen> {
         iconData: Icons.view_module_rounded,
         color: Color(0xFF5c8bb0),
       ),
-      // BarItem(
-      //   text: AppLocale.of(context)!.getString('callUs'),
-      //   iconData: FontAwesomeIcons.whatsapp,
-      //   color: Colors.yellow.shade900,
-      // ),
-      // BarItem(
-      //   text: AppLocale.of(context)!.getString('callUs'),
-      //   // iconData: Icons.apps,
-      //   iconData: Icons.clear_all_sharp,
-      //   // iconData: Icons.auto_awesome_motion_rounded ,
-      //   color: Colors.yellow.shade900,
-      // ),
       BarItem(
         text: AppLocale.of(context)!.getString('pharmacy'),
         iconData: Icons.local_pharmacy,
@@ -126,12 +112,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      print('User granted permission');
+      // User granted permission
     } else if (settings.authorizationStatus ==
         AuthorizationStatus.provisional) {
-      print('User granted provisional permission');
+      // User granted provisional permission
     } else {
-      print('User declined or has not accepted permission');
+      // User declined or has not accepted permission
     }
   }
 

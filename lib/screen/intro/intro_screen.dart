@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eshop/provider/configurations_provider.dart';
+import 'package:eshop/screen/address/governorate_screen.dart';
 import 'package:eshop/screen/home/home_screen.dart';
 import 'package:eshop/screen/login/login.dart';
 import 'package:eshop/utils/cache_helper.dart';
@@ -23,11 +24,14 @@ class IntroScreen extends StatefulWidget {
 class _IntroScreenState extends State<IntroScreen> {
   String token = "";
   Timer? timer;
+  String? cityId;
   @override
   void initState() {
     super.initState();
 
     token = CacheHelper.getPrefs(key: "token") ?? "";
+    cityId = CacheHelper.getPrefs(key: 'cityId') ?? "";
+
     timer = Timer(
       const Duration(seconds: 15),
       () {
@@ -39,6 +43,8 @@ class _IntroScreenState extends State<IntroScreen> {
             CacheHelper.clearAll();
             CacheHelper.savePrefs(value: false, key: 'isCached');
             Navigator.of(context).pushReplacementNamed(Login.route);
+          } else if (cityId!.isEmpty) {
+            Navigator.of(context).pushReplacementNamed(GovernorateScreen.route);
           } else {
             Navigator.of(context).pushReplacementNamed(
               HomeScreen.route,
@@ -83,15 +89,16 @@ class _IntroScreenState extends State<IntroScreen> {
             ),
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
-                  side: BorderSide(
-                    width: 3.0,
-                    color: primaryColor,
-                  ),
-                  shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(25.0),
-                  ),
-                  primary: Colors.white,
-                  padding: const EdgeInsets.all(10)),
+                side: BorderSide(
+                  width: 3.0,
+                  color: primaryColor,
+                ),
+                shape: new RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(25.0),
+                ),
+                primary: Colors.white,
+                padding: const EdgeInsets.all(10),
+              ),
               icon: Icon(
                 Icons.arrow_back_ios,
                 color: primaryColor,
@@ -101,9 +108,19 @@ class _IntroScreenState extends State<IntroScreen> {
                 if (token == "") {
                   Navigator.of(context).pushReplacementNamed(Login.route);
                 } else {
-                  Navigator.of(context).pushReplacementNamed(
-                    HomeScreen.route,
-                  );
+                  bool isCached = CacheHelper.getPrefs(key: 'isCached') ?? true;
+                  if (isCached) {
+                    CacheHelper.clearAll();
+                    CacheHelper.savePrefs(value: false, key: 'isCached');
+                    Navigator.of(context).pushReplacementNamed(Login.route);
+                  } else if (cityId!.isEmpty) {
+                    Navigator.of(context)
+                        .pushReplacementNamed(GovernorateScreen.route);
+                  } else {
+                    Navigator.of(context).pushReplacementNamed(
+                      HomeScreen.route,
+                    );
+                  }
                 }
               },
               label: Text(

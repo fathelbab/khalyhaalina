@@ -8,13 +8,14 @@ class OrderProvider with ChangeNotifier {
     String customerName,
     String phoneNumber,
     String address,
+    String couponCode,
     String receivedDate,
     double subTotal,
     List<CartData> listOfProduct,
   ) async {
     final token = await _getToken();
     String response = await createOrderbyUser(customerName, phoneNumber,
-        address, receivedDate, subTotal, listOfProduct, token);
+        address, couponCode, receivedDate, subTotal, listOfProduct, token);
     return response;
   }
 
