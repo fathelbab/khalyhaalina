@@ -10,7 +10,7 @@ import 'package:eshop/utils/components.dart';
 import 'package:eshop/utils/log.dart';
 import 'package:eshop/utils/style.dart';
 import 'package:eshop/utils/cache_helper.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+// import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -191,8 +191,8 @@ class _FavouriteProductItemState extends State<FavouriteProductItem> {
     super.dispose();
     _textFieldController.dispose();
   }
-  shareProduct(int productId) async {
-    Uri id = await createDynamicLinkID(productId.toString());
+  shareProduct(int id) async {
+    // Uri id = await createDynamicLinkID(productId.toString());
     Share.share(id.toString());
   }
 

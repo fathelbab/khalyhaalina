@@ -212,8 +212,8 @@ class _ProductItemsState extends State<ProductItems> {
   //         content: Text(AppLocale.of(context)!.getString("addedError")!)));
   //   });
   // }
-  shareProduct(int productId) async {
-    Uri id = await createDynamicLinkID(productId.toString());
+  shareProduct(int id) async {
+    // Uri id = await createDynamicLinkID(productId.toString());
     Share.share(id.toString());
   }
 

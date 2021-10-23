@@ -595,8 +595,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     }
   }
 
-  shareProduct(int productId) async {
-    Uri id = await createDynamicLinkID(productId.toString());
+  shareProduct(int id) async {
+    // Uri id = await createDynamicLinkID(productId.toString());
     Share.share(id.toString());
   }
 
